@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{91220d2e-951e-4529-bae0-2f293a6191a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DirectX">
+      <UniqueIdentifier>{9ce6819c-240b-4c6e-9927-e86b5595a45c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="background">
+      <UniqueIdentifier>{11943d99-5584-4f53-844f-a5bc3a84379e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{db1daa74-c458-494c-8d45-caebb423bfb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Global">
+      <UniqueIdentifier>{7f295346-306f-4cc3-8816-f9a8c7189e64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{5b61ee05-c32e-4406-abdc-2e2cbc19f9ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{06d9b299-bfcc-4fec-9dd2-87dd09fb98ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{3abc915e-2b80-4074-8f53-bbf5274eb0e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{280b86f6-1366-4650-906e-336744afc72b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Enemy">
+      <UniqueIdentifier>{cf4b5695-c3ec-4ba6-b39c-7724224fc18c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Megaman">
+      <UniqueIdentifier>{9858b1c1-dade-4b08-9299-3e4906196c16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Megaman\Bullet">
+      <UniqueIdentifier>{7ef1f42c-b456-4a9b-aa48-46a4661e6112}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="MContent.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="MGraphic.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="MKeyboard.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>background</Filter>
+    </ClCompile>
+    <ClCompile Include="Global.cpp">
+      <Filter>Global</Filter>
+    </ClCompile>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticGameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullets.cpp">
+      <Filter>Megaman\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Megaman.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="MContent.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="MGraphic.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="MKeyboard.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGround.h">
+      <Filter>background</Filter>
+    </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticGameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullets.h">
+      <Filter>Megaman\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Megaman.h" />
+  </ItemGroup>
+</Project>
