@@ -32,7 +32,7 @@ public:
 	virtual void UpdateBox();
 	virtual void Render(MGraphic* graphic, Camera* cam);
 
-	float CheckCollision(GameObject* obj, float& normalx, float& normaly, float timeFrame);
+	float CheckCollision(GameObject* obj, CDirection &normalX, CDirection &normalY, float timeFrame);
 
 };
 

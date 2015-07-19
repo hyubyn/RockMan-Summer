@@ -208,7 +208,8 @@ void Megaman::UpdateCollision(vector<GameObject*> vecGameObjs, float timeFrame)
 {
 
 	float timeCollision = timeFrame;
-	float normalx = 0.0f, normaly = 0.0f;
+	CDirection normalx = NONE_DIRECT, normaly = NONE_DIRECT;
+
 
 	float topTime, leftTime, rightTime, botTime;
 	topTime = leftTime = rightTime = botTime = timeFrame;
@@ -220,7 +221,7 @@ void Megaman::UpdateCollision(vector<GameObject*> vecGameObjs, float timeFrame)
 	for (int i = 0; i < vecGameObjs.size(); i++)
 	{
 		GameObject* gameObj = vecGameObjs[i];
-		normalx = 0.0f, normaly = 0.0f;
+		normalx = NONE_DIRECT, normaly = NONE_DIRECT;
 		float t = CheckCollision(gameObj, normalx, normaly, timeFrame);
 		if (t <= timeFrame)   // Có x?y ra va ch?m.
 		{

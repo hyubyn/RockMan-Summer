@@ -1,41 +1,8 @@
-﻿#include "CCollision.h"
+﻿#include "Collision.h"
 
-CBox::CBox()
-{
-	CBox(0, 0, 0, 0, 0, 0);
-}
-
-CBox::CBox(float x, float y, float width, float height, float vx, float vy)
-{
-	_x = x;
-	_y = y;
-	_width = width;
-	_height = height;
-	_vx = vx;
-	_vy = vy;
-}
-
-CBox::CBox(Rect rectangle)
-{
-	_x = rectangle.left;
-	_y = rectangle.top;
-	_width = abs(rectangle.right - rectangle.left);
-	_height = abs(rectangle.top - rectangle.bottom);
-	_vx = 0.0f;
-	_vy = 0.0f;
-}
-
-bool CBox::IntersecWith(CBox box, bool acceptDiffirent)
-{
-	if (!acceptDiffirent)
-		return !(_x > box._x + box._width || _y < box._y - box._height || _x + _width<box._x || _y - _height>box._y);
-	else
-		return !(floor(_x) > floor(box._x + box._width) || floor(_y) < floor(box._y - box._height) || floor(_x + _width) < floor(box._x) || floor(_y - _height) > floor(box._y));
-}
 
 CCollision::CCollision()
 {
-
 }
 
 CCollision::~CCollision()
@@ -43,25 +10,23 @@ CCollision::~CCollision()
 
 }
 
-CBox CCollision::GetSweptBox(CBox box, float frameTime)
+Box CCollision::GetSweptBroadphaseBox(Box b, float t)
 {
-	CBox re;
-	re._x = box._vx > 0 ? box._x : box._x - abs(box._vx)*frameTime;
-	re._y = box._vy > 0 ? box._y + abs(box._vy)*frameTime : box._y;
-	re._vx = box._vx;
-	re._vy = box._vy;
-	re._width = box._width + abs(box._vx)*frameTime;
-	re._height = box._height + abs(box._vy)*frameTime;
+	Box broadphaseBox;
+	broadphaseBox._x = b._vx > 0 ? b._x : b._x + b._vx * t;
+	broadphaseBox._y = b._vy < 0 ? b._y : b._y + b._vy * t;
+	broadphaseBox._width = b._vx > 0 ? b._vx * t + b._width : b._width - b._vx * t;
+	broadphaseBox._height = b._vy > 0 ? b._vy * t + b._height : b._height - b._vy * t;
 
-	return re;
+	return broadphaseBox;
 }
 
-bool CCollision::AABBCheck(CBox box1, CBox box2)
+bool CCollision::AABBCheck(Box b1, Box b2)
 {
-	return box1.IntersecWith(box2, true);
+	return !(b1._x + b1._width < b2._x || b1._x > b2._x + b2._width || b1._y < b2._y - b2._height || b1._y - b1._height > b2._y);
 }
 
-float CCollision::SweepAABB(CBox box1, CBox box2, CDirection &normalX, CDirection &normalY, float frameTime)
+float CCollision::SweepAABB(Box box1, Box box2, CDirection &normalX, CDirection &normalY, float frameTime)
 {
 	float xInvEntry, yInvEntry;
 	float xInvExit, yInvExit;
@@ -129,22 +94,22 @@ float CCollision::SweepAABB(CBox box1, CBox box2, CDirection &normalX, CDirectio
 		normalX = CDirection::NONE_DIRECT;
 		normalY = CDirection::NONE_DIRECT;
 
-		if (box1.IntersecWith(box2))
+		if (box1.IsIntersect(box2))
 		{
 			// Nếu 2 box va chạm lẫn nhau thì có thể hai box này đã dính nhau
-			if (fabsf ( box1._y - box1._height- box2._y)<=2.0f
+			if (fabsf(box1._y - box1._height - box2._y) <= 2.0f
 				&& !(box1._x + box1._width <= box2._x || box1._x >= box2._x + box2._width))
 				normalY = CDirection::ON_DOWN;
 
-			else if (fabsf(box1._y -( box2._y - box2._height))<=2.0f
+			else if (fabsf(box1._y - (box2._y - box2._height)) <= 2.0f
 				&& !(box1._x + box1._width <= box2._x || box1._x >= box2._x + box2._width))
 				normalY = CDirection::ON_UP;
 
-			else if (fabsf(box1._x + box1._width - box2._x)<=2.0f
+			else if (fabsf(box1._x + box1._width - box2._x) <= 2.0f
 				&& !(box1._y - box1._height >= box2._y || box1._y <= box2._y - box2._height))
 				normalX = CDirection::ON_RIGHT;
 
-			else if (fabsf(box1._x -( box2._x + box2._width))<=2.0f
+			else if (fabsf(box1._x - (box2._x + box2._width)) <= 2.0f
 				&& !(box1._y - box1._height >= box2._y || box1._y <= box2._y - box2._height))
 				normalX = CDirection::ON_LEFT;
 
@@ -171,13 +136,13 @@ float CCollision::SweepAABB(CBox box1, CBox box2, CDirection &normalX, CDirectio
 				}
 				else
 				{
-					if (fabsf(box1._y - box1._height - box2._y)<=2.0f)
+					if (fabsf(box1._y - box1._height - box2._y) <= 2.0f)
 					{
 						normalX = CDirection::NONE_DIRECT;
 						normalY = CDirection::ON_DOWN;
 						entryTime = 0.0f;
 					}
-					else if (fabsf(box1._y -( box2._y - box2._height)<=2.0f))
+					else if (fabsf(box1._y - (box2._y - box2._height) <= 2.0f))
 					{
 						normalX = CDirection::NONE_DIRECT;
 						normalY = CDirection::ON_UP;
@@ -194,13 +159,13 @@ float CCollision::SweepAABB(CBox box1, CBox box2, CDirection &normalX, CDirectio
 				}
 				else
 				{
-					if (fabsf(box1._y - box1._height - box2._y)<=2.0f)
+					if (fabsf(box1._y - box1._height - box2._y) <= 2.0f)
 					{
 						normalX = CDirection::NONE_DIRECT;
 						normalY = CDirection::ON_DOWN;
 						entryTime = 0.0f;
 					}
-					else if (fabsf(box1._y -( box2._y - box2._height))<=2.0f)
+					else if (fabsf(box1._y - (box2._y - box2._height)) <= 2.0f)
 					{
 						normalX = CDirection::NONE_DIRECT;
 						normalY = CDirection::ON_UP;
@@ -220,13 +185,13 @@ float CCollision::SweepAABB(CBox box1, CBox box2, CDirection &normalX, CDirectio
 				}
 				else
 				{
-					if (fabsf(box1._x + box1._width - box2._x)<=2.0f)
+					if (fabsf(box1._x + box1._width - box2._x) <= 2.0f)
 					{
 						normalY = CDirection::NONE_DIRECT;
 						normalX = CDirection::ON_RIGHT;
 						entryTime = 0.0f;
 					}
-					else if (fabsf(box1._x -( box2._x + box2._width))<2.0f)
+					else if (fabsf(box1._x - (box2._x + box2._width)) < 2.0f)
 					{
 						normalY = CDirection::NONE_DIRECT;
 						normalX = CDirection::ON_LEFT;
@@ -249,7 +214,7 @@ float CCollision::SweepAABB(CBox box1, CBox box2, CDirection &normalX, CDirectio
 						normalX = CDirection::ON_RIGHT;
 						entryTime = 0.0f;
 					}
-					else if (fabsf(box1._x - (box2._x + box2._width))<2.0f)
+					else if (fabsf(box1._x - (box2._x + box2._width)) < 2.0f)
 					{
 						normalY = CDirection::NONE_DIRECT;
 						normalX = CDirection::ON_LEFT;
@@ -259,6 +224,7 @@ float CCollision::SweepAABB(CBox box1, CBox box2, CDirection &normalX, CDirectio
 			}
 		}
 		return entryTime;
-	}
 #pragma endregion
+	}
+
 }

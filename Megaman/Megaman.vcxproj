@@ -71,7 +71,7 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Bullets.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="CCollision.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionInfo.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -88,7 +88,7 @@
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Bullets.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CCollision.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionInfo.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />

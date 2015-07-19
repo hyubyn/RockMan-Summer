@@ -8,7 +8,7 @@
 #define _COLLISION_IFNO_H_
 
 #include "GameObject.h"
-#include "CCollision.h"
+#include "Collision.h"
 
 struct CollisionInfo
 {

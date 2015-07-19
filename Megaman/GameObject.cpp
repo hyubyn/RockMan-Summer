@@ -42,12 +42,12 @@ void GameObject::Update(float gametime)
 
 void GameObject::UpdateBox()
 {
-	this->box.x = this->position.x;
-	this->box.y = this->position.y;
-	this->box.width = width;
-	this->box.height = height;
-	this->box.vX = speed.x;
-	this->box.vY = speed.y;
+	this->box._x = this->position.x;
+	this->box._y = this->position.y;
+	this->box._width = width;
+	this->box._height = height;
+	this->box._vx = speed.x;
+	this->box._vy = speed.y;
 }
 
 void GameObject::Render(MGraphic* graphic, Camera* cam)
@@ -58,7 +58,7 @@ void GameObject::Render(MGraphic* graphic, Camera* cam)
 	graphic->DrawTexture(this->img, position, center, rect, D3DCOLOR_XRGB(255, 255, 255), cam);
 }
 
-float GameObject::CheckCollision(GameObject* obj, float& normalx, float& normaly, float timeFrame)
+float GameObject::CheckCollision(GameObject* obj, CDirection &normalX, CDirection &normalY, float timeFrame)
 {
 	float timeCollision = timeFrame;
 	Box myBox = this->GetBox();
@@ -68,16 +68,16 @@ float GameObject::CheckCollision(GameObject* obj, float& normalx, float& normaly
 	Box objBox(576.0f, 52.0f, 128.0f, 20.0f, 0.0f, 0.0f);*/
 
 	// Cố định objBox nếu objBox là đối tượng di chuyển.
-	myBox.vX -= objBox.vX;
-	myBox.vY -= objBox.vY;
-	objBox.vX = 0;
-	objBox.vY = 0;
+	myBox._vx -= objBox._vx;
+	myBox._vy -= objBox._vy;
+	objBox._vx = 0;
+	objBox._vy = 0;
 
 	Box sweptBroadphaseBox = CCollision::GetSweptBroadphaseBox(myBox, timeFrame);
 
 	if (CCollision::AABBCheck(sweptBroadphaseBox, objBox))
 	{
-		timeCollision = CCollision::SweepAABB(myBox, objBox, normalx, normaly, timeFrame);
+		timeCollision = CCollision::SweepAABB(myBox, objBox, normalX, normalY, timeFrame);
 
 		if (timeCollision == timeFrame && CCollision::AABBCheck(myBox, objBox))
 			return 0;
