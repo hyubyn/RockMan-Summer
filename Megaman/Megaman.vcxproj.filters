@@ -70,9 +70,6 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Timer</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Collision</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
@@ -86,6 +83,12 @@
       <Filter>Megaman\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Megaman.cpp" />
+    <ClCompile Include="CCollision.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionInfo.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -112,9 +115,6 @@
     <ClInclude Include="Timer.h">
       <Filter>Timer</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Collision</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>
@@ -128,5 +128,11 @@
       <Filter>Megaman\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Megaman.h" />
+    <ClInclude Include="CCollision.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionInfo.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
