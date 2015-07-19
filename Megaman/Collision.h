@@ -6,9 +6,9 @@
 // Struct Box dùng để bao đối tượng lại để xét va chạm.
 struct Box
 {
-	float _vx, _vy;	// Vận tốc chuyển động các vật thể
-	float _x, _y;	// Tọa độ các đối tượng trong hệ quy chiếu
-	float _width, _height;	// Kích thước của vật thể
+	float x, y;             /* Vị trí của box */
+	float width, height;    /* Chiều dài và chiều cao của box */
+	float vX, vY;           /* Vận tốc của box */
 
 	//Phương thức khởi tạo của lớp box
 	Box(){
@@ -17,21 +17,21 @@ struct Box
 
 	Box(float x, float y, float w, float h, float vx, float vy)
 	{
-		this->_x = x;
-		this->_y = y;
-		this->_width = w;
-		this->_height = h;
-		this->_vx = vx;
-		this->_vy = vy;
+		this->x = x;
+		this->y = y;
+		this->width = w;
+		this->height = h;
+		this->vX = vx;
+		this->vY = vy;
 	}
 
 	bool IsIntersect(Box box)
 	{
 		bool result = true;
-		if (_x + _width < box._x
-			|| box._x + box._width < _x
-			|| _y - _height > box._y
-			|| box._y - box._height > _y)
+		if (x + width < box.x
+			||box.x + box.width < x
+			||y - height > box.y
+			||box.y - box.height > y)
 			result = false;
 		return result;
 	}
@@ -39,21 +39,6 @@ struct Box
 
 	//Lớp CCollision hỗ trợ các phương thức để xét va chạm giữa 2
 	//đối tượng trong game theo thuật toán Sweep AABB.
-enum CDirection
-{
-	// Hướng lên
-	ON_UP = 101,
-	// Hướng xuống
-	ON_DOWN = 102,
-	// Hướng bên phải
-	ON_RIGHT = 103,
-	// Hướng bên trái
-	ON_LEFT = 104,
-	NONE_DIRECT = 105,
-	// Hai vật nằm lồng trong nhau
-	INSIDE = 106
-};
-
 class CCollision
 {
 public:
@@ -90,7 +75,7 @@ public:
 	Return:     Thời gian xảy ra va chạm nếu có va chạm hoặc
 	            timeFrame nếu không có va chạm.
 	==================================================================-M*/
-	static float SweepAABB(Box box1, Box box2, CDirection &normalX, CDirection &normalY, float frameTime);
+	static float SweepAABB(Box b1, Box b2, float& normalx,float& normaly, float timeFrame);
 };
 
 #endif // _COLLISION_H_
