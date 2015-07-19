@@ -10,10 +10,15 @@ class MKeyboard
 	HWND hWnd;
 public:
 	bool Init();
+
+	static MKeyboard* GetInstance();
+	static MKeyboard* _pInstance;
+
 	MKeyboard(HINSTANCE hIns,HWND hwnd);	
 	void GetState();
 	bool IsKeyDown(int Key);
 	bool IsPreKeyDown(int Key);	
+	int IsKeyPress(int keyCode);
 	~MKeyboard(void);
 };
 

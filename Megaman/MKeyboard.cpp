@@ -1,5 +1,6 @@
 #include "MKeyboard.h"
 
+MKeyboard* MKeyboard::_pInstance = NULL;
 
 MKeyboard::MKeyboard(HINSTANCE hIns,HWND hwnd)
 {
@@ -61,6 +62,14 @@ void MKeyboard::GetState()
 bool MKeyboard::IsKeyDown(int Key)
 {
 	return key_buffer[Key] && 0x80;
+}
+
+MKeyboard* MKeyboard::GetInstance()
+{
+	if (_pInstance == NULL)
+		_pInstance = new MKeyboard();
+
+	return _pInstance;
 }
 
 MKeyboard::~MKeyboard(void)
