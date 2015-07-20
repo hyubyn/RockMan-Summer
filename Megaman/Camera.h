@@ -8,6 +8,7 @@ public:
 	Camera();
 	~Camera();
 	D3DXVECTOR2 _pos;
+	RECT getViewPort();
 	int width;
 	int height;
 	void Update(D3DXVECTOR2 megamanPos);

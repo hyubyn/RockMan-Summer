@@ -36,3 +36,15 @@ D3DXVECTOR3 Camera::GetPointTransform(int x, int y)
 
 	return D3DXVECTOR3(v_result.x, v_result.y, 0);
 }
+
+RECT Camera::getViewPort()
+{
+	RECT rect;
+	rect.left = _pos.x;
+	rect.top = _pos.y;
+	rect.right = rect.left + SCREEN_WIDTH;
+	rect.bottom = rect.top - SCREEN_HEIGHT;
+
+	return rect;
+
+}
