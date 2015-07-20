@@ -172,7 +172,7 @@ void Megaman::UpdateAnimation()
 
 void Megaman::Update(float gameTime, MKeyboard* key, Camera* Cam, vector<GameObject*> listGameObject)
 {
-	Cam->Update(position.x);
+	Cam->Update(position);
 	this->UpdateKeyBoard(key);
 	this->UpdateBullets(gameTime, Cam);
 	this->UpdateAnimation();

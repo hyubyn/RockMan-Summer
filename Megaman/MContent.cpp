@@ -58,6 +58,11 @@ LPDIRECT3DSURFACE9 MContent::LoadSurface(string path)
 	return surface;
 }
 
+LPDIRECT3DDEVICE9 MContent::getDevice()
+{
+	return d3ddv;
+}
+
 MContent::~MContent(void)
 {
 

@@ -94,6 +94,54 @@ void MGraphic::DrawTexture(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR2 postion, D3DX
 	D3DXVECTOR3 pos = cam->GetPointTransform(postion.x + center.x, postion.y + center.y);
 	this->d3dxSprite->Draw(texture, NULL, &center, &D3DXVECTOR3(pos.x, pos.y, 0), color);
 }
+
+void MGraphic::DrawTile(LPDIRECT3DTEXTURE9 texture, RECT destinationRectangle, D3DXVECTOR2 position, bool isDrawAtCenter, D3DXVECTOR2 scale, Camera* _camera)
+{
+	//xét định tọa độ tâm của khung hình chữ nhật
+	D3DXVECTOR3 center;
+
+	if (isDrawAtCenter){
+		center.x = (destinationRectangle.right - destinationRectangle.left) / 2;
+		center.y = (destinationRectangle.bottom - destinationRectangle.top) / 2;
+		center.z = 0;
+	}
+	else
+	{
+		center.x = destinationRectangle.left;
+		center.y = destinationRectangle.top;
+		center.z = 0;
+	}
+
+	// Nếu có set camera thì transform theo camera
+	if (_camera != NULL){
+		_camera->Transform(&position);
+	}
+
+	// đặt lại vị trí tương ứng giá trị scale
+	D3DXVECTOR3 positionDraw;
+	positionDraw.x = position.x / scale.x;
+	positionDraw.y = position.y / scale.y;
+	positionDraw.z = 0;
+
+	// tạo hai ma trận lưu trữ hệ thống tọa độ cũ, mới 
+	D3DXMATRIX oldMatrix, newMatrix;
+
+	this->d3dxSprite->GetTransform(&oldMatrix);
+
+	//đặt ma trận scale 
+	D3DXMatrixIdentity(&newMatrix);
+	newMatrix._11 = scale.x;
+	newMatrix._22 = scale.y;
+
+	this->d3dxSprite->SetTransform(&newMatrix);
+
+	this->d3dxSprite->Draw(texture, &destinationRectangle, &center, &positionDraw, D3DCOLOR_XRGB(255,255,255));
+
+	// đặt lại ma trận ban đầu
+	this->d3dxSprite->SetTransform(&oldMatrix);
+}
+
+
 void MGraphic::DrawSurface()
 {
 

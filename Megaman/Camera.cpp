@@ -17,9 +17,9 @@ Camera::~Camera()
 {
 }
 
-void Camera::Update(int x)
+void Camera::Update(D3DXVECTOR2 megamanPosition)
 {
-	_pos.x = x - width / 2;
+	_pos.x = megamanPosition.x - width / 2;
 	if (_pos.x < 0)
 		_pos.x = 0;
 }
@@ -35,4 +35,16 @@ D3DXVECTOR3 Camera::GetPointTransform(int x, int y)
 	D3DXVec3Transform(&v_result, &pos, &_MatrixTransform);
 
 	return D3DXVECTOR3(v_result.x, v_result.y, 0);
+}
+
+RECT Camera::getViewPort()
+{
+	RECT rect;
+	rect.left = _pos.x;
+	rect.top = _pos.y;
+	rect.right = rect.left + SCREEN_WIDTH;
+	rect.bottom = rect.top - SCREEN_HEIGHT;
+
+	return rect;
+
 }
