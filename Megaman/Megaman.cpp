@@ -30,6 +30,8 @@ void Megaman::Init(MContent* content)
 	column = 5;
 	//bool
 	shot = false;
+	
+
 	right = true;
 	keyxpressed = false;
 

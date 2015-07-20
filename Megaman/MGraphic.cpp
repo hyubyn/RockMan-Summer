@@ -64,12 +64,12 @@ void MGraphic::End()
 void MGraphic::DrawTexture(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR2 postion, D3DXVECTOR3 center, RECT source, D3DCOLOR color, Camera* cam)
 {
 
-	D3DXVECTOR3 pos = cam->GetPointTransform(postion.x + center.x, postion.y + center.y);
+	D3DXVECTOR3 pos = cam->GetPointTransform(postion.x, postion.y);
 	this->d3dxSprite->Draw(texture, &source, &center, &D3DXVECTOR3(pos.x, pos.y, 0), color);
 }
 void MGraphic::DrawTextureFlipx(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR2 postion, D3DXVECTOR3 center, RECT source, D3DCOLOR color, Camera* cam)
 {
-	D3DXVECTOR3 pos = cam->GetPointTransform(postion.x + center.x, postion.y + center.y);
+	D3DXVECTOR3 pos = cam->GetPointTransform(postion.x, postion.y);
 
 
 	D3DXMATRIX oldMt;
@@ -98,7 +98,6 @@ void MGraphic::DrawSurface()
 {
 
 }
-
 LPDIRECT3DDEVICE9 MGraphic::GetDevice()
 {
 	return this->d3ddev;

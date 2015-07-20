@@ -17,13 +17,13 @@ void Bullets::IsShot(D3DXVECTOR2 Pos, bool r)
 {
 	if (r)
 	{
-		position.x = Pos.x + 24;
-		position.y = Pos.y + 10;
+		position.x = Pos.x + 8;
+		position.y = Pos.y;
 	}
 	else
 	{
 		position.x = Pos.x - 8;
-		position.y = Pos.y + 10;
+		position.y = Pos.y;
 	}
 	right = r;
 	shot = true;
