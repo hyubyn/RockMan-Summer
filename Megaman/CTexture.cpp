@@ -5,7 +5,7 @@ CTexture::CTexture()
 
 }
 
-CTexture::CTexture(wchar_t* pNamePath, D3DCOLOR color)
+CTexture::CTexture(char* pNamePath, D3DCOLOR color)
 {
 	this->_pNamePath = pNamePath;
 	LoadImageFromFile(_pNamePath, color);
@@ -14,7 +14,7 @@ CTexture::~CTexture()
 {
 
 }
-void CTexture::LoadImageFromFile(wchar_t* pNamePath, D3DCOLOR color)
+void CTexture::LoadImageFromFile(char* pNamePath, D3DCOLOR color)
 {
 	HRESULT result;
 	D3DXIMAGE_INFO info;
@@ -32,7 +32,7 @@ void CTexture::LoadImageFromFile(wchar_t* pNamePath, D3DCOLOR color)
 	_height = info.Height;
 
 	// Lấy thiết bị 
-	LPDIRECT3DDEVICE9 pd3ddev = MContent::getDevice();
+	LPDIRECT3DDEVICE9 pd3ddev = MContent::GetInstance()->getDevice();
 	if (pd3ddev)
 		result = D3DXCreateTextureFromFileEx( // Tạo texture từ file ảnh
 		pd3ddev,

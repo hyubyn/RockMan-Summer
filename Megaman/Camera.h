@@ -13,5 +13,6 @@ public:
 	int height;
 	void Update(D3DXVECTOR2 megamanPos);
 	D3DXVECTOR3 GetPointTransform(int x, int y);
+	void Transform(D3DXVECTOR2* position);
 };
 

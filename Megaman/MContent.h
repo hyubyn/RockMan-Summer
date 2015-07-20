@@ -14,5 +14,6 @@ public:
 	LPDIRECT3DSURFACE9 LoadSurface(string path);
 	LPDIRECT3DDEVICE9 getDevice();
 	MContent(LPDIRECT3DDEVICE9);
+	MContent(){};
 	~MContent(void);
 };

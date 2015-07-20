@@ -1,4 +1,4 @@
-#include "Camera.h"
+﻿#include "Camera.h"
 #include "Global.h"
 
 Camera::Camera()
@@ -35,6 +35,18 @@ D3DXVECTOR3 Camera::GetPointTransform(int x, int y)
 	D3DXVec3Transform(&v_result, &pos, &_MatrixTransform);
 
 	return D3DXVECTOR3(v_result.x, v_result.y, 0);
+}
+
+void Camera::Transform(D3DXVECTOR2* position)
+{
+	D3DXVECTOR4 outTransform;
+
+	// Transform theo ma trận tranform
+	D3DXVec3Transform(&outTransform, &D3DXVECTOR3(position->x, position->y, 0), &_MatrixTransform);
+
+	position->x = floor( outTransform.x);
+	position->y =floor( outTransform.y);
+
 }
 
 RECT Camera::getViewPort()
