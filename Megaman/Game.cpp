@@ -83,6 +83,9 @@ void Game::InitGame()
 
 	map = new Map();
 	map->Init(content);
+
+	tileManager = new CTile(graphic);
+	tileManager->LoadTile("Resources//Resources//Maps//boom_man_stage.txt");
 }
 
 Camera* Game::GetCam()
@@ -100,12 +103,14 @@ void Game::Update(float gameTime)
 void Game::Render()
 {
 	graphic->Begin();
+	tileManager->RenderTile(graphic,Cam);
 	back->Render(graphic, Cam);
+
 	map->Render(graphic, Cam);
 
 	megaman->Render(graphic,Cam);
 	
-
+	
 	graphic->End();
 
 

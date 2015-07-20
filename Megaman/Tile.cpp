@@ -1,4 +1,4 @@
-#include "Tile.h"
+﻿#include "Tile.h"
 
 CTile::CTile(vector<vector<int>> matrix, CTexture bkg, int total, int rowcount, int columncount)
 {
@@ -10,6 +10,11 @@ CTile::CTile(vector<vector<int>> matrix, CTexture bkg, int total, int rowcount, 
 	{
 		_tileMatrix.push_back(matrix.at(i));
 	}
+}
+
+CTile::CTile(MGraphic* graphic)
+{
+	this->_graphic = graphic;
 }
 
 CTile::CTile(void)
@@ -57,4 +62,58 @@ void CTile::RenderTile(MGraphic* graphics, Camera* cam)
 		startDrawPos.y -= TILE_SIZE;
 		startDrawPos.x -= TILE_SIZE*abs(startColumn - endColumn);
 	}
+}
+
+void CTile::LoadTile(char* file)
+{
+	ifstream fs;		// Luồng đọc file map
+	string line;		// Chuỗi đọc file map
+	_textureBkg = CTexture("Resources//Resources//Maps//boom_man_stage.bmp", D3DCOLOR_XRGB(255, 255, 255), _graphic->GetDevice());
+	// Mở file và đọc, nếu không được thì out
+	fs.open(file, ios::in);
+	if (!fs.is_open())
+	{
+		OutputDebugString("Can not open map file");
+		return;
+	}
+
+	istringstream iss;								
+
+#pragma endregion
+
+#pragma region Tiến hành đọc dữ liệu từ file .txt
+
+#pragma region Lấy thông tin ma trận tile
+
+	getline(fs, line);
+	if (line.compare("#Tile_Matrix") == 0)
+	{
+		getline(fs, line);								// Bỏ qua dòng "Total_Row	Total_Column	Total_Tile"
+		getline(fs, line);
+		iss.clear();
+		iss.str(line);
+		iss >> _countRow >> _countColumn >> _totalTile;	// Đẩy giá trị tổng số dòng, cột, tổng số tile vào biến
+		getline(fs, line);								// Bỏ qua dòng "#Tile_Matrix_Value"
+
+		// Tạo mảng hai chiều lưu ma trận tile
+		for (int i = 0; i < _countRow; i++)
+		{
+			vector<int> row;
+			row.resize(_countColumn);
+			_tileMatrix.push_back(row);
+		}
+
+		// Tiến hành đọc dữ liệu
+		for (int i = 0; i < _countRow; i++)
+		{
+			getline(fs, line);
+			iss.clear();
+			iss.str(line);
+			for (int j = 0; j < _countColumn; j++)
+				iss >> _tileMatrix[i][j];
+		}
+		getline(fs, line);					// Bỏ qua dòng "#Tile_Matrix_End"
+	}
+	fs.close();
+#pragma endregion
 }

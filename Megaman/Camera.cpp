@@ -52,7 +52,7 @@ void Camera::Transform(D3DXVECTOR2* position)
 RECT Camera::getViewPort()
 {
 	RECT rect;
-	rect.left = _pos.x;
+	rect.left = _pos.x ;
 	rect.top = _pos.y;
 	rect.right = rect.left + SCREEN_WIDTH;
 	rect.bottom = rect.top - SCREEN_HEIGHT;

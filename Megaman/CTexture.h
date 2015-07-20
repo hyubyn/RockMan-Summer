@@ -13,13 +13,15 @@ protected:
 	int _width;// chiều rộng của bức ảnh
 	char* _pNamePath;// tên đường dẫn file
 	void LoadImageFromFile(char* pNamePath, D3DCOLOR color);//load texture 
+	void LoadImageFromFile(char* pNamePath, D3DCOLOR color, LPDIRECT3DDEVICE9 device);
 public:
 	
 	CTexture();
-	CTexture(char* pNamePath, D3DCOLOR color);
+	CTexture(char* pNamePath, D3DCOLOR color, LPDIRECT3DDEVICE9 device);
 	~CTexture();
 	LPDIRECT3DTEXTURE9 GetTexture();
 	int GetHeight();
 	int GetWidth();
+
 };
 #endif

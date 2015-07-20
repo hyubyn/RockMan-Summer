@@ -2,8 +2,8 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "Camera.h"
-
-class MGraphic
+#include "CSingleton.h"
+class MGraphic : public CSingleton<MGraphic>
 {
 private :
 
@@ -22,6 +22,7 @@ private :
 public:
 	bool InitD3D();
 	MGraphic(HWND,int,int);
+	MGraphic(){}
 	~MGraphic(void);
 	void Begin();
 	void End();

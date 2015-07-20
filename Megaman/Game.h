@@ -9,7 +9,7 @@
 #include "Timer.h"
 #include "BackGround.h"
 #include "Map.h"
-
+#include "Tile.h"
 //RSManager* RSManager::instance = NULL;
 class Game
 {
@@ -42,7 +42,8 @@ private:
 	//khai báo map
 	Map* map;
 
-
+	//Tile
+	CTile* tileManager;
 
 	//background
 	BackGround* back;
