@@ -17,9 +17,9 @@ Camera::~Camera()
 {
 }
 
-void Camera::Update(int x)
+void Camera::Update(D3DXVECTOR2 megamanPosition)
 {
-	_pos.x = x - width / 2;
+	_pos.x = megamanPosition.x - width / 2;
 	if (_pos.x < 0)
 		_pos.x = 0;
 }
