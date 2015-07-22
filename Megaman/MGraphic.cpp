@@ -40,11 +40,23 @@ bool MGraphic::InitD3D()
 	hr = D3DXCreateSprite(this->d3ddev,&this->d3dxSprite);
 	if(FAILED(hr))
 		return false;	
+
+		
+	// Khởi tạo font handler
+	hr = D3DXCreateFont(this->d3ddev, FONT_SIZE, 0, FW_NORMAL, 0, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Megaman 2", &d3dxSpriteFont);
+	if (hr != D3D_OK)
+		return false;
 	return true;
+	
 }
 
 MGraphic::~MGraphic(void)
 {
+}
+
+void MGraphic::GetCam(Camera* cam)
+{
+	this->_cam = cam;
 }
 
 void MGraphic::Begin()
@@ -93,6 +105,74 @@ void MGraphic::DrawTexture(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR2 postion, D3DX
 
 	D3DXVECTOR3 pos = cam->GetPointTransform(postion.x + center.x, postion.y + center.y);
 	this->d3dxSprite->Draw(texture, NULL, &center, &D3DXVECTOR3(pos.x, pos.y, 0), color);
+}
+
+
+void MGraphic::DrawString(string text, D3DXVECTOR2 position, D3DCOLOR color, bool isDrawAtCenter,  Camera* cam){
+
+	RECT destRect;
+	destRect.top = position.y;
+	destRect.left = position.x;
+	destRect.bottom = destRect.top + SCREEN_HEIGHT;
+	destRect.right = destRect.left + SCREEN_WIDTH;
+
+	DrawString(text, destRect, color, D3DXVECTOR2(1, 1), isDrawAtCenter, cam);
+}
+
+
+void MGraphic::DrawString(string text, RECT boundingRectangle, D3DCOLOR color, D3DXVECTOR2 scale, bool isDrawAtCenter, Camera* cam){
+
+	// Nếu có camera thì chuyển vị theo camera
+	if (_cam != NULL)
+	{
+		D3DXVECTOR2 drawPos(boundingRectangle.left, boundingRectangle.top);
+		long width = boundingRectangle.right - boundingRectangle.left;
+		long height = boundingRectangle.bottom - boundingRectangle.top;
+
+		_cam->Transform(&drawPos);
+		boundingRectangle.left = drawPos.x;
+		boundingRectangle.top = drawPos.y;
+		boundingRectangle.right = boundingRectangle.left + width;
+		boundingRectangle.bottom = boundingRectangle.top + height;
+	}
+
+	// Chỉnh giá trị scale cho phù hợp
+	D3DXMATRIX oldMatrix, newMatrix;
+	this->d3dxSprite->GetTransform(&oldMatrix);
+
+	// Tìm ra vị trí mới trong hệ tọa độ hệ thống mới
+	boundingRectangle.top /= scale.y;
+	boundingRectangle.left /= scale.x;
+
+	// Cài đặt tọa độ hệ thống mới
+	D3DXMatrixIdentity(&newMatrix);
+	newMatrix._11 = scale.x;
+	newMatrix._22 = scale.y;
+
+	// Cài đặt hệ thống tọa độ mới
+	this->d3dxSprite->SetTransform(&newMatrix);
+
+	// Kiểm tra nếu chỉ định là vẽ tại tâm đoạn Text thì cần tính lại vị trí của khung hình chữ nhật
+	if (isDrawAtCenter){
+		boundingRectangle.top += FONT_SIZE / 2;
+		boundingRectangle.left -= (FONT_SIZE*text.length()) / 2;
+		boundingRectangle.bottom = boundingRectangle.top + SCREEN_HEIGHT;
+		boundingRectangle.right = boundingRectangle.left + SCREEN_WIDTH;
+	}
+
+	// Vẽ bóng chữ
+	RECT boundingRectangleShadow;
+	boundingRectangleShadow.top = boundingRectangle.top + 1;
+	boundingRectangleShadow.left = boundingRectangle.left + 1;
+	boundingRectangleShadow.bottom = boundingRectangleShadow.top + SCREEN_HEIGHT;
+	boundingRectangleShadow.right = boundingRectangleShadow.left + SCREEN_WIDTH;
+	d3dxSpriteFont->DrawTextA(this->d3dxSprite, text.c_str(), text.length(), &boundingRectangleShadow, DT_LEFT, D3DCOLOR_XRGB(0, 0, 0));
+
+	// Tiến hành vẽ chữ tại vị trí mới trong hệ thống tọa độ mới
+	d3dxSpriteFont->DrawTextA(this->d3dxSprite, text.c_str(), text.length(), &boundingRectangle, DT_LEFT, color);
+	
+	// Reset lại ma trận hệ thống
+	(this->d3dxSprite->SetTransform(&oldMatrix));
 }
 
 void MGraphic::DrawTile(LPDIRECT3DTEXTURE9 texture, RECT destinationRectangle, D3DXVECTOR2 position, bool isDrawAtCenter, D3DXVECTOR2 scale, Camera* _camera)
