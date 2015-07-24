@@ -1,51 +1,15 @@
-﻿Build started 18/07/2015 8:05:55 CH.
-     1>Project "E:\Project\Summer\Final\Megaman\Megaman\Megaman.vcxproj" on node 2 (Build target(s)).
+﻿Build started 7/21/2015 08:37:47.
+     1>Project "E:\RockMan-Summer\Megaman\Megaman.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt BackGround.cpp Bullets.cpp Camera.cpp Collision.cpp Game.cpp GameObject.cpp Global.cpp Map.cpp MContent.cpp Megaman.cpp MGraphic.cpp MKeyboard.cpp StaticGameObject.cpp Timer.cpp WinMain.cpp
-         WinMain.cpp
-         c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         Timer.cpp
-         StaticGameObject.cpp
-         c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-     1>e:\project\summer\final\megaman\megaman\staticgameobject.cpp(17): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>e:\project\summer\final\megaman\megaman\staticgameobject.cpp(18): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-         MKeyboard.cpp
-         c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         MGraphic.cpp
-     1>e:\project\summer\final\megaman\megaman\mgraphic.cpp(67): warning C4244: 'argument' : conversion from 'FLOAT' to 'int', possible loss of data
-     1>e:\project\summer\final\megaman\megaman\mgraphic.cpp(72): warning C4244: 'argument' : conversion from 'FLOAT' to 'int', possible loss of data
-     1>e:\project\summer\final\megaman\megaman\mgraphic.cpp(94): warning C4244: 'argument' : conversion from 'FLOAT' to 'int', possible loss of data
-         Megaman.cpp
-         c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-     1>e:\project\summer\final\megaman\megaman\megaman.cpp(173): warning C4244: 'argument' : conversion from 'FLOAT' to 'int', possible loss of data
-     1>e:\project\summer\final\megaman\megaman\megaman.cpp(220): warning C4018: '<' : signed/unsigned mismatch
-         MContent.cpp
-         Map.cpp
-         c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-     1>e:\project\summer\final\megaman\megaman\map.cpp(53): warning C4018: '<' : signed/unsigned mismatch
-     1>e:\project\summer\final\megaman\megaman\map.cpp(75): warning C4244: 'argument' : conversion from 'FLOAT' to 'int', possible loss of data
-     1>e:\project\summer\final\megaman\megaman\map.cpp(76): warning C4018: '<' : signed/unsigned mismatch
-         Global.cpp
-         GameObject.cpp
-         c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-     1>e:\project\summer\final\megaman\megaman\gameobject.cpp(47): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>e:\project\summer\final\megaman\megaman\gameobject.cpp(48): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Game.cpp
          Game.cpp
          c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         Collision.cpp
-         Camera.cpp
-     1>e:\project\summer\final\megaman\megaman\camera.cpp(22): warning C4244: '=' : conversion from 'int' to 'FLOAT', possible loss of data
-     1>e:\project\summer\final\megaman\megaman\camera.cpp(32): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
-         Bullets.cpp
-         c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         BackGround.cpp
-         c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-         Generating Code...
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Project\Summer\Final\Megaman\Debug\Megaman.exe" /INCREMENTAL /NOLOGO dxerr.lib winmm.lib dsound.lib d3dx9.lib d3d9.lib dinput8.lib dxguid.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\Project\Summer\Final\Megaman\Debug\Megaman.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Project\Summer\Final\Megaman\Debug\Megaman.lib" /MACHINE:X86 Debug\BackGround.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\RockMan-Summer\Debug\Megaman.exe" /INCREMENTAL /NOLOGO dxerr.lib winmm.lib dsound.lib d3dx9.lib d3d9.lib dinput8.lib dxguid.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\RockMan-Summer\Debug\Megaman.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\RockMan-Summer\Debug\Megaman.lib" /MACHINE:X86 Debug\BackGround.obj
          Debug\Bullets.obj
          Debug\Camera.obj
          Debug\Collision.obj
+         Debug\CTexture.obj
          Debug\Game.obj
          Debug\GameObject.obj
          Debug\Global.obj
@@ -55,11 +19,12 @@
          Debug\MGraphic.obj
          Debug\MKeyboard.obj
          Debug\StaticGameObject.obj
+         Debug\Tile.obj
          Debug\Timer.obj
          Debug\WinMain.obj
-         Megaman.vcxproj -> E:\Project\Summer\Final\Megaman\Debug\Megaman.exe
-     1>Done Building Project "E:\Project\Summer\Final\Megaman\Megaman\Megaman.vcxproj" (Build target(s)).
+         Megaman.vcxproj -> E:\RockMan-Summer\Debug\Megaman.exe
+     1>Done Building Project "E:\RockMan-Summer\Megaman\Megaman.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:30.77
+Time Elapsed 00:00:02.48

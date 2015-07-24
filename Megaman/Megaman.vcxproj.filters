@@ -85,7 +85,11 @@
     <ClCompile Include="Bullets.cpp">
       <Filter>Megaman\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Megaman.cpp" />
+    <ClCompile Include="CTexture.cpp" />
+    <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="Megaman.cpp">
+      <Filter>Megaman</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -127,6 +131,11 @@
     <ClInclude Include="Bullets.h">
       <Filter>Megaman\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="Megaman.h" />
+    <ClInclude Include="CSingleton.h" />
+    <ClInclude Include="CTexture.h" />
+    <ClInclude Include="Tile.h" />
+    <ClInclude Include="Megaman.h">
+      <Filter>Megaman</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

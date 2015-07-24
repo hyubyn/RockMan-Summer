@@ -104,7 +104,7 @@ void Game::Render()
 {
 	graphic->Begin();
 	tileManager->RenderTile(graphic,Cam);
-	back->Render(graphic, Cam);
+	/*back->Render(graphic, Cam);*/
 
 	map->Render(graphic, Cam);
 
