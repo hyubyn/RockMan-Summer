@@ -13,7 +13,7 @@ Megaman::~Megaman()
 void Megaman::Init(MContent* content)
 {
 	this->img = content->LoadTexture("Resources\\Megaman\\Megaman_Final.png");
-	this->position = D3DXVECTOR2(50, 36);
+	this->position = D3DXVECTOR2(128, 145);
 
 	this->speed = D3DXVECTOR2(0, 0);
 	this->speedmax = D3DXVECTOR2(80, 300);
