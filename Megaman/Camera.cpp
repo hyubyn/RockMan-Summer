@@ -3,29 +3,19 @@
 
 Camera::Camera()
 {
-	_pos.x = 0;
-	_pos.y = 256;
+	
 	width = SCREEN_WIDTH;
 	height = SCREEN_HEIGHT;
 	isMoving = false;
 	D3DXMatrixIdentity(&_MatrixTransform);
 	_MatrixTransform._22 = -1;
-	_listPoint.push_back(D3DXVECTOR2(0,256));
-	_listPoint.push_back(D3DXVECTOR2(1535,256));
-	_listPoint.push_back(D3DXVECTOR2(1535,500));
-	_listPoint.push_back(D3DXVECTOR2(1535,740));
-	_listPoint.push_back(D3DXVECTOR2(2815,740));
-	_listPoint.push_back(D3DXVECTOR2(2815,978));
-	_listPoint.push_back(D3DXVECTOR2(2815,1216));
-	_listPoint.push_back(D3DXVECTOR2(3839,1216));
-	_listPoint.push_back(D3DXVECTOR2(4096,1216));
-	_listPoint.push_back(D3DXVECTOR2(4096, 978));
-	_listPoint.push_back(D3DXVECTOR2(4096, 555));
-	_listPoint.push_back(D3DXVECTOR2(4096, 320));
-	for (int i = 0; i < _listPoint.size() - 1; i++)
+	LoadCameraPath(3);
+	endMap = _listPoint.at(count - 1);										// lay toa do cuoi cung cua camera
+	for (int i = 0; i < count - 1; i++)
 	{
 		_listMoveLine.push_back(MoveLine(_listPoint.at(i), _listPoint.at(i + 1)));
 	}
+	_pos = _listPoint.at(0);
 }
 
 
@@ -35,6 +25,7 @@ Camera::~Camera()
 
 void Camera::Update(D3DXVECTOR2 megamanPosition)
 {
+
 	if (!isMoving)
 	{
 		for (int i = 0; i < _listMoveLine.size(); ++i)
@@ -65,76 +56,67 @@ void Camera::Update(D3DXVECTOR2 megamanPosition)
 
 void Camera::Move(D3DXVECTOR2 megamanPos, int index)
 {
+	
 	MoveLine line = _listMoveLine.at(index);
-	if (line.direct == horizontal)											// camera di chuyen theo phuong ngang
+	if (_pos != endMap)
 	{
-		if (line.endPoint.x - line.startPoint.x < 300 && _pos.x < line.endPoint.x)	//neu la toa do camera di chuyen qua thi cho camera chay len
+		if (line.direct == horizontal)											// camera di chuyen theo phuong ngang
 		{
-			_pos.y = line.endPoint.y;
-			_pos.x += 1;
-			if (_pos.x > line.endPoint.x)
+			if (line.endPoint.x - line.startPoint.x < limitX && _pos.x < line.endPoint.x)	//neu la toa do camera di chuyen qua thi cho camera chay len
 			{
-				_pos.x = line.endPoint.x;
+				_pos.y = line.endPoint.y;
+				_pos.x += 1;
+				if (_pos.x > line.endPoint.x)
+				{
+					_pos.x = line.endPoint.x;
+				}
+			} 
+			else
+			{
+				_pos.x = megamanPos.x - SCREEN_WIDTH / 2;
+				if (_pos.x < line.startPoint.x )
+				{
+					_pos = line.startPoint;
+				}
+				else if (_pos.x > line.endPoint.x)
+				{
+					_pos = line.endPoint;
+				}
 			}
 		} 
-		else
+		else if(line.direct == vertical)
 		{
-			_pos.x = megamanPos.x - SCREEN_WIDTH / 2;
-			if (_pos.x < line.startPoint.x )
+
+			if (line.startPoint.y < line.endPoint.y)		// neu la huong di len
 			{
-				_pos = line.startPoint;
-			}
-			else if (_pos.x > line.endPoint.x)
-			{
-				_pos = line.endPoint;
-			}
-		}
-	} 
-	else if(line.direct == vertical)
-	{
-			/*if (line.startPoint.y < line.endPoint.y && _pos == line.startPoint && megamanPos.y > line.startPoint.y)
-			{
-				isMoving = true;
-				endPoint = line.endPoint;
+
+				if (_pos == line.startPoint && megamanPos.y > line.startPoint.y)
+				{
+					isMoving = true;
+					endPoint = line.endPoint;
+				} 
+				else if(_pos == line.endPoint && megamanPos.y < line.startPoint.y)
+				{
+					isMoving = true;
+					endPoint = line.startPoint;
+				}
 			} 
-			else if(line.startPoint.y > line.endPoint.y && _pos == line.startPoint && megamanPos.y < line.endPoint.y)
+			else                                                // neu la huong di xuong
 			{
-				isMoving = true;
-				endPoint = line.endPoint;
-			}
-			else if (_pos == line.endPoint && megamanPos.y < line.startPoint.y)
-			{
-				isMoving = true;
-				endPoint = line.startPoint;
-			}*/
-		if (line.startPoint.y < line.endPoint.y)		// neu la huong di len
-		{
-			
-			if (_pos == line.startPoint && megamanPos.y > line.startPoint.y)
-			{
-				isMoving = true;
-				endPoint = line.endPoint;
-			} 
-			else if(_pos == line.endPoint && megamanPos.y < line.startPoint.y)
-			{
-				isMoving = true;
-				endPoint = line.startPoint;
-			}
-		} 
-		else                                                // neu la huong di xuong
-		{
-			if (_pos == line.startPoint && megamanPos.y < line.endPoint.y)
-			{
-				isMoving = true;
-				endPoint = line.endPoint;
-			} 
-			else if(_pos == line.endPoint && megamanPos.y > line.endPoint.y)
-			{
-				isMoving = true;
-				endPoint = line.startPoint;
+				if (_pos == line.startPoint && megamanPos.y < line.startPoint.y - SCREEN_HEIGHT)
+				{
+					isMoving = true;
+					endPoint = line.endPoint;
+				} 
+				else if(_pos == line.endPoint && megamanPos.y > line.endPoint.y)
+				{
+					isMoving = true;
+					endPoint = line.startPoint;
+				}
 			}
 		}
 	}
+	
 }
 
 D3DXVECTOR3 Camera::GetPointTransform(int x, int y)
@@ -172,4 +154,46 @@ RECT Camera::getViewPort()
 
 	return rect;
 
+}
+
+void Camera::SetEndMap(D3DXVECTOR2 point)
+{
+	this->endMap = point;
+}
+
+void Camera::LoadCameraPath(int id)
+{
+	wchar_t* state = nullptr;
+	switch (id)
+	{
+	case 1: state = L"Resources//Resources//Maps//Boom.txt";break;
+	case 2: state = L"Resources//Resources//Maps//Cut.txt";break;
+	case 3: state = L"Resources//Resources//Maps//Guts.txt";break;
+
+	default:
+		break;
+	}
+	ifstream fs;		// Luồng đọc file path
+	string line;		// Chuỗi đọc file path
+	fs.open(state, ios::in);
+	if (!fs.is_open())
+	{
+		OutputDebugString("Can not open map file");
+		return;
+	}
+	int x, y;		// point
+	istringstream iss;	
+	getline(fs, line);								// Bỏ qua dòng "Total_Row	Total_Column	Total_Tile"
+	getline(fs, line);
+	iss.clear();
+	iss.str(line);
+	iss>>count>>limitX;
+	for (int i = 0; i < count; i++)
+	{
+		getline(fs,line);
+		iss.clear();
+		iss.str(line);
+		iss>>x>>y;
+		_listPoint.push_back(D3DXVECTOR2(x,y));
+	}
 }

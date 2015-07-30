@@ -1,6 +1,8 @@
 #pragma once
 #include "d3dx9.h"
 #include <vector>
+#include <fstream>
+#include <sstream>
 using namespace std;
 
 enum DirectionCamera	// huong di chuyen cua Camera
@@ -58,20 +60,25 @@ struct MoveLine			// duong di chuyen, bao gom huong di chuyen va toa do diem dau
 class Camera
 {
 	D3DXMATRIX _MatrixTransform;
-	vector<D3DXVECTOR2> _listPoint;
-	vector<MoveLine> _listMoveLine;
-	bool isMoving;
-	D3DXVECTOR2 endPoint;
+	vector<D3DXVECTOR2> _listPoint;	// list cac toa do duoc doc tu file txt
+	vector<MoveLine> _listMoveLine;	// list cac duong thang ma camera di chuyen ben tren
+	bool isMoving;		// bien xac dinh camera co dang di chuyen hay ko
+	D3DXVECTOR2 endPoint;	// toa do camera di chuyen toi
+	D3DXVECTOR2 endMap;	// toa do cuoi cung cua Camera
+	int count;	// bien dem luu tru so luong point path
+	int limitX; // hieu cua hai toa do camera di chuyen. moi map moi khac
 public:
 	Camera();
 	~Camera();
 	D3DXVECTOR2 _pos;
 	RECT getViewPort();
+	void LoadCameraPath(int id);	// Ham load file txt lay cac toa do cua camera path, id: 1 = boom state, 2 = cut state, 3 = guts state
 	int width;
 	int height;
 	void Update(D3DXVECTOR2 megamanPos);
 	void Check();
 	void Move(D3DXVECTOR2,int );
+	void SetEndMap(D3DXVECTOR2);				// set toa do cuoi cung cua camera
 	D3DXVECTOR3 GetPointTransform(int x, int y);
 	void Transform(D3DXVECTOR2* position);
 };
