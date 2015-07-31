@@ -38,8 +38,8 @@ int WINAPI WinMain(HINSTANCE h, HINSTANCE p, LPTSTR a, int c)
 			{
 				m_pTimer->EndCount();
 
-				game.Update(m_pTimer->GetTime());
-				game.Render();
+				game.Update(m_pTimer);
+				game.Render(m_pTimer);
 			}
 		}
 	}

@@ -77,6 +77,7 @@ void MGraphic::DrawTexture(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR2 postion, D3DX
 {
 
 	D3DXVECTOR3 pos = cam->GetPointTransform(postion.x, postion.y);
+	D3DXVECTOR3 center1 = cam->GetPointTransform(postion.x, postion.y);
 	this->d3dxSprite->Draw(texture, &source, &center, &D3DXVECTOR3(pos.x, pos.y, 0), color);
 }
 void MGraphic::DrawTextureFlipx(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR2 postion, D3DXVECTOR3 center, RECT source, D3DCOLOR color, Camera* cam)
@@ -123,13 +124,13 @@ void MGraphic::DrawString(string text, D3DXVECTOR2 position, D3DCOLOR color, boo
 void MGraphic::DrawString(string text, RECT boundingRectangle, D3DCOLOR color, D3DXVECTOR2 scale, bool isDrawAtCenter, Camera* cam){
 
 	// Nếu có camera thì chuyển vị theo camera
-	if (_cam != NULL)
+	if (cam != NULL)
 	{
 		D3DXVECTOR2 drawPos(boundingRectangle.left, boundingRectangle.top);
 		long width = boundingRectangle.right - boundingRectangle.left;
 		long height = boundingRectangle.bottom - boundingRectangle.top;
 
-		_cam->Transform(&drawPos);
+		cam->Transform(&drawPos);
 		boundingRectangle.left = drawPos.x;
 		boundingRectangle.top = drawPos.y;
 		boundingRectangle.right = boundingRectangle.left + width;

@@ -77,6 +77,8 @@ void Game::InitGame()
 	keyboard->Init();
 
 	Cam = new Camera();
+	_screenManager = new CScreenManager();
+	_screenManager->SetStartScreen(new CStartState(graphic));
 
 	back = new BackGround();
 	back->Init(content);
@@ -93,23 +95,27 @@ Camera* Game::GetCam()
 	return Cam;
 }
 
-void Game::Update(float gameTime)
+void Game::Update(CTimer* gameTime)
 {	
-	keyboard->GetState();
-	megaman->Update(gameTime,keyboard,Cam,map->listGameObject);
+	_screenManager->UpdateInput(keyboard);
+	_screenManager->Update(gameTime);
+	//keyboard->GetState();
+	//megaman->Update(gameTime,keyboard,Cam,map->listGameObject);
 	
 	
 }
-void Game::Render()
+void Game::Render(CTimer* gameTime)
 {
 	graphic->Begin();
-	tileManager->RenderTile(graphic,Cam);
+	//tileManager->RenderTile(graphic,Cam);
 	/*back->Render(graphic, Cam);*/
 
-	map->Render(graphic, Cam);
+	//map->Render(graphic, Cam);
 
-	megaman->Render(graphic,Cam);
+	//megaman->Render(graphic,Cam);
 	
+		_screenManager->GetCurrentScreen()->GetCam(Cam);
+	_screenManager->Render(gameTime, graphic);
 	
 	graphic->End();
 

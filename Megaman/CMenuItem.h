@@ -12,6 +12,7 @@
 #include "CTexture.h"
 #include "MKeyboard.h"
 #include "Global.h"
+#include "CSprite.h"
 
 class CMenuItem :public CItem
 {
@@ -32,7 +33,7 @@ public:
 	//	+ gameTime	: Thời gian cập nhật hệ thống
 	//	+ graphics	: cọ vẽ đối tượng
 	//-----------------------------------------------------------------------------
-	void Render(CTimer* gameTime, MGraphic* graphics) override;
+	void Render(CTimer* gameTime,Camera* cam, MGraphic* graphics) override;
 
 	//-----------------------------------------------------------------------------
 	// 	Cập nhật tất cả các logic của 1 đối tượng
@@ -44,7 +45,7 @@ public:
 	//-----------------------------------------------------------------------------
 	// 	Lấy ra màu hiển thị của chữ, vì khi kích hoạt animation thì màu chữ sẽ đổi
 	//-----------------------------------------------------------------------------
-	D3DXCOLOR GetAnimationColor();
+	D3DCOLOR GetAnimationColor();
 
 	//-----------------------------------------------------------------------------
 	// Tên của MenuItem, nó sẽ hiển thị ngay bên dưới border 
@@ -59,12 +60,12 @@ public:
 	//-----------------------------------------------------------------------------
 	// Border của MenuItem
 	//-----------------------------------------------------------------------------
-	Sprite * _border;
+	CSprite * _border;
 
 	//-----------------------------------------------------------------------------
 	// Màu chữ
 	//-----------------------------------------------------------------------------
-	Color _foreground;
+	D3DCOLOR _foreground;
 
 	//-----------------------------------------------------------------------------
 	// Chỉ định MenuItem có được focus hay không
@@ -72,10 +73,10 @@ public:
 	bool _isFocused;
 
 private:
-	Vector2 _borderPosition;
-	Vector2 _positionText;
-	Rect    _boundingRectBkg;
-	Color _replaceColor;	// Biến hỗ trợ chạy hiệu ứng chữ
+	D3DXVECTOR2 _borderPosition;
+	D3DXVECTOR2 _positionText;
+	RECT    _boundingRectBkg;
+	D3DCOLOR _replaceColor;	// Biến hỗ trợ chạy hiệu ứng chữ
 	float _timeAnimationText;//Thời gian vẽ của 1 màu của Text
 };
 

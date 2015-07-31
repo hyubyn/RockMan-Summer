@@ -49,7 +49,7 @@ int CTextblock::Initlize(MGraphic* graphic)
 	// Nếu như _size được set giá trị thì kiểm tra để lấy giá trị nhỏ nhất hiển thị, lấy giá trị đó để cài đặt hiển thị
 	float minWidth, minHeight;
 	if (_size.x != 0 && _size.y != 0){
-		minWidth = __min(FONT_SIZE*maxCharacter, _size.x);
+		minWidth = __min(FONT_SIZE*maxCharacter*0.5, _size.x);
 		minHeight = __min(FONT_SIZE*maxHeight, _size.y);
 	}
 	else

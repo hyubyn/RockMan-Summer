@@ -12,12 +12,7 @@ MKeyboard::MKeyboard(HINSTANCE hIns,HWND hwnd)
 
 bool MKeyboard::Init()
 {
-	HRESULT hr= DirectInput8Create(
-		this->hInstance,
-		DIRECTINPUT_VERSION,
-		IID_IDirectInput8,
-		(void**)&this->di8,
-		NULL);
+	HRESULT hr= DirectInput8Create( GetModuleHandle(NULL), DIRECTINPUT_VERSION,IID_IDirectInput8, (void**)&di8, NULL );
 	if(FAILED(hr))
 		return false;
 	hr = this->di8->CreateDevice(GUID_SysKeyboard,&this->did8,NULL);
@@ -51,18 +46,53 @@ bool MKeyboard::Init()
 }
 void MKeyboard::GetState()
 {
-	HRESULT hr = this->did8->GetDeviceState(sizeof(this->key_buffer),(LPVOID)&this->key_buffer);
+
+	did8->Poll();
+	HRESULT hr = this->did8->GetDeviceState(sizeof(this->keyState),(LPVOID)&this->keyState);
 	if(FAILED(hr))
 	{
 		while (this->did8->Acquire() == DIERR_INPUTLOST);				
 	}
+
+	DWORD dwElements = KEYBOARD_BUFFER_SIZE;
+	did8->GetDeviceData( sizeof(DIDEVICEOBJECTDATA), KeyEvents, &dwElements, 0 );
+
+	// Scan through all data, check if the key is pressed or released
+	for( DWORD i = 0; i < dwElements; i++ ) 
+	{
+		int KeyCode = KeyEvents[i].dwOfs;
+		int KeyState = KeyEvents[i].dwData;
+		if ( (KeyState & 0x80) > 0)
+			_KeyDown = KeyCode; 
+		else 
+			_KeyUP = KeyCode;
+	}
 }
 
-bool MKeyboard::IsKeyDown(int Key)
+int MKeyboard::IsKeyDown(int Key)
 {
-	return key_buffer[Key] && 0x80;
+	return keyState[Key] && 0x80;
+}
+
+int MKeyboard::GetKeyDown()
+{
+
+	int tam = _KeyDown;
+	_KeyDown = 0;
+	return tam;
+
+}
+
+int MKeyboard::GetKeyUp()
+{
+	int tam = _KeyUP;
+	_KeyUP = 0;
+	return tam;
 }
 
 MKeyboard::~MKeyboard(void)
 {
+	di8->Release();
+	did8->Release();
+
 }

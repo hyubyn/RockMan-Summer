@@ -25,3 +25,24 @@ CScreen* CScreen::GetNextScreen()
 {
 	return _nextScreen;
 }
+
+bool CScreen::IsFinished(){
+	return _isFinished;
+}
+
+void CScreen::GetGraphic(MGraphic *gra)
+{
+	this->_graphic = gra;
+}
+
+void CScreen::SetInput(MKeyboard* input)
+{
+	this->_input = input;
+}
+
+
+void CScreen::GetCam(Camera* cam)
+{
+	this->_camera = cam;
+}
+

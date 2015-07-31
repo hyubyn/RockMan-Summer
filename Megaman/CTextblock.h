@@ -1,4 +1,6 @@
-﻿
+﻿#ifndef CTEXT_BLOCK_H
+#define CTEXT_BLOCK_H
+
 #include "Item.h"
 #include "Global.h"
 #include "Timer.h"
@@ -123,3 +125,4 @@ private:
 	RECT _boundingRectText; // Khung hình chữ nhật bao đoạn text
 };
 
+#endif //!CTEXT_BLOCK_H

@@ -10,6 +10,9 @@
 #include "BackGround.h"
 #include "Map.h"
 #include "Tile.h"
+#include "CScressnManager.h"
+#include "StartState.h"
+#include "SelectBossState.h"
 //RSManager* RSManager::instance = NULL;
 class Game
 {
@@ -55,10 +58,11 @@ private:
 
 public:
 
+	CScreenManager* _screenManager;
 	bool InitWindow();
 	void InitGame();
-	void Update(float gameTime);
-	void Render();
+	void Update(CTimer* gameTime);
+	void Render(CTimer* gameTime);
 	Game(HINSTANCE hIns,int W,int H,char* name);
 	~Game(void);
 };
