@@ -9,7 +9,7 @@ Camera::Camera()
 	isMoving = false;
 	D3DXMatrixIdentity(&_MatrixTransform);
 	_MatrixTransform._22 = -1;
-	LoadCameraPath(3);
+	LoadCameraPath(1);
 	endMap = _listPoint.at(count - 1);										// lay toa do cuoi cung cua camera
 	for (int i = 0; i < count - 1; i++)
 	{
