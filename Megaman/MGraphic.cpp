@@ -77,7 +77,6 @@ void MGraphic::DrawTexture(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR2 postion, D3DX
 {
 
 	D3DXVECTOR3 pos = cam->GetPointTransform(postion.x, postion.y);
-	D3DXVECTOR3 center1 = cam->GetPointTransform(postion.x, postion.y);
 	this->d3dxSprite->Draw(texture, &source, &center, &D3DXVECTOR3(pos.x, pos.y, 0), color);
 }
 void MGraphic::DrawTextureFlipx(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR2 postion, D3DXVECTOR3 center, RECT source, D3DCOLOR color, Camera* cam)
@@ -120,17 +119,95 @@ void MGraphic::DrawString(string text, D3DXVECTOR2 position, D3DCOLOR color, boo
 	DrawString(text, destRect, color, D3DXVECTOR2(1, 1), isDrawAtCenter, cam);
 }
 
+void MGraphic::Draw(LPDIRECT3DTEXTURE9 texture, RECT destinationRectangle, D3DXVECTOR2 position, bool isDrawAtCenter, D3DXVECTOR2 scale, SpriteEffects effects)
+{
+	//xét định tọa độ tâm của khung hình chữ nhật
+	D3DXVECTOR3 center;
+
+	if (isDrawAtCenter){
+		center.x = (destinationRectangle.right - destinationRectangle.left) / 2;
+		center.y = (destinationRectangle.bottom - destinationRectangle.top) / 2;
+		center.z = 0;
+	}
+	else
+	{
+		center.x = destinationRectangle.left;
+		center.y = destinationRectangle.top;
+		center.z = 0;
+	}
+
+	// Nếu có set camera thì transform theo camera
+	if (_cam != NULL){
+		_cam->Transform(&position);
+	}
+
+	// đặt lại vị trí tương ứng giá trị scale
+	D3DXVECTOR3 positionDraw;
+	positionDraw.x = position.x / scale.x;
+	positionDraw.y = position.y / scale.y;
+	positionDraw.z = 0;
+
+	// tạo hai ma trận lưu trữ hệ thống tọa độ cũ, mới 
+	D3DXMATRIX oldMatrix, newMatrix;
+
+	d3dxSprite->GetTransform(&oldMatrix);
+
+	//đặt ma trận scale 
+	D3DXMatrixIdentity(&newMatrix);
+	newMatrix._11 = scale.x;
+	newMatrix._22 = scale.y;
+
+	switch (effects)
+	{
+	case SpriteEffects::FLIP_HORIZONTALLY:
+		newMatrix._11 *= -1;
+		positionDraw.x *= -1;
+		break;
+	case SpriteEffects::FLIP_VERTICALLY:
+		newMatrix._22 *= -1;
+		positionDraw.y *= -1;
+		break;
+	default:
+		break;
+	}
+
+	d3dxSprite->SetTransform(&newMatrix);
+
+	d3dxSprite->Draw(texture, &destinationRectangle, &center, &positionDraw, D3DCOLOR_XRGB(255, 255, 255));
+
+	// đặt lại ma trận ban đầu
+	d3dxSprite->SetTransform(&oldMatrix);
+}
+void MGraphic::Draw(LPDIRECT3DTEXTURE9 texture, RECT boundingRectangle, bool isDrawAtCenter, D3DXVECTOR2 scale, SpriteEffects effect){
+	RECT destinationRectangle;
+	destinationRectangle.left = 0;
+	destinationRectangle.top = 0;
+	destinationRectangle.right = boundingRectangle.right - boundingRectangle.left;
+	destinationRectangle.bottom = boundingRectangle.bottom - boundingRectangle.top;
+
+	D3DXVECTOR2 pos(boundingRectangle.left, boundingRectangle.top);
+
+	Draw(texture, destinationRectangle, pos, isDrawAtCenter, scale, effect);
+}
+void MGraphic::Draw(LPDIRECT3DTEXTURE9 texture, RECT destinationRectangle, D3DXVECTOR2 position, bool isDrawAtCenter, SpriteEffects effect)
+{
+	Draw(texture, destinationRectangle, position, isDrawAtCenter, D3DXVECTOR2(1.0f, 1.0f), effect);
+}
+void MGraphic::Draw(LPDIRECT3DTEXTURE9 texture, RECT destinationRectangle, D3DXVECTOR2 position, D3DXVECTOR2 scale)
+{
+	Draw(texture, destinationRectangle, position, true, scale, SpriteEffects::NONE);
+}
 
 void MGraphic::DrawString(string text, RECT boundingRectangle, D3DCOLOR color, D3DXVECTOR2 scale, bool isDrawAtCenter, Camera* cam){
 
 	// Nếu có camera thì chuyển vị theo camera
-	if (cam != NULL)
+	if (_cam != NULL)
 	{
 		D3DXVECTOR2 drawPos(boundingRectangle.left, boundingRectangle.top);
 		long width = boundingRectangle.right - boundingRectangle.left;
 		long height = boundingRectangle.bottom - boundingRectangle.top;
 
-		cam->Transform(&drawPos);
+		_cam->Transform(&drawPos);
 		boundingRectangle.left = drawPos.x;
 		boundingRectangle.top = drawPos.y;
 		boundingRectangle.right = boundingRectangle.left + width;

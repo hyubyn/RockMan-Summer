@@ -1,81 +1,106 @@
-﻿#include <limits>
+﻿//-----------------------------------------------------------------------------
+// File: CCollision.h
+//
+// Desc: Định nghĩa lớp CCollision hỗ trợ kiểm tra va chạm các đối tượng
+//
+//-----------------------------------------------------------------------------
+#ifndef _CCOLLIION_H_
+#define _CCOLLISION_H_
 
-#ifndef _COLLISION_H_
-#define _COLLISION_H_
+#include <math.h>
+#include <limits>
+#include "Global.h"
+#include <stdio.h>
+#include <vector>
+#include <dinput.h>
 
-// Struct Box dùng để bao đối tượng lại để xét va chạm.
+//-----------------------------------------------------------------------------
+// Cấu trúc CBox hỗ trợ việc tổng quát hóa các đối tượng đang cần xét va chạm
+//
+//-----------------------------------------------------------------------------
 struct Box
 {
-	float x, y;             /* Vị trí của box */
-	float width, height;    /* Chiều dài và chiều cao của box */
-	float vX, vY;           /* Vận tốc của box */
+	float _vx, _vy;	// Vận tốc chuyển động các vật thể
+	float _x, _y;	// Tọa độ các đối tượng trong hệ quy chiếu
+	float _width, _height;	// Kích thước của vật thể
 
-	//Phương thức khởi tạo của lớp box
-	Box(){
+	Box();
 
-	}
+	//-----------------------------------------------------------------------------
+	// x: vị trí x của box
+	// y: vị trí y của box
+	// width: kích thước ngang của box
+	// height: kích thước dọc của box
+	// vx: vận tốc chiều x của box
+	// vy: vận tốc chiều y của box
+	//-----------------------------------------------------------------------------
+	Box(float x, float y, float width, float height, float vx, float vy);
 
-	Box(float x, float y, float w, float h, float vx, float vy)
-	{
-		this->x = x;
-		this->y = y;
-		this->width = w;
-		this->height = h;
-		this->vX = vx;
-		this->vY = vy;
-	}
+	//-----------------------------------------------------------------------------
+	// Tạo box từ một rectangle, lúc này, vận tốc là 0
+	//-----------------------------------------------------------------------------
+	Box(RECT rectangle);
 
-	bool IsIntersect(Box box)
-	{
-		bool result = true;
-		if (x + width < box.x
-			||box.x + box.width < x
-			||y - height > box.y
-			||box.y - box.height > y)
-			result = false;
-		return result;
-	}
+	bool IntersecWith(Box box, bool acceptDiffirent = false);
 };
 
-	//Lớp CCollision hỗ trợ các phương thức để xét va chạm giữa 2
-	//đối tượng trong game theo thuật toán Sweep AABB.
-class CCollision
+//-----------------------------------------------------------------------------
+// Hướng va chạm của khối hộp
+//-----------------------------------------------------------------------------
+enum CDirection
 {
+	// Hướng lên
+	ON_UP = 101,
+	// Hướng xuống
+	ON_DOWN = 102,
+	// Hướng bên phải
+	ON_RIGHT = 103,
+	// Hướng bên trái
+	ON_LEFT = 104,
+	NONE_DIRECT = 105,
+	// Hai vật nằm lồng trong nhau
+	INSIDE = 106
+};
+
+//-----------------------------------------------------------------------------
+// Hỗ trợ việc xét va chạm các đối tượng theo giải thuật SweepAABB
+//
+//-----------------------------------------------------------------------------
+class CCollision{
 public:
+	//-----------------------------------------------------------------------------
+	// Phương thức tạo swept box - là khối bao tổng thể theo vận tốc di chuyển đối tượng
+	//
+	// + frameTime: Khoảng thời gian chuyển khung hình
+	//-----------------------------------------------------------------------------
+	static Box GetSweptBox(Box box, float frameTime);
+
+	//-----------------------------------------------------------------------------
+	// Hàm hỗ trợ kiểm tra đơn giản xem box1 có va chạm với box hay không
+	// bao khác hay không.
+	//
+	// + anotherBox: Khung bao được dùng để kiểm tra
+
+	// return: Trả về true nếu va chạm, false nếu không va chạm
+	//-----------------------------------------------------------------------------
+	static bool AABBCheck(Box box1, Box box2);
+
+	//-----------------------------------------------------------------------------
+	// Kiểm tra xem box1 có va chạm với box2 theo hướng nào trong 1 khoảng thời gian chuyển khung hình nhất định
+	//
+	// + box1: Khung bao đối tượng di chuyển 1
+	// + box2: Khung bao đối tượng đứng yên 2
+	// + normalX: Hướng va chạm theo chiều x
+	// + normalY: Hướng va chạm theo chiều y
+	// + frameTime: Khoảng thời gian chuyển khung hình
+	//
+	// return: Thời gian bắt đầu va chạm theo trục x hoặc y
+	//-----------------------------------------------------------------------------
+	static float SweepAABB(Box box1, Box box2, CDirection &normalX, CDirection &normalY, float frameTime);
+
+private:
 	CCollision();
 	~CCollision();
-
-	/*M+==================================================================
-	Method:	    CCollision::GetSwpetBroadphaseBox
-
-	Summary:	Phương thức tạo ra Broadphase box.
-	==================================================================-M*/
-	static Box GetSweptBroadphaseBox(Box b, float t);
-
-	/*M+==================================================================
-	Method:	    CCollision::AABBCheck
-
-	Summary:	Phương thức kiểm tra xem 2 đối tượng có thể xảy ra va chạm 
-				hay không trước khi kiểm tra bằng SweepAABB. Tăng hiệu xuất
-				của chương trình khi có nhiều đối tượng.
-	==================================================================-M*/
-	static bool AABBCheck(Box b1, Box b2);
-
-	/*M+==================================================================
-	Method:	    CCollision::SweepAABB
-
-	Summary:	Phương thức kiểm tra xem 2 đối tượng xảy ra va chạm không
-				(theo thuật toán Sweep AAABB).
-
-	Args:       b1 - Box của đối tượng di chuyển.
-				b2 - Box của đối tượng đứng yên.
-				normalx, normaly - Hướng va chạm.
-				timeFrame - Thời gian của frame hiện tại.
-
-	Return:     Thời gian xảy ra va chạm nếu có va chạm hoặc
-	            timeFrame nếu không có va chạm.
-	==================================================================-M*/
-	static float SweepAABB(Box b1, Box b2, float& normalx,float& normaly, float timeFrame);
 };
 
-#endif // _COLLISION_H_
+#endif //!_CCOLLISION_H
