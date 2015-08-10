@@ -17,14 +17,15 @@ private:
 	int _totalTile;
 	int _countColumn;
 	int _countRow;
-	CTexture _textureBkg;
+	
 	vector<vector<int>>		_tileMatrix;	// Ma trận lưu các tile background
 	MGraphic* _graphic;
 public:
 	CTile(void);
+	CTexture _textureBkg;
 	// ham load demo
 	CTile(MGraphic* graphic);
-	void LoadTile(char* file);
+	void LoadTile(char* file, int id);
 	CTile(vector<vector<int>>, CTexture, int, int, int);
 	void RenderTile(MGraphic*, Camera*);
 	~CTile(void);

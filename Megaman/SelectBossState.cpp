@@ -14,13 +14,13 @@ CSelectBossState::CSelectBossState(MGraphic* graphic, LPDIRECT3DDEVICE9 d3ddev):
 
 	_background._position = D3DXVECTOR2(0, 256);
 	_background._size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
-	_background._source = "Resources//Resources//sprites//background_2.png";
+	_background._source = "Resources//sprites//background_2.png";
 	_background._transparentColor = D3DCOLOR_XRGB(255, 255, 255);
 	_background.Initlize(graphic);
 
 	// Màn CutMan
-	_boss[0]._border = new CSprite("Resources//Resources//sprites//button_menu_state.png", 1, 2, 2, 1, D3DCOLOR_XRGB(0, 255, 0),d3ddev);
-	_boss[0]._background = new CTexture("Resources//Resources//sprites//icon_master_cut_man.png", D3DCOLOR_XRGB(0, 255, 0),d3ddev);
+	_boss[0]._border = new CSprite("Resources//sprites//button_menu_state.png", 1, 2, 2, 1, D3DCOLOR_XRGB(0, 255, 0),d3ddev);
+	_boss[0]._background = new CTexture("Resources//sprites//icon_master_cut_man.png", D3DCOLOR_XRGB(0, 255, 0),d3ddev);
 	_boss[0]._size = D3DXVECTOR2(50, 50);
 	_boss[0]._position = D3DXVECTOR2(SCREEN_WIDTH / 2 - 60, SCREEN_HEIGHT / 2 + 130);
 	_boss[0]._name = "CUTMAN";
@@ -29,8 +29,8 @@ CSelectBossState::CSelectBossState(MGraphic* graphic, LPDIRECT3DDEVICE9 d3ddev):
 	_boss[0].Initlize(graphic);
 
 	// Màn GutsMan
-	_boss[1]._border = new CSprite("Resources//Resources//sprites//button_menu_state.png", 1, 2, 2, 500, D3DCOLOR_XRGB(0, 255, 0),d3ddev);
-	_boss[1]._background = new CTexture("Resources//Resources//sprites//icon_master_guts_man.png", D3DCOLOR_XRGB(0, 255, 0),d3ddev);
+	_boss[1]._border = new CSprite("Resources//sprites//button_menu_state.png", 1, 2, 2, 500, D3DCOLOR_XRGB(0, 255, 0),d3ddev);
+	_boss[1]._background = new CTexture("Resources//sprites//icon_master_guts_man.png", D3DCOLOR_XRGB(0, 255, 0),d3ddev);
 	_boss[1]._size = D3DXVECTOR2(50, 50);
 	_boss[1]._position = D3DXVECTOR2(SCREEN_WIDTH / 2 + 15, SCREEN_HEIGHT / 2 + 130);
 	_boss[1]._name = "GUTSMAN";
@@ -38,8 +38,8 @@ CSelectBossState::CSelectBossState(MGraphic* graphic, LPDIRECT3DDEVICE9 d3ddev):
 	_boss[1].Initlize(graphic);
 
 	// Màn IceMan
-	_boss[2]._border = new CSprite("Resources//Resources//sprites//button_menu_state.png", 1, 2, 2, 500, D3DCOLOR_XRGB(0, 255, 0), d3ddev);
-	_boss[2]._background = new CTexture("Resources//Resources//sprites//icon_master_Ice_man.png", D3DCOLOR_XRGB(0, 255, 0), d3ddev);
+	_boss[2]._border = new CSprite("Resources//sprites//button_menu_state.png", 1, 2, 2, 500, D3DCOLOR_XRGB(0, 255, 0), d3ddev);
+	_boss[2]._background = new CTexture("Resources//sprites//icon_master_Ice_man.png", D3DCOLOR_XRGB(0, 255, 0), d3ddev);
 	_boss[2]._size = D3DXVECTOR2(50, 50);
 	_boss[2]._position = D3DXVECTOR2(SCREEN_WIDTH / 2 + 44, SCREEN_HEIGHT / 2 + 62);
 	_boss[2]._name = "ICEMAN";
@@ -47,8 +47,8 @@ CSelectBossState::CSelectBossState(MGraphic* graphic, LPDIRECT3DDEVICE9 d3ddev):
 	_boss[2].Initlize(graphic);
 
 	// Màn BoomMan
-	_boss[3]._border = new CSprite("Resources//Resources//sprites//button_menu_state.png", 1, 2, 2, 500, D3DCOLOR_XRGB(0, 255, 0), d3ddev);
-	_boss[3]._background = new CTexture("Resources//Resources//sprites//icon_master_Boom_man.png", D3DCOLOR_XRGB(0, 255, 0), d3ddev);
+	_boss[3]._border = new CSprite("Resources//sprites//button_menu_state.png", 1, 2, 2, 500, D3DCOLOR_XRGB(0, 255, 0), d3ddev);
+	_boss[3]._background = new CTexture("Resources//sprites//icon_master_Boom_man.png", D3DCOLOR_XRGB(0, 255, 0), d3ddev);
 	_boss[3]._size = D3DXVECTOR2(50, 50);
 	_boss[3]._position = D3DXVECTOR2(SCREEN_WIDTH / 2 + 15, SCREEN_HEIGHT / 2 - 5);
 	_boss[3]._name = "BOOMMAN";
@@ -56,8 +56,8 @@ CSelectBossState::CSelectBossState(MGraphic* graphic, LPDIRECT3DDEVICE9 d3ddev):
 	_boss[3].Initlize(graphic);
 
 	// Màn FireMan
-	_boss[4]._border = new CSprite("Resources//Resources//sprites//button_menu_state.png", 1, 2, 2, 500, D3DCOLOR_XRGB(0, 255, 0), d3ddev);
-	_boss[4]._background = new CTexture("Resources//Resources//sprites//icon_master_Fire_man.png", D3DCOLOR_XRGB(0, 255, 0), d3ddev);
+	_boss[4]._border = new CSprite("Resources//sprites//button_menu_state.png", 1, 2, 2, 500, D3DCOLOR_XRGB(0, 255, 0), d3ddev);
+	_boss[4]._background = new CTexture("Resources//sprites//icon_master_Fire_man.png", D3DCOLOR_XRGB(0, 255, 0), d3ddev);
 	_boss[4]._size = D3DXVECTOR2(50, 50);
 	_boss[4]._position = D3DXVECTOR2(SCREEN_WIDTH / 2 - 60, SCREEN_HEIGHT / 2 - 5);
 	_boss[4]._name = "FIREMAN";
@@ -65,8 +65,8 @@ CSelectBossState::CSelectBossState(MGraphic* graphic, LPDIRECT3DDEVICE9 d3ddev):
 	_boss[4].Initlize(graphic);
 
 	// Màn ElecMan
-	_boss[5]._border = new CSprite("Resources//Resources//sprites//button_menu_state.png", 1, 2, 2, 500, D3DCOLOR_XRGB(0, 255, 0), d3ddev);
-	_boss[5]._background = new CTexture("Resources//Resources//sprites//icon_master_Electric_man.png", D3DCOLOR_XRGB(0, 255, 0), d3ddev);
+	_boss[5]._border = new CSprite("Resources//sprites//button_menu_state.png", 1, 2, 2, 500, D3DCOLOR_XRGB(0, 255, 0), d3ddev);
+	_boss[5]._background = new CTexture("Resources//sprites//icon_master_Electric_man.png", D3DCOLOR_XRGB(0, 255, 0), d3ddev);
 	_boss[5]._size = D3DXVECTOR2(50, 50);
 	_boss[5]._position = D3DXVECTOR2(SCREEN_WIDTH / 2 - 90, SCREEN_HEIGHT / 2 + 62);
 	_boss[5]._name = "ELECMAN";
@@ -115,15 +115,17 @@ void CSelectBossState::UpdateKeyboard(MKeyboard* input)
 		switch (_stageIndex + 1)
 		{
 		case 1:
-		
+			_nextScreen = new CPlayState("Resources//Resources//Maps//cut_man_stage.txt", this->_graphic, this->_graphic->GetDevice(), input, this->_camera, 2);
+			_isFinished = true;
 			
 			break;
 		case 2:
-
+			_nextScreen = new CPlayState("Resources//Resources//Maps//guts_man_stage.txt", this->_graphic, this->_graphic->GetDevice(), input, this->_camera, 3);
+			_isFinished = true;
 
 			break;
 		case 4:
-			_nextScreen = new CPlayState("Resources//Resources//Maps//boom_man_stage.txt", this->_graphic, this->_graphic->GetDevice(), input);
+			_nextScreen = new CPlayState("Resources//Resources//Maps//boom_man_stage.txt", this->_graphic, this->_graphic->GetDevice(), input, this->_camera, 1);
 			_isFinished = true;
 			
 			break;

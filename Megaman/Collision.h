@@ -4,7 +4,7 @@
 // Desc: Định nghĩa lớp CCollision hỗ trợ kiểm tra va chạm các đối tượng
 //
 //-----------------------------------------------------------------------------
-#ifndef _CCOLLIION_H_
+#ifndef _CCOLLISION_H_
 #define _CCOLLISION_H_
 
 #include <math.h>
@@ -15,7 +15,7 @@
 #include <dinput.h>
 
 //-----------------------------------------------------------------------------
-// Cấu trúc CBox hỗ trợ việc tổng quát hóa các đối tượng đang cần xét va chạm
+// Cấu trúc Box hỗ trợ việc tổng quát hóa các đối tượng đang cần xét va chạm
 //
 //-----------------------------------------------------------------------------
 struct Box

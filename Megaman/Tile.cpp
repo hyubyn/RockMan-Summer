@@ -64,11 +64,19 @@ void CTile::RenderTile(MGraphic* graphics, Camera* cam)
 	}
 }
 
-void CTile::LoadTile(char* file)
+void CTile::LoadTile(char* file, int id)
 {
 	ifstream fs;		// Luồng đọc file map
 	string line;		// Chuỗi đọc file map
-	_textureBkg = CTexture("Resources//Resources//Maps//boom_man_stage.bmp", D3DCOLOR_XRGB(255, 255, 255), _graphic->GetDevice());
+	switch (id)
+	{
+	case 1:_textureBkg = CTexture("Resources//Resources//Maps//boom_man_stage.bmp", D3DCOLOR_XRGB(255, 255, 255), _graphic->GetDevice()); break;
+	case 2:_textureBkg = CTexture("Resources//Resources//Maps//cut_man_stage.bmp", D3DCOLOR_XRGB(255, 255, 255), _graphic->GetDevice());break;
+	case 3: _textureBkg = CTexture("Resources//Resources//Maps//guts_man_stage.bmp", D3DCOLOR_XRGB(255, 255, 255), _graphic->GetDevice());break;
+	default:
+		break;
+	}
+	
 	// Mở file và đọc, nếu không được thì out
 	fs.open(file, ios::in);
 	if (!fs.is_open())
