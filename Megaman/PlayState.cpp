@@ -21,9 +21,8 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 
 		this->SetInput(input);
 		//enemy
-		
-		fish = new CEnemyFish(cam->_pos.y);
-		fish->_position = D3DXVECTOR2(60, cam->_pos.y);
+		fish = new CEnemyFish(cam->_pos.y - 112);
+		fish->_position = D3DXVECTOR2(200, cam->_pos.y - 112);
 		fish->_id = 4;
 		fish->_size = D3DXVECTOR2(16,16);
 		fish->Initlize();

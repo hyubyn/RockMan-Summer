@@ -17,7 +17,7 @@ CEnemyFish::~CEnemyFish()
 int CEnemyFish::Initlize()
 {
 	_sprite = ResourceManager::GetSprite(ID_SPRITE_ENEMY_FISH);
-	_v = D3DXVECTOR2(50.0f / 1000.0f, 60.0f / 1000.0f);
+	_v = D3DXVECTOR2(50.0f , 60.0f);
 	_g = 0.098f / 1000.0f;
 	UpdateBox();
 	return 1;
