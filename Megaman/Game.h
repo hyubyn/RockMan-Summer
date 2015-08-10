@@ -5,14 +5,13 @@
 #include "MKeyboard.h"
 #include "Megaman.h"
 #include "Global.h"
-#include "Camera.h"
-#include "Timer.h"
 #include "BackGround.h"
 #include "Map.h"
 #include "Tile.h"
 #include "CScressnManager.h"
 #include "StartState.h"
 #include "SelectBossState.h"
+#include "CEnemyFish.h"
 //RSManager* RSManager::instance = NULL;
 class Game
 {
@@ -55,7 +54,8 @@ private:
 
 	static HRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam);
 
-
+	// khai bao doi tuong enemy de test
+	
 public:
 
 	CScreenManager* _screenManager;

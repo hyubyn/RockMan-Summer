@@ -18,7 +18,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -46,6 +47,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -70,38 +72,81 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="Bullets.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CBullet.h" />
+    <ClInclude Include="CEnemy.h" />
+    <ClInclude Include="CEnemyFish.h" />
+    <ClInclude Include="CEnemyFishBullet.h" />
+    <ClInclude Include="CGameObject.h" />
+    <ClInclude Include="CInput.h" />
+    <ClInclude Include="CMenuItem.h" />
+    <ClInclude Include="CObject.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionInfo.h" />
+    <ClInclude Include="CScressnManager.h" />
     <ClInclude Include="CSingleton.h" />
+    <ClInclude Include="CSprite.h" />
+    <ClInclude Include="CTextblock.h" />
     <ClInclude Include="CTexture.h" />
+    <ClInclude Include="DSUtil.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="ImageItem.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MContent.h" />
     <ClInclude Include="Megaman.h" />
     <ClInclude Include="MGraphic.h" />
     <ClInclude Include="MKeyboard.h" />
+    <ClInclude Include="PlayState.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Screen.h" />
+    <ClInclude Include="SelectBossState.h" />
+    <ClInclude Include="StartState.h" />
     <ClInclude Include="StaticGameObject.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Trace.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackGround.cpp" />
     <ClCompile Include="Bullets.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CBullet.cpp" />
+    <ClCompile Include="CEnemy.cpp" />
+    <ClCompile Include="CEnemyFish.cpp" />
+    <ClCompile Include="CEnemyFishBullet.cpp" />
+    <ClCompile Include="CGameObject.cpp" />
+    <ClCompile Include="CInput.cpp" />
+    <ClCompile Include="CMenuItem.cpp" />
+    <ClCompile Include="CObject.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="CollisionInfo.cpp" />
+    <ClCompile Include="CScressnManager.cpp" />
+    <ClCompile Include="CSprite.cpp" />
+    <ClCompile Include="CTextblock.cpp" />
     <ClCompile Include="CTexture.cpp" />
+    <ClCompile Include="DSUtil.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Global.cpp" />
+    <ClCompile Include="ImageItem.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MContent.cpp" />
     <ClCompile Include="Megaman.cpp" />
     <ClCompile Include="MGraphic.cpp" />
     <ClCompile Include="MKeyboard.cpp" />
+    <ClCompile Include="PlayState.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="SelectBossState.cpp" />
+    <ClCompile Include="StartState.cpp" />
     <ClCompile Include="StaticGameObject.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Trace.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

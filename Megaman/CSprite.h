@@ -23,6 +23,7 @@ public:
 	int _timeFrameDefault;
 	CSprite();
 	CSprite(char* pNamePath, int countRow, int countColumn, int countFrame, int timeframe,D3DCOLOR color,  LPDIRECT3DDEVICE9 device);
+	CSprite(char* pNamePath, int countRow, int countColumn, int countFrame, int timeframe, D3DCOLOR color);
 	~CSprite();
 	void SetIndex(int index);
 	int GetIndex();

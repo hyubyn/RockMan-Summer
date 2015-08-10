@@ -1,9 +1,11 @@
-﻿#pragma once
+﻿#ifndef _MEGAMAN_H_
+#define _MEGAMAN_H_
+
 #include "GameObject.h"
+#include "CEnemyFish.h"
 #include "Bullets.h"
 #include <vector>
-class Megaman :
-	public GameObject
+class Megaman :	public GameObject
 {
 public:
 	D3DXVECTOR2 speedmax;
@@ -51,3 +53,4 @@ public:
 	~Megaman();
 };
 
+#endif

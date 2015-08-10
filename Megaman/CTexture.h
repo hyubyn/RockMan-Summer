@@ -18,6 +18,7 @@ public:
 	
 	CTexture();
 	CTexture(char* pNamePath, D3DCOLOR color, LPDIRECT3DDEVICE9 device);
+	CTexture(char* pNamePath, D3DCOLOR color);
 	~CTexture();
 	LPDIRECT3DTEXTURE9 GetTexture();
 	int GetHeight();

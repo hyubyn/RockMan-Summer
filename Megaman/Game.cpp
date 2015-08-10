@@ -58,10 +58,15 @@ bool Game::InitWindow()
 
 	if (!graphic->InitD3D())
 		return false;
+	if (ResourceManager::Init(this->hWnd, graphic->GetDevice()) == 0)
+	{
+		MessageBox(NULL, "Lỗi không khởi tạo được các đối tượng Sound", "Lỗi khởi tạo", MB_OK);
+		return false;
+	}
 	//Chỗ này làm ẩu nên nó không logic một tí. các bạn tự fix lại	
 	content = new MContent(graphic->GetDevice());
 	return true;
-
+	
 	m_pTimer = CTimer::GetInstance();
 	m_pTimer->SetMaxFps((float)GAME_FPS);
 	
@@ -70,6 +75,8 @@ bool Game::InitWindow()
 
 void Game::InitGame()
 {
+	
+
 	megaman = new Megaman();
 	megaman->Init(content);
 
@@ -80,6 +87,7 @@ void Game::InitGame()
 	_screenManager = new CScreenManager();
 	_screenManager->SetStartScreen(new CStartState(graphic));
 
+
 	back = new BackGround();
 	back->Init(content);
 
@@ -87,7 +95,6 @@ void Game::InitGame()
 	map->Init(content);
 
 	tileManager = new CTile(graphic);
-	tileManager->LoadTile("Resources//Resources//Maps//boom_man_stage.txt");
 }
 
 Camera* Game::GetCam()
@@ -97,10 +104,10 @@ Camera* Game::GetCam()
 
 void Game::Update(CTimer* gameTime)
 {	
+	keyboard->GetState();
 	_screenManager->UpdateInput(keyboard);
 	_screenManager->Update(gameTime);
-	//keyboard->GetState();
-	//megaman->Update(gameTime,keyboard,Cam,map->listGameObject);
+		//megaman->Update(gameTime,keyboard,Cam,map->listGameObject);
 	
 	
 }
@@ -114,7 +121,7 @@ void Game::Render(CTimer* gameTime)
 
 	//megaman->Render(graphic,Cam);
 	
-		_screenManager->GetCurrentScreen()->GetCam(Cam);
+		//_screenManager->GetCurrentScreen()->GetCam(Cam);
 	_screenManager->Render(gameTime, graphic);
 	
 	graphic->End();

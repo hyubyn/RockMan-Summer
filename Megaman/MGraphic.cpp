@@ -1,8 +1,10 @@
 ﻿#include "MGraphic.h"
 
 
+MGraphic* MGraphic::_pInstance = NULL;
 MGraphic::MGraphic(HWND hwnd,int W,int H)
 {
+	this->_pInstance = NULL;
 	this->hWnd = hwnd;
 	this->Width = W;
 	this->Height = H;
@@ -57,6 +59,11 @@ MGraphic::~MGraphic(void)
 void MGraphic::GetCam(Camera* cam)
 {
 	this->_cam = cam;
+}
+
+void MGraphic::SetDevice(LPDIRECT3DDEVICE9 d3ddev)
+{
+	this->d3ddev = d3ddev;
 }
 
 void MGraphic::Begin()
@@ -313,4 +320,14 @@ LPDIRECT3DDEVICE9 MGraphic::GetDevice()
 void MGraphic::DrawString(char* str)
 {
 	
+}
+
+MGraphic* MGraphic::GetInstance()
+{
+	if(_pInstance == nullptr)
+	{
+			_pInstance = new MGraphic();
+			_pInstance->InitD3D();
+	}
+	return _pInstance;
 }

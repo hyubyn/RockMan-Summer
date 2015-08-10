@@ -14,7 +14,7 @@ enum SpriteEffects{
 	FLIP_VERTICALLY = 2  // Xoay 1 góc 180 quanh trục X
 };
 
-class MGraphic : public CSingleton<MGraphic>
+class MGraphic 
 {
 private :
 
@@ -43,7 +43,7 @@ public:
 	void DrawTextureFlipx(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR2 postion, D3DXVECTOR3 center, RECT source, D3DCOLOR color, Camera* cam);
 	void DrawTexture(LPDIRECT3DTEXTURE9 texture, D3DXVECTOR2 postion, D3DXVECTOR3 center, D3DCOLOR color, Camera* cam);
 	
-	void Draw(LPDIRECT3DTEXTURE9 texture, RECT destinationRectangle, D3DXVECTOR2 position, bool isDrawAtCenter, D3DXVECTOR2 scale, SpriteEffects effects);
+	void Draw(LPDIRECT3DTEXTURE9 texture, RECT destinationRectangle, D3DXVECTOR2 position, bool isDrawAtCenter, D3DXVECTOR2 scale = D3DXVECTOR2(1,1), SpriteEffects effects = SpriteEffects::NONE);
 	void Draw(LPDIRECT3DTEXTURE9 texture, RECT boundingRectangle, bool isDrawAtCenter, D3DXVECTOR2 scale, SpriteEffects effect);
 	void Draw(LPDIRECT3DTEXTURE9 texture, RECT destinationRectangle, D3DXVECTOR2 position, bool isDrawAtCenter, SpriteEffects effect);
 	void Draw(LPDIRECT3DTEXTURE9 texture, RECT destinationRectangle, D3DXVECTOR2 position, D3DXVECTOR2 scale);
@@ -55,6 +55,10 @@ public:
 	void DrawString(char* str);
 	void DrawSurface();
 	void GetCam(Camera* cam);
+	void SetDevice(LPDIRECT3DDEVICE9 d3ddev);
 	LPDIRECT3DDEVICE9 GetDevice();	
+	static MGraphic* GetInstance();
+protected:
+	static MGraphic*	_pInstance;
 };
 

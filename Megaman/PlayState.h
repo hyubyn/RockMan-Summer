@@ -3,15 +3,14 @@
 
 #pragma once
 #include "Screen.h"
-#include "Map.h"
 #include "Tile.h"
+#include "Map.h"
 #include "Megaman.h"
-
 class CPlayState: public CScreen
 
 {
 public:
-	CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, MKeyboard* input);
+	CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, MKeyboard* input,  Camera* cam, int id);
 
 	//-----------------------------------------------------------------------------
 	// Phương thức cập nhật sự kiện bàn phím, chuột
@@ -45,6 +44,11 @@ private:
 
 		//Khai báo đối tượng Content(Dùng để load dữ liệu)
 	MContent* content;
+
+	
+
+	// khai bao enemy de test
+	CEnemyFish* fish;
 };
 
 #endif

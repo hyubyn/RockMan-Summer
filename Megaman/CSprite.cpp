@@ -19,6 +19,23 @@ CSprite::CSprite(char* pNamePath, int countRow, int countColumn, int countFrame,
 	_frameStart = 0;
 	_frameEnd = _countFrame-1;
 }
+
+CSprite::CSprite(char* pNamePath, int countRow, int countColumn, int countFrame, int timeFrame, D3DCOLOR color) :CTexture(pNamePath, color)
+{
+	this->_countColumn = countColumn;
+	this->_countFrame = countFrame;
+	this->_countRow = countRow;
+	this->_index = 0;
+	this->_frameHeight = _height / _countRow;
+	this->_frameWidth = _width / _countColumn;
+	this->_timeFrame = timeFrame;
+	_timeFrameDefault = timeFrame;
+	_tick = 0;
+	_isNextFrame = false;
+	_frameStart = 0;
+	_frameEnd = _countFrame-1;
+}
+
 CSprite::~CSprite()
 {
 

@@ -10,6 +10,13 @@ CTexture::CTexture(char* pNamePath, D3DCOLOR color, LPDIRECT3DDEVICE9 device)
 	this->_pNamePath = pNamePath;
 	LoadImageFromFile(_pNamePath, color, device);
 }
+
+CTexture::CTexture(char* pNamePath, D3DCOLOR color)
+{
+	this->_pNamePath = pNamePath;
+	LoadImageFromFile(_pNamePath, color);
+}
+
 CTexture::~CTexture()
 {
 
@@ -99,7 +106,6 @@ void CTexture::LoadImageFromFile(char* pNamePath, D3DCOLOR color, LPDIRECT3DDEVI
 
 LPDIRECT3DTEXTURE9 CTexture::GetTexture()
 {
-
 	return _texture;
 }
 int CTexture::GetHeight()

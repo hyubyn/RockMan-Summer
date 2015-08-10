@@ -95,6 +95,14 @@ void Megaman::UpdateKeyBoard(MKeyboard* key)
 	{
 		Fire();
 	}
+	if (key->IsKeyDown(DIK_UP))
+	{
+		this->position.y += 2;
+	}
+	else if (key->IsKeyDown(DIK_DOWN))
+	{
+		this->position.y -= 2;
+	}
 }
 
 void Megaman::Fire()

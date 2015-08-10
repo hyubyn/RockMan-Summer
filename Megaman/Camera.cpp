@@ -9,13 +9,9 @@ Camera::Camera()
 	isMoving = false;
 	D3DXMatrixIdentity(&_MatrixTransform);
 	_MatrixTransform._22 = -1;
-	LoadCameraPath(1);
-	endMap = _listPoint.at(count - 1);										// lay toa do cuoi cung cua camera
-	for (int i = 0; i < count - 1; i++)
-	{
-		_listMoveLine.push_back(MoveLine(_listPoint.at(i), _listPoint.at(i + 1)));
-	}
-	_pos = _listPoint.at(0);
+	_pos.x = 0;
+	_pos.y = 256;
+	
 }
 
 
@@ -196,4 +192,10 @@ void Camera::LoadCameraPath(int id)
 		iss>>x>>y;
 		_listPoint.push_back(D3DXVECTOR2(x,y));
 	}
+	endMap = _listPoint.at(count - 1);										// lay toa do cuoi cung cua camera
+	for (int i = 0; i < count - 1; i++)
+	{
+		_listMoveLine.push_back(MoveLine(_listPoint.at(i), _listPoint.at(i + 1)));
+	}
+	_pos = _listPoint.at(0);
 }
