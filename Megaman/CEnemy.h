@@ -9,7 +9,7 @@
 
 #include "CGameObject.h"
 #include "CBullet.h"
-
+#include "CExplodingEffectManager.h"
 class Megaman;
 
 class CEnemy :public CMoveableObject
