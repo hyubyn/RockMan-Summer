@@ -36,7 +36,7 @@ void CEnemyMachineAuto::Update(CTimer* gameTime, Megaman* rockman)
 	_sprite.Update(gameTime);
 	
 	//Nếu Rockman nằm trong vùng cho phép tấn công và thời gian tấn công còn lại đã hết
-	if (abs( rockman->GetPos.position.x - this->_position.x) <= SPACE_X_TO_MACHINE_AUTO_ENEMY_ATTACK
+	if (abs( rockman->GetPos().x - this->_position.x) <= SPACE_X_TO_MACHINE_AUTO_ENEMY_ATTACK
 		&& _timeAttackRemain <= 0)
 	{
 		_timeAttackRemain = TIME_ATTACK_OF_MACHINE_AUTO_ENEMY + TIME_DELAY_ATTACK_OF_MACHINE_AUTO_ENEMY;//Gán lại thời gian tấn công còn lại
