@@ -55,8 +55,7 @@ void CMenuItem::Render(CTimer* gameTime,Camera* cam, MGraphic* graphics)
 
 void CMenuItem::Update(CTimer* gameTime)
 {
-	if ( _timeAnimationText >= 40)
-	{
+	
 		if (_isFocused)
 		{
 			_border->SetAllowAnimate(_border->_timeFrameDefault);
@@ -77,7 +76,7 @@ void CMenuItem::Update(CTimer* gameTime)
 		}
 		_timeAnimationText = 0;
 		
-	}
+	
 	_timeAnimationText++;
 	
 }

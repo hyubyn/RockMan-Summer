@@ -78,13 +78,10 @@ void CEnemyMachine::Update(CTimer* gameTime, Megaman* rockman)
 		break;
 	}
 	OutputDebugStringW((L"va toc" + wstring(::to_wstring(_v.x) + L"\n")).c_str());
-	UpdateBox();
-	if(_timeFrame >=40)
-	{
-	_sprite.Update(gameTime);
+	
+ 	_sprite.Update(gameTime);
 	_timeFrame = 0;
-	}
-	_timeFrame++;
+
 	
 }
 void CEnemyMachine::OnCollideWith(CGameObject *gameObject, CDirection normalX, CDirection normalY, float deltaTime)

@@ -6,6 +6,9 @@
 #include "Tile.h"
 #include "Map.h"
 #include "Megaman.h"
+#include "CEnemyMachine.h"
+#include "CEnemyMachineAuto.h"
+#include "CEnemyNinja.h"
 class CPlayState: public CScreen
 
 {
@@ -49,6 +52,14 @@ private:
 
 	// khai bao enemy de test
 	CEnemyFish* fish;
+
+	CEnemyMachine* machine;
+
+	CEnemyMachineAuto* machineauto;
+
+	CEnemyNinja* eneNinja;
+
+
 };
 
 #endif

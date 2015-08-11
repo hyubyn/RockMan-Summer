@@ -14,13 +14,13 @@ int CInput::InitInput(HINSTANCE hInstance, HWND hwnd)
 {
 	if (this->InitInputDirect(hInstance) == 0)
 	{
-		MessageBox(NULL, L"Lỗi không khởi tạo được đối tượng InputDirectX", L"Lỗi khởi tạo", MB_OK);
+		MessageBox(NULL, "Lỗi không khởi tạo được đối tượng InputDirectX", "Lỗi khởi tạo", MB_OK);
 		return 0;
 	}
 
 	if (this->InitKeyboard(hwnd) == 0)
 	{
-		MessageBox(NULL, L"Lỗi không khởi tạo được đối tượng Keyboard DirectX", L"Lỗi khởi tạo", MB_OK);
+		MessageBox(NULL, "Lỗi không khởi tạo được đối tượng Keyboard DirectX", "Lỗi khởi tạo", MB_OK);
 		return 0;
 	}
 
