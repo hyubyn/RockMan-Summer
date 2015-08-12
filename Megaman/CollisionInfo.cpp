@@ -1,15 +1,13 @@
 #include "CollisionInfo.h"
 
-
 CollisionInfo::CollisionInfo()
 {
 
 }
 
-CollisionInfo::CollisionInfo(GameObject* object, float normalx, float normaly, float timeCollide)
+CollisionInfo::CollisionInfo(CGameObject* object, CDirection direction, float timeCollide)
 {
 	_object = object;
-	_normalx = normalx;
-	_normaly = normaly;
+	_direction = direction;
 	_timeCollide = timeCollide;
 }
