@@ -9,6 +9,7 @@
 #include "CEnemyMachine.h"
 #include "CEnemyMachineAuto.h"
 #include "CEnemyNinja.h"
+#include "CEnemyFish.h"
 class CPlayState: public CScreen
 
 {
