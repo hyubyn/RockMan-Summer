@@ -1,5 +1,5 @@
-﻿#ifndef _CONFIG_H_
-#define _CONFIG_H_
+﻿#ifndef _GLOBAL_H_
+#define _GLOBAL_H_
 
 #define TILE_SIZE		32
 #define SCREEN_WIDTH	256
@@ -487,7 +487,7 @@ enum class STTBOOM{
 	START,
 };
 
-#endif //_CONFIG_H_
+#endif //_GLOBAL_H_
 
 
 //86-c1 

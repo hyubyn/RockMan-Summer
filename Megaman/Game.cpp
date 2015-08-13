@@ -78,7 +78,7 @@ void Game::InitGame()
 	
 
 	megaman = new Megaman();
-	megaman->Init(content);
+	megaman->Initlize();
 
 	keyboard = new MKeyboard(hInstance, hWnd);
 	keyboard->Init();

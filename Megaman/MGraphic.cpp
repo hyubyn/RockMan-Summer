@@ -204,6 +204,18 @@ void MGraphic::Draw(LPDIRECT3DTEXTURE9 texture, RECT destinationRectangle, D3DXV
 {
 	Draw(texture, destinationRectangle, position, true, scale, SpriteEffects::NONE);
 }
+void MGraphic::Draw(LPDIRECT3DTEXTURE9 texture, RECT boundingRectangle, bool isDrawAtCenter, D3DXVECTOR2 scale)
+{
+	RECT destinationRectangle;
+	destinationRectangle.left = 0;
+	destinationRectangle.top = 0;
+	destinationRectangle.right = boundingRectangle.right - boundingRectangle.left;
+	destinationRectangle.bottom = boundingRectangle.bottom - boundingRectangle.top;
+
+	D3DXVECTOR2 pos(boundingRectangle.left, boundingRectangle.top);
+
+	Draw(texture, destinationRectangle, pos, isDrawAtCenter, scale, NONE);
+}
 
 void MGraphic::DrawString(string text, RECT boundingRectangle, D3DCOLOR color, D3DXVECTOR2 scale, bool isDrawAtCenter, Camera* cam){
 

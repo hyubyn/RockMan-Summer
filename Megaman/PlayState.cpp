@@ -11,7 +11,7 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 		content = new MContent(gra->GetDevice());
 
 		megaman = new Megaman();
-		megaman->Init(content);
+		megaman->Initlize();
 
 		map = new Map();
 		map->Init(content);
@@ -54,8 +54,7 @@ void CPlayState::UpdateKeyboard(MKeyboard* input)
 
 void CPlayState::Update(CTimer* gameTime)
 {
-	megaman->Update(gameTime->GetTime(),this->_input,this->_camera,map->listGameObject);
-
+	megaman->Update(gameTime);
 	fish->Update(gameTime,megaman);
 	machine->Update(gameTime,megaman);
 	machineauto->Update(gameTime,megaman);
@@ -78,8 +77,7 @@ void CPlayState::Draw(CTimer* gameTime, MGraphic* graphics)
 
 	eneNinja->Render(gameTime,graphics);
 
-	megaman->Render(graphics,this->_camera);
-
+	megaman->Render(gameTime, graphics);
 
 
 

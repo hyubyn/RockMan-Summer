@@ -47,7 +47,7 @@ public:
 	void Draw(LPDIRECT3DTEXTURE9 texture, RECT boundingRectangle, bool isDrawAtCenter, D3DXVECTOR2 scale, SpriteEffects effect);
 	void Draw(LPDIRECT3DTEXTURE9 texture, RECT destinationRectangle, D3DXVECTOR2 position, bool isDrawAtCenter, SpriteEffects effect);
 	void Draw(LPDIRECT3DTEXTURE9 texture, RECT destinationRectangle, D3DXVECTOR2 position, D3DXVECTOR2 scale);
-
+	void Draw(LPDIRECT3DTEXTURE9 texture, RECT boundingRectangle, bool isDrawAtCenter, D3DXVECTOR2 scale);
 	
 	void DrawTile(LPDIRECT3DTEXTURE9 texture, RECT destinationRectangle, D3DXVECTOR2 position, bool isDrawAtCenter, D3DXVECTOR2 scale, Camera* cam);
 	void DrawString(string text, D3DXVECTOR2 position, D3DCOLOR color, bool isDrawAtCenter, Camera* cam);
