@@ -115,7 +115,7 @@ void CGameInfo::Load()
 	fs.open(gameInfoFile, ios::in);
 	if (!fs.is_open())
 	{
-		OutputDebugString(L"Can not open map file game info");
+		OutputDebugString("Can not open map file game info");
 		return;
 	}
 
@@ -171,7 +171,7 @@ void CGameInfo::Save()
 	fs.open(gameInfoFile);
 	if (!fs.is_open())
 	{
-		OutputDebugString(L"Can not open map file game info to save data");
+		OutputDebugString("Can not open map file game info to save data");
 		return;
 	}
 

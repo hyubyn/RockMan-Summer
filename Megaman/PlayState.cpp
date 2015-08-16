@@ -45,6 +45,9 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 		eneNinja->_id = 7;
 		eneNinja->_size = D3DXVECTOR2(26, 24);
 		eneNinja->Initlize();
+
+		megaman->_position = D3DXVECTOR2(100, 200);
+		megaman->_behave = STAND;
 }
 
 void CPlayState::UpdateKeyboard(MKeyboard* input)

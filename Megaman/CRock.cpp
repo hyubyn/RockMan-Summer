@@ -12,9 +12,9 @@ CRock::~CRock()
 
 int CRock::Initlize()
 {
-	_texture = CTexture(L"Resources//Sprites//Others//rock.png", D3DCOLOR_XRGB(255, 0, 195));
+	_texture = CTexture("Resources//Sprites//Others//rock.png", D3DCOLOR_XRGB(255, 0, 195));
 	if (_typeID == ID_ROCK_IN_GUT_STAGE)
-		_texture = CTexture(L"Resources//Sprites//Others//rock_in_gut_stage.png", D3DCOLOR_XRGB(0, 255, 0));
+		_texture = CTexture("Resources//Sprites//Others//rock_in_gut_stage.png", D3DCOLOR_XRGB(0, 255, 0));
 	UpdateBox();
 	return 0;
 }

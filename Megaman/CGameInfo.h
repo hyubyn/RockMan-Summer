@@ -14,6 +14,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <Windows.h>
 
 using namespace std;
 

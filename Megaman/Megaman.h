@@ -150,6 +150,8 @@ public:
 	friend class CGutsRockmanBullet;
 	friend class CBoomRockManBullet;
 
+	Behave _behave;
+
 	bool	_canFire;						// Kiểm tra có hể bắn đạn hay không
 private:
 	//-----------------------------------------------------------------------------
@@ -177,7 +179,7 @@ private:
 	// tác động. Do vậy giá trị cuối cùng sau khi gọi hàm Update là hành vi cuối cùng 
 	// đã qua xử lý
 	//-----------------------------------------------------------------------------
-	Behave _behave;
+	
 
 	int	_deltaTime, _timeDie, _timeHurted, _deltaTimeCanFire, _deltaTimeInShield, _deltaTimeJump;	// Biến đếm thời gian dự phòng, dùng cho việc đếm các khoảng thời gian như thời gian chết của Rockman
 	int	_jumpTime;							// Biến đếm thời gian hỗ trợ đảm bảo thời gian nhảy giữa hai lần là ngắn nhất
