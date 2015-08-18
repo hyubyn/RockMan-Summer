@@ -1,7 +1,7 @@
 ﻿#ifndef CTEXT_BLOCK_H
 #define CTEXT_BLOCK_H
 
-#include "Item.h"
+#include "ItemControl.h"
 #include "Global.h"
 #include "Timer.h"
 #include "MGraphic.h"
@@ -47,7 +47,7 @@ enum Alignment
 	CENTER
 };
 
-class CTextblock :public CItem
+class CTextblock :public CItemControl
 {
 public:
 	CTextblock(void);

@@ -5,7 +5,7 @@ class Asset
 {
 public:	
 	static Asset* GetInstance();
-	 bool __is_require_shake_screen = false;
+	 bool __is_require_shake_screen;
 private:
 	Asset();
 	~Asset();

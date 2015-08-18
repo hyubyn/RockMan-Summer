@@ -6,11 +6,11 @@
 #include "Global.h"
 #include <vector>
 
-class CItem
+class CItemControl
 {
 public:
-	CItem(void);
-	virtual ~CItem(void);
+	CItemControl(void);
+	virtual ~CItemControl(void);
 
 	//-----------------------------------------------------------------------------
 	// 	Khởi tạo tất cả các thành phần của 1 đối tượng với các giá trí đã có

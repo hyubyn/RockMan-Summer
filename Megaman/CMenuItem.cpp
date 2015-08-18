@@ -1,6 +1,6 @@
 ﻿#include "CMenuItem.h"
 
-CMenuItem::CMenuItem() :CItem()
+CMenuItem::CMenuItem() :CItemControl()
 {
 	_background = NULL;
 	_border = NULL;

@@ -31,8 +31,10 @@ private :
 	HWND hWnd;
 	int Width;
 	int Height;
-	Camera* _cam;
+
 public:
+	static MGraphic*	_pInstance;
+	Camera* _cam;
 	bool InitD3D();
 	MGraphic(HWND,int,int);
 	MGraphic(){}
@@ -59,6 +61,6 @@ public:
 	LPDIRECT3DDEVICE9 GetDevice();	
 	static MGraphic* GetInstance();
 protected:
-	static MGraphic*	_pInstance;
+	
 };
 

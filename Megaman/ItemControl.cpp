@@ -1,14 +1,14 @@
-#include "Item.h"
+#include "ItemControl.h"
 
 
-CItem::CItem()
+CItemControl::CItemControl()
 {
 	_position = D3DXVECTOR2(0, 0);
 	_centerposition = D3DXVECTOR2(0, 0);
 	_size = D3DXVECTOR2(0, 0);
 }
 
-RECT CItem::GetBoundingRectangle(){
+RECT CItemControl::GetBoundingRectangle(){
 	RECT boundingRect;
 	boundingRect.left = _position.x;
 	boundingRect.top = _position.y;
@@ -18,12 +18,12 @@ RECT CItem::GetBoundingRectangle(){
 	return boundingRect;
 }
 
-D3DXVECTOR2 CItem::GetPositionCenter()
+D3DXVECTOR2 CItemControl::GetPositionCenter()
 {
 	return D3DXVECTOR2(_position.x/* + _origin.x*/, _position.y/* + _origin.y*/);
 }
 
-CItem::~CItem()
+CItemControl::~CItemControl()
 {
 
 }

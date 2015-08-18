@@ -54,17 +54,19 @@ bool Game::InitWindow()
 	
 	//tạo màn hình vẽ
 	graphic = new MGraphic(this->hWnd, SCREEN_WIDTH, SCREEN_HEIGHT);
-
+	
 
 	if (!graphic->InitD3D())
 		return false;
-	if (ResourceManager::Init(this->hWnd, graphic->GetDevice()) == 0)
+
+	MGraphic::_pInstance = graphic;
+	if (ResourceManager::Init(this->hWnd, MGraphic::GetInstance()->GetDevice()) == 0)
 	{
 		MessageBox(NULL, "Lỗi không khởi tạo được các đối tượng Sound", "Lỗi khởi tạo", MB_OK);
 		return false;
 	}
 	//Chỗ này làm ẩu nên nó không logic một tí. các bạn tự fix lại	
-	content = new MContent(graphic->GetDevice());
+	content = new MContent(MGraphic::GetInstance()->GetDevice());
 	return true;
 	
 	m_pTimer = CTimer::GetInstance();
@@ -84,8 +86,8 @@ void Game::InitGame()
 	keyboard->Init();
 
 	Cam = new Camera();
-	_screenManager = new CScreenManager();
-	_screenManager->SetStartScreen(new CStartState(graphic));
+	
+	CScreenManager::GetInstance()->SetStartScreen(new CStartState(MGraphic::GetInstance()));
 
 
 	back = new BackGround();
@@ -94,7 +96,7 @@ void Game::InitGame()
 	map = new Map();
 	map->Init(content);
 
-	tileManager = new CTile(graphic);
+	tileManager = new CTile(MGraphic::GetInstance());
 }
 
 Camera* Game::GetCam()
@@ -105,15 +107,15 @@ Camera* Game::GetCam()
 void Game::Update(CTimer* gameTime)
 {	
 	keyboard->GetState();
-	_screenManager->UpdateInput(keyboard);
-	_screenManager->Update(gameTime);
+	CScreenManager::GetInstance()->UpdateInput(keyboard);
+	CScreenManager::GetInstance()->Update(gameTime);
 		//megaman->Update(gameTime,keyboard,Cam,map->listGameObject);
 	
 	
 }
 void Game::Render(CTimer* gameTime)
 {
-	graphic->Begin();
+	MGraphic::GetInstance()->Begin();
 	//tileManager->RenderTile(graphic,Cam);
 	/*back->Render(graphic, Cam);*/
 
@@ -122,9 +124,9 @@ void Game::Render(CTimer* gameTime)
 	//megaman->Render(graphic,Cam);
 	
 		//_screenManager->GetCurrentScreen()->GetCam(Cam);
-	_screenManager->Render(gameTime, graphic);
+	CScreenManager::GetInstance()->Render(gameTime, MGraphic::GetInstance());
 	
-	graphic->End();
+	MGraphic::GetInstance()->End();
 
 
 }

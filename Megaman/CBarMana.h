@@ -1,19 +1,29 @@
-﻿#pragma once
+﻿//-----------------------------------------------------------------------------
+#ifndef _CBABMANA_H_
+#define _CBARMANA_H_
+
 #include "ItemControl.h"
+#include "Global.h"
+#include "MGraphic.h"
+#include "CTextblock.h"
 #include "CTexture.h"
 
-class CImageItem: public CItemControl
+class CBarMana : public CItemControl
 {
 public:
-	CImageItem(void);
-	~CImageItem(void);
+	//-----------------------------------------------------------------------------
+	// 	Hàm khởi tạo 
+	//-----------------------------------------------------------------------------
+	CBarMana();
+	CBarMana(D3DXVECTOR2 position, string name);
+	~CBarMana();
 
 	//-----------------------------------------------------------------------------
 	// 	Khởi tạo tất cả các thành phần của 1 đối tượng với các giá trí đã có
 	//	
 	//	Trả về 0 nếu lối hoặc 1 nếu thành công
 	//-----------------------------------------------------------------------------
-	int Initlize(MGraphic* graphic) override;
+	int Initlize(MGraphic* gra) override;
 
 	//-----------------------------------------------------------------------------
 	// 	Cập nhật tất cả các logic của 1 đối tượng
@@ -31,24 +41,25 @@ public:
 	void Render(CTimer* gameTime,Camera* cam, MGraphic* graphics) override;
 
 	//-----------------------------------------------------------------------------
-	// source của bức ảnh
+	// Set giá trị mana
 	//-----------------------------------------------------------------------------
-	char* _source;	
+	void SetMana(int mana);
 
-	
-	//-----------------------------------------------------------------------------
-	// Màu nền
-	//-----------------------------------------------------------------------------
-	D3DCOLOR _transparentColor;
-
-	
-	//-----------------------------------------------------------------------------
-	// bound khung
-	//-----------------------------------------------------------------------------
-	RECT _boundingRect;
+	void IsDraw(boolean isdraw);
 private:
+	RECT _boundingBG;
+	RECT _boundingMana;
+	D3DXVECTOR2 _position;
 
-	  // Texture của bức ảnh
-	CTexture* _texture;
+	int _mana;// giá trị chính của mana chạy từ 0->20 
+	int _maxMana;
+	CTexture _textureMana;
+	CTexture _textureBG;
+	CTextblock _text;
+	boolean _isDraw;
+
+	
+
 };
+#endif //!_CPROGRESSBAR_H_
 

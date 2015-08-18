@@ -52,6 +52,7 @@ protected:
 	MGraphic* _graphic;
 	CTimer* _gameTime;
 	MKeyboard* _input;
+	int				_typeID;		// ID của màn hình
 
 };
 

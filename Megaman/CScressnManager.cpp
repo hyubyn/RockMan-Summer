@@ -100,6 +100,8 @@ void CScreenManager::ShowPopupScreen(CScreen* popupScreen){
 	if (_popupScreen != NULL)
 	{
 		_popupScreen->_camera = _currentScreen->_camera;
-		//((CPopup*)_popupScreen)->Initilize();
+		_popupScreen->GetGraphic(_currentScreen->_graphic);
+		((CPopup*)_popupScreen)->Initilize();
+
 	}
 }

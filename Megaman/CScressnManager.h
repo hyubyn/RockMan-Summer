@@ -12,7 +12,9 @@
 #include "Screen.h"
 #include "MKeyboard.h"
 #include "Timer.h"
+#include "CPopup.h"
 #include "MGraphic.h"
+#include "DSUtil.h"
 
 
 using namespace std;

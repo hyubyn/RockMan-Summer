@@ -7,14 +7,14 @@
 #ifndef _CMENU_ITEM_H_
 #define _CMENU_ITEM_H_
 
-#include "Item.h"
+#include "ItemControl.h"
 #include "MGraphic.h"
 #include "CTexture.h"
 #include "MKeyboard.h"
 #include "Global.h"
 #include "CSprite.h"
 
-class CMenuItem :public CItem
+class CMenuItem :public CItemControl
 {
 public:
 	CMenuItem();

@@ -1,6 +1,6 @@
 ﻿#include "CTextblock.h"
 
-CTextblock::CTextblock() :CItem(){
+CTextblock::CTextblock() :CItemControl(){
 	_text = "";
 	_color = D3DCOLOR_XRGB(255, 255, 255);
 	_scale = D3DXVECTOR2(1, 1);

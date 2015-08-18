@@ -1,7 +1,7 @@
 #include "ImageItem.h"
 
 
-CImageItem::CImageItem(): CItem()
+CImageItem::CImageItem(): CItemControl()
 {
 	_texture = NULL;
 	
