@@ -47,8 +47,8 @@ void CQuadTree::LoadMap(int mapId)
 		iss.clear();
 		iss.str(line);
 		iss>>id>>type>>x>>y>>width>>height>>xCollide>>yCollide>>posXCollide>>posYCollide;
-		CGameObject* object = new CGameObject(id, type, x, y, D3DXVECTOR2(width, height), xCollide, yCollide, posXCollide, posYCollide);
-		_listAllGameObject.push_back(object);
+		//CGameObject* object = new CGameObject(id, type, x, y, D3DXVECTOR2(width, height), xCollide, yCollide, posXCollide, posYCollide);
+		//_listAllGameObject.push_back(object);
 	}
 	getline(fs, line);		// bo qua dong #objectend
 	getline(fs, line);		// bo qua dong #QuadTree Collision
