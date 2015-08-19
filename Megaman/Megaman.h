@@ -36,6 +36,8 @@
 #include "CGutsRockManBullet.h"
 #include "CBoomRockManBullet.h"
 
+#include "MKeyboard.h"
+
 using namespace std;
 
 enum Behave
@@ -60,9 +62,9 @@ enum Behave
 };
 
 #define ROCKMAN_VERLOCITY_X		85.0f/1000.0f
-#define ROCKMAN_VERLOCITY_Y		355.0f/1000.0f
+#define ROCKMAN_VERLOCITY_Y		0
 #define ROCKMAN_ACCELERATE_X	0.00075f/1000.0f
-#define ROCKMAN_ACCELERATE_Y	1.09f/1000.0f
+#define ROCKMAN_ACCELERATE_Y	0
 
 class CPlayScreen;
 
@@ -94,6 +96,8 @@ public:
 	//	+ gameTime	: Thời gian cập nhật hệ thống
 	//-----------------------------------------------------------------------------
 	void Update(CTimer* gameTime) override;
+
+	void Update(CTimer* gameTime, MKeyboard* mkeyboard);
 
 	void OnCollideWith(CGameObject* obj, CDirection normalX, CDirection normalY, float collideTime) override;
 
@@ -187,7 +191,6 @@ private:
 
 	D3DXVECTOR2 _actionPosition;					// Ví trí bắt đầu nhảy, nhằm đảm bảo Rockman không nhảy vượt quá 1 khoảng chiều cao nhất định nào đó
 
-	CInput* _input;
 
 	int		_life;							// Số mạng sống còn lại của Rockman
 
@@ -224,6 +227,8 @@ private:
 	vector<CSprite>		_confuses;
 
 	CDirection			_changeScreenDirection;
+
+	float timetemp;
 };
 
 #endif // !_CROCK_MAN_H_

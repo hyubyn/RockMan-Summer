@@ -1,4 +1,4 @@
-#include "MKeyboard.h"
+﻿#include "MKeyboard.h"
 
 
 MKeyboard::MKeyboard(HINSTANCE hIns,HWND hwnd)
@@ -43,6 +43,8 @@ bool MKeyboard::Init()
 	if (FAILED(hr))
 		return false;
 	return true;
+
+	_isActive = true;
 }
 void MKeyboard::GetState()
 {
@@ -69,9 +71,81 @@ void MKeyboard::GetState()
 	}
 }
 
+void MKeyboard::Update()
+{
+	did8->Poll();
+	HRESULT hr = this->did8->GetDeviceState(sizeof(this->keyState), (LPVOID)&this->keyState);
+	if (FAILED(hr))
+	{
+		while (this->did8->Acquire() == DIERR_INPUTLOST);
+	}
+}
+
 int MKeyboard::IsKeyDown(int Key)
 {
 	return keyState[Key] && 0x80;
+}
+
+int MKeyboard::IsKeyDown_M(int keyCode)
+{
+	if (_isActive)
+	{
+		if ((keyState[keyCode] & 0x80) != 0)
+		{
+			if ((_preKeyStates[keyCode] & 0x80) == 0)
+				return true;
+			else return false;
+		}
+		else return false;
+	}
+	else return false;
+}
+
+
+
+int MKeyboard::IsKeyUp(int keyCode)
+{
+	if (_isActive)
+	{
+		if ((keyState[keyCode] & 0x80) == 0)
+		{
+			if ((_preKeyStates[keyCode] & 0x80) != 0)
+				return true;
+			else return false;
+		}
+		else return false;
+	}
+	else return false;
+}
+
+int MKeyboard::IsKeyPress(int keyCode)
+{
+	if (_isActive)
+	{
+		if ((keyState[keyCode] & 0x80) != 0)
+		{
+			if ((_preKeyStates[keyCode] & 0x80) != 0)
+				return true;
+			else return false;
+		}
+		else return false;
+	}
+	else return false;
+}
+
+int MKeyboard::IsKeyRelease(int keyCode)
+{
+	if (_isActive)
+	{
+		if ((keyState[keyCode] & 0x80) == 0)
+		{
+			if ((_preKeyStates[keyCode] & 0x80) == 0)
+				return true;
+			else return false;
+		}
+		else return false;
+	}
+	else return false;
 }
 
 int MKeyboard::GetKeyDown()
@@ -90,9 +164,30 @@ int MKeyboard::GetKeyUp()
 	return tam;
 }
 
+void MKeyboard::SaveKeyStateHistory()
+{
+	for (int i = 0; i < 256; i++)
+		_preKeyStates[i] = keyState[i];
+}
+
+void MKeyboard::Active(){
+	_isActive = true;
+}
+
+void MKeyboard::Deactive()
+{
+	_isActive = false;
+}
+
 MKeyboard::~MKeyboard(void)
 {
 	di8->Release();
 	did8->Release();
+
+}
+
+MKeyboard::MKeyboard(void)
+{
+	_isActive = true;
 
 }

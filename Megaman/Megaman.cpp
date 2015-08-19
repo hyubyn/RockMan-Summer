@@ -83,13 +83,13 @@ void Megaman::Render(CTimer* gameTime, MGraphic* graphics)
 		{
 			if (_deltaTime >= 0.0f)
 			{
-				_deltaTime -= gameTime->GetTime();
+				_deltaTime -= timetemp;
 				if (_deltaTime <= 0.0f)
 					_deltaTime = -50;
 			}
 			else
 			{
-				_deltaTime += gameTime->GetTime();
+				_deltaTime += timetemp;
 				if (_deltaTime >= 0.0f)
 					_deltaTime = 50.0f;
 			}
@@ -151,8 +151,10 @@ D3DXVECTOR2 Megaman::GetPos()
 	return this->_position;
 }
 
-void Megaman::Update(CTimer* gameTime)
+void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 {
+	timetemp = gameTime->GetTime() * 400;
+
 	if (IsDied())
 		return;
 
@@ -590,7 +592,7 @@ void Megaman::Update(CTimer* gameTime)
 						_isRequireOverDoor = true;
 					break;
 				case ID_STAIR:
-					if (_input->IsKeyPress(ID_KEY_CODE_UP))
+					if (mkeyboard->IsKeyPress(ID_KEY_CODE_UP))
 					{
 						_behave = Behave::STAIR;
 						_a.x = 0.0f;
@@ -694,7 +696,7 @@ void Megaman::Update(CTimer* gameTime)
 					break;
 				case ID_ELEVATOR:
 				case ID_STAIR:
-					if (_input->IsKeyPress(ID_KEY_CODE_DOWN) && !_hasRockOnHead)
+					if (mkeyboard->IsKeyPress(ID_KEY_CODE_DOWN) && !_hasRockOnHead)
 					{
 						_behave = Behave::STAIR_BEGIN_END;
 						_position.x = collidedLst[i]->_object->_position.x;
@@ -804,15 +806,14 @@ void Megaman::Update(CTimer* gameTime)
 
 #pragma region Hoàn tất hành vi của trạng thái cũ hoặc trạng thái chuyển tiếp trong khi va chạm. Nhận dữ liệu bàn phím và điều hướng trạng thái tiếp theo
 
-		_input = CInput::GetInstance();
 
-		_position += _v*gameTime->GetTime();
-		_v += _a*gameTime->GetTime();
+		_position += _v*timetemp;
+		_v += _a*timetemp;
 
 		// Việc ràng ở đây chỉ áp dụng cho loại đạn thường. Còn cái đạn kỹ năng khác bị ảnh hưởng bởi luồng xử lý khác
 		if (!_canFire&&_currentSkill == Skill::NORMAL)
 		{
-			_deltaTimeCanFire += gameTime->GetTime();
+			_deltaTimeCanFire += timetemp;
 			if (_deltaTimeCanFire >= 300)
 			{
 				_deltaTimeCanFire = 0;
@@ -821,7 +822,7 @@ void Megaman::Update(CTimer* gameTime)
 		}
 		if (_isInShield)
 		{
-			_deltaTimeInShield += gameTime->GetTime();
+			_deltaTimeInShield += timetemp;
 			if (_deltaTimeInShield >= 2000)
 			{
 				_deltaTimeInShield = 0;
@@ -830,7 +831,7 @@ void Megaman::Update(CTimer* gameTime)
 		}
 		if (_isRequireOverDoor&&_timeOverDoor != 0)
 		{
-			_timeOverDoor += gameTime->GetTime();
+			_timeOverDoor += timetemp;
 			if (_timeOverDoor >= 2500)
 			{
 				_isRequireOverDoor = false;
@@ -847,7 +848,7 @@ void Megaman::Update(CTimer* gameTime)
 		case START:
 			if (_isChangingState)
 			{
-				_deltaTime += gameTime->GetTime();
+				_deltaTime += timetemp;
 				if (_deltaTime >= 75)
 				{
 					_deltaTime = 0;
@@ -865,7 +866,7 @@ void Megaman::Update(CTimer* gameTime)
 			}
 			break;
 		case STAND_FIRE:
-			_deltaTime += gameTime->GetTime();
+			_deltaTime += timetemp;
 			if (_deltaTime >= 300)
 			{
 				_behave = Behave::STAND;
@@ -893,18 +894,18 @@ void Megaman::Update(CTimer* gameTime)
 					_v.x = 0.0f;
 				}
 			}
-			if (_input->IsKeyPress(ID_KEY_CODE_LEFT) && _input->IsKeyPress(ID_KEY_CODE_RIGHT))
+			if (mkeyboard->IsKeyPress(ID_KEY_CODE_LEFT) && mkeyboard->IsKeyPress(ID_KEY_CODE_RIGHT))
 			{
 				_v.x = 0.0f;
 				_a.x = 0.0f;
 			}
-			else if (_input->IsKeyPress(ID_KEY_CODE_LEFT))
+			else if (mkeyboard->IsKeyPress(ID_KEY_CODE_LEFT))
 			{
 				_isRight = false;
 				_behave = Behave::PREPARE_RUN;
 				_deltaTime = 0;
 			}
-			else if (_input->IsKeyPress(ID_KEY_CODE_RIGHT))
+			else if (mkeyboard->IsKeyPress(ID_KEY_CODE_RIGHT))
 			{
 				_isRight = true;
 				_behave = Behave::PREPARE_RUN;
@@ -913,7 +914,7 @@ void Megaman::Update(CTimer* gameTime)
 
 			if (_isChangingState)
 			{
-				_jumpTime += gameTime->GetTime();
+				_jumpTime += timetemp;
 				if (_jumpTime >= 100.0f)
 				{
 					_jumpTime = 0.0f;
@@ -921,7 +922,7 @@ void Megaman::Update(CTimer* gameTime)
 					_isChangingState = false;
 				}
 			}
-			if (_input->IsKeyDown(ID_KEY_CODE_JUMP) && _canJump)
+			if (mkeyboard->IsKeyDown_M(ID_KEY_CODE_JUMP) && _canJump)
 			{
 				_v.y = 2.0f* ROCKMAN_VERLOCITY_Y / 3.0f;
 				_deltaTimeJump = 0.0f;
@@ -930,7 +931,7 @@ void Megaman::Update(CTimer* gameTime)
 				_canJump = false;
 				_canJumpMore = true;
 			}
-			if (_input->IsKeyDown(ID_KEY_CODE_FIRE) && (_canFire || _hasRockOnHead) && GetWeapons(_currentSkill) > 0)
+			if (mkeyboard->IsKeyDown_M(ID_KEY_CODE_FIRE) && (_canFire || _hasRockOnHead) && GetWeapons(_currentSkill) > 0)
 			{
 				if (_currentSkill != Skill::GUTS&& _canFire)
 				{
@@ -987,14 +988,14 @@ void Megaman::Update(CTimer* gameTime)
 			}
 			break;
 		case STAIR_FIRE:
-			_deltaTime += gameTime->GetTime();
+			_deltaTime += timetemp;
 			if (_deltaTime >= 300)
 			{
 				_behave = Behave::STAIR;
 				_deltaTime = 0;
 			}
 		case STAIR:
-			if (_input->IsKeyPress(ID_KEY_CODE_UP) && _v.y <= 0.0f)
+			if (mkeyboard->IsKeyPress(ID_KEY_CODE_UP) && _v.y <= 0.0f)
 
 			{
 				_v.x = 0.0f;
@@ -1003,7 +1004,7 @@ void Megaman::Update(CTimer* gameTime)
 				_a.y = 0.0f;
 				_sprite.SetAllowAnimate(120);
 			}
-			else	if (_input->IsKeyUp(ID_KEY_CODE_UP) && _v.y > 0.0f)
+			else	if (mkeyboard->IsKeyUp(ID_KEY_CODE_UP) && _v.y > 0.0f)
 			{
 				_v.y = 0.0f;
 				_a.y = 0.0f;
@@ -1011,7 +1012,7 @@ void Megaman::Update(CTimer* gameTime)
 				_v.x = 0.0f;
 				_sprite.SetAllowAnimate(0);
 			}
-			else	if (_input->IsKeyPress(ID_KEY_CODE_DOWN) && _v.y >= 0.0f)
+			else	if (mkeyboard->IsKeyPress(ID_KEY_CODE_DOWN) && _v.y >= 0.0f)
 			{
 				_v.y = -50.0f / 1000.0f;
 				_a.y = 0.0f;
@@ -1019,7 +1020,7 @@ void Megaman::Update(CTimer* gameTime)
 				_v.x = 0.0f;
 				_sprite.SetAllowAnimate(120);
 			}
-			else if (_input->IsKeyUp(ID_KEY_CODE_DOWN) && _v.y < 0.0f)
+			else if (mkeyboard->IsKeyUp(ID_KEY_CODE_DOWN) && _v.y < 0.0f)
 			{
 				_v.y = 0.0f;
 				_a.y = 0.0f;
@@ -1027,15 +1028,15 @@ void Megaman::Update(CTimer* gameTime)
 				_v.x = 0.0f;
 				_sprite.SetAllowAnimate(0);
 			}
-			if (_input->IsKeyDown(ID_KEY_CODE_LEFT))
+			if (mkeyboard->IsKeyDown_M(ID_KEY_CODE_LEFT))
 			{
 				_isRight = false;
 			}
-			else if (_input->IsKeyDown(ID_KEY_CODE_RIGHT))
+			else if (mkeyboard->IsKeyDown_M(ID_KEY_CODE_RIGHT))
 			{
 				_isRight = true;
 			}
-			if (_input->IsKeyDown(ID_KEY_CODE_JUMP) || isFalled)
+			if (mkeyboard->IsKeyDown_M(ID_KEY_CODE_JUMP) || isFalled)
 			{
 				_behave = Behave::FALL;
 				_v.x = 0.0f;
@@ -1044,7 +1045,7 @@ void Megaman::Update(CTimer* gameTime)
 				_a.x = 0.0f;
 				_sprite.SetAllowAnimate(0);
 			}
-			if (_input->IsKeyDown(ID_KEY_CODE_FIRE) && _canFire&&GetWeapons(_currentSkill) > 0 && _currentSkill != Skill::GUTS)
+			if (mkeyboard->IsKeyDown_M(ID_KEY_CODE_FIRE) && _canFire&&GetWeapons(_currentSkill) > 0 && _currentSkill != Skill::GUTS)
 			{
 				_behave = Behave::STAIR_FIRE;
 				_deltaTime = 0;
@@ -1053,13 +1054,13 @@ void Megaman::Update(CTimer* gameTime)
 			}
 			break;
 		case STAIR_BEGIN_END:
-			if (_input->IsKeyPress(ID_KEY_CODE_DOWN))
+			if (mkeyboard->IsKeyPress(ID_KEY_CODE_DOWN))
 			{
 				_behave = Behave::STAIR;
 				if (_collidedObjectGroundInside->_object != NULL)
 					_position.y -= _collidedObjectGroundInside->_object->GetBox()._y - _position.y + _box._height / 2 + 1;
 			}
-			else if (_input->IsKeyPress(ID_KEY_CODE_UP))
+			else if (mkeyboard->IsKeyPress(ID_KEY_CODE_UP))
 			{
 				_behave = Behave::STAND;
 				_canJump = true;
@@ -1071,7 +1072,7 @@ void Megaman::Update(CTimer* gameTime)
 			if (_isChangingState)
 				_isChangingState = false;
 
-			_timeHurted += gameTime->GetTime();
+			_timeHurted += timetemp;
 			if (_timeHurted >= 300)
 			{
 				if (_behave == Behave::HURT_ON_GROUND)
@@ -1083,8 +1084,8 @@ void Megaman::Update(CTimer* gameTime)
 			}
 			break;
 		case PREPARE_RUN:
-			_deltaTime += gameTime->GetTime();
-			if (_input->IsKeyPress(ID_KEY_CODE_LEFT))
+			_deltaTime += timetemp;
+			if (mkeyboard->IsKeyPress(ID_KEY_CODE_LEFT))
 			{
 				_a.x += -ROCKMAN_ACCELERATE_X / 3.0f;
 				_v.x += -ROCKMAN_VERLOCITY_X / 3.0f;
@@ -1104,7 +1105,7 @@ void Megaman::Update(CTimer* gameTime)
 					_deltaTime = 0;
 				}
 			}
-			else if (_input->IsKeyPress(ID_KEY_CODE_RIGHT))
+			else if (mkeyboard->IsKeyPress(ID_KEY_CODE_RIGHT))
 			{
 				_a.x += ROCKMAN_ACCELERATE_X / 3.0f;
 				_v.x += ROCKMAN_VERLOCITY_X / 3.0f;
@@ -1123,13 +1124,13 @@ void Megaman::Update(CTimer* gameTime)
 					_deltaTime = 0;
 				}
 			}
-			if (_input->IsKeyUp(ID_KEY_CODE_LEFT) || _input->IsKeyUp(ID_KEY_CODE_RIGHT))
+			if (mkeyboard->IsKeyUp(ID_KEY_CODE_LEFT) || mkeyboard->IsKeyUp(ID_KEY_CODE_RIGHT))
 			{
 				_behave = Behave::STAND;
 				_v.x = 0.0f;
 				_a.x = _isRight ? ROCKMAN_ACCELERATE_X : -ROCKMAN_ACCELERATE_X;
 			}
-			if (_input->IsKeyDown(ID_KEY_CODE_JUMP))
+			if (mkeyboard->IsKeyDown_M(ID_KEY_CODE_JUMP))
 			{
 				_v.y = 2.0f* ROCKMAN_VERLOCITY_Y / 3.0f;
 				_deltaTimeJump = 0.0f;
@@ -1140,7 +1141,7 @@ void Megaman::Update(CTimer* gameTime)
 			}
 			break;
 		case RUN_FIRE:
-			_deltaTime += gameTime->GetTime();
+			_deltaTime += timetemp;
 			if (_deltaTime >= 300)
 			{
 				_behave = Behave::RUN;
@@ -1150,20 +1151,20 @@ void Megaman::Update(CTimer* gameTime)
 		case RUN:
 			if (!_isRequireOverDoor)
 			{
-				if (_input->IsKeyPress(ID_KEY_CODE_RIGHT) && _input->IsKeyPress(ID_KEY_CODE_LEFT)
-					|| _input->IsKeyRelease(ID_KEY_CODE_LEFT) && _input->IsKeyRelease(ID_KEY_CODE_RIGHT))
+				if (mkeyboard->IsKeyPress(ID_KEY_CODE_RIGHT) && mkeyboard->IsKeyPress(ID_KEY_CODE_LEFT)
+					|| mkeyboard->IsKeyRelease(ID_KEY_CODE_LEFT) && mkeyboard->IsKeyRelease(ID_KEY_CODE_RIGHT))
 				{
 					_behave = Behave::STAND;
 				}
 				else
 				{
-					if (_input->IsKeyPress(ID_KEY_CODE_RIGHT) && _v.x <= 0)
+					if (mkeyboard->IsKeyPress(ID_KEY_CODE_RIGHT) && _v.x <= 0)
 					{
 						_a.x = ROCKMAN_ACCELERATE_X;
 						_v.x = ROCKMAN_VERLOCITY_X;
 						_isRight = true;
 					}
-					else if (_input->IsKeyPress(ID_KEY_CODE_LEFT) && _v.x >= 0)
+					else if (mkeyboard->IsKeyPress(ID_KEY_CODE_LEFT) && _v.x >= 0)
 					{
 						_a.x = -ROCKMAN_ACCELERATE_X;
 						_v.x = -ROCKMAN_VERLOCITY_X;
@@ -1173,7 +1174,7 @@ void Megaman::Update(CTimer* gameTime)
 
 				if (_isChangingState)
 				{
-					_jumpTime += gameTime->GetTime();
+					_jumpTime += timetemp;
 					if (_jumpTime >= 100.0f)
 					{
 						_jumpTime = 0.0f;
@@ -1182,7 +1183,7 @@ void Megaman::Update(CTimer* gameTime)
 					}
 				}
 
-				if (_input->IsKeyDown(ID_KEY_CODE_JUMP) && _canJump)
+				if (mkeyboard->IsKeyDown_M(ID_KEY_CODE_JUMP) && _canJump)
 				{
 					_v.y = 2.0f* ROCKMAN_VERLOCITY_Y / 3.0f;
 					_deltaTimeJump = 0.0f;
@@ -1192,7 +1193,7 @@ void Megaman::Update(CTimer* gameTime)
 					_canJumpMore = true;
 				}
 
-				if (_input->IsKeyDown(ID_KEY_CODE_FIRE) && (_canFire || _hasRockOnHead) && GetWeapons(_currentSkill) > 0)
+				if (mkeyboard->IsKeyDown_M(ID_KEY_CODE_FIRE) && (_canFire || _hasRockOnHead) && GetWeapons(_currentSkill) > 0)
 				{
 					if (_currentSkill != Skill::GUTS&& _canFire)
 					{
@@ -1249,27 +1250,27 @@ void Megaman::Update(CTimer* gameTime)
 			}
 			break;
 		case JUMP_FIRE:
-			_deltaTime += gameTime->GetTime();
+			_deltaTime += timetemp;
 			if (_deltaTime >= 300)
 			{
 				_behave = Behave::JUMP;
 				_deltaTime = 0;
 			}
 		case JUMP:
-			if (_input->IsKeyPress(ID_KEY_CODE_RIGHT) && _input->IsKeyPress(ID_KEY_CODE_LEFT))
+			if (mkeyboard->IsKeyPress(ID_KEY_CODE_RIGHT) && mkeyboard->IsKeyPress(ID_KEY_CODE_LEFT))
 			{
 				_v.x = 0.0f;
 				_a.x = 0.0f;
 			}
 			else
 			{
-				if (_input->IsKeyPress(ID_KEY_CODE_LEFT) && _v.x >= 0)
+				if (mkeyboard->IsKeyPress(ID_KEY_CODE_LEFT) && _v.x >= 0)
 				{
 					_v.x = -ROCKMAN_VERLOCITY_X;
 					_a.x = -ROCKMAN_ACCELERATE_X;
 					_isRight = false;
 				}
-				else if (_input->IsKeyPress(ID_KEY_CODE_RIGHT) && _v.x <= 0)
+				else if (mkeyboard->IsKeyPress(ID_KEY_CODE_RIGHT) && _v.x <= 0)
 				{
 					_v.x = ROCKMAN_VERLOCITY_X;
 					_a.x = ROCKMAN_ACCELERATE_X;
@@ -1277,9 +1278,9 @@ void Megaman::Update(CTimer* gameTime)
 				}
 			}
 
-			if (_input->IsKeyPress(ID_KEY_CODE_JUMP) && _canJumpMore)
+			if (mkeyboard->IsKeyPress(ID_KEY_CODE_JUMP) && _canJumpMore)
 			{
-				_deltaTimeJump += gameTime->GetTime();
+				_deltaTimeJump += timetemp;
 				if (_deltaTimeJump >= 50)
 				{
 					_v.y += ROCKMAN_VERLOCITY_Y / 3.0f;
@@ -1288,7 +1289,7 @@ void Megaman::Update(CTimer* gameTime)
 				}
 			}
 
-			if (_input->IsKeyDown(ID_KEY_CODE_FIRE) && (_canFire || _hasRockOnHead) && GetWeapons(_currentSkill) > 0)
+			if (mkeyboard->IsKeyDown_M(ID_KEY_CODE_FIRE) && (_canFire || _hasRockOnHead) && GetWeapons(_currentSkill) > 0)
 			{
 				if (_currentSkill != Skill::GUTS&& _canFire)
 				{
@@ -1312,7 +1313,7 @@ void Megaman::Update(CTimer* gameTime)
 			}
 			break;
 		case FALL_FIRE:
-			_deltaTime += gameTime->GetTime();
+			_deltaTime += timetemp;
 			if (_deltaTime >= 300)
 			{
 				_behave = Behave::JUMP_FIRE;
@@ -1321,27 +1322,27 @@ void Megaman::Update(CTimer* gameTime)
 		case FALL:
 			if (!_isRequireOverDoor)
 			{
-				if (_input->IsKeyPress(ID_KEY_CODE_RIGHT) && _input->IsKeyPress(ID_KEY_CODE_LEFT))
+				if (mkeyboard->IsKeyPress(ID_KEY_CODE_RIGHT) && mkeyboard->IsKeyPress(ID_KEY_CODE_LEFT))
 				{
 					_a.x = 0.0f;
 					_v.x = 0.0f;
 				}
 				else
 				{
-					if (_input->IsKeyDown(ID_KEY_CODE_LEFT) && _v.x >= 0.0f)
+					if (mkeyboard->IsKeyDown_M(ID_KEY_CODE_LEFT) && _v.x >= 0.0f)
 					{
 						_a.x = -ROCKMAN_ACCELERATE_X;
 						_v.x = -ROCKMAN_VERLOCITY_X;
 						_isRight = false;
 					}
-					else if (_input->IsKeyDown(ID_KEY_CODE_RIGHT) && _v.x <= 0.0f)
+					else if (mkeyboard->IsKeyDown_M(ID_KEY_CODE_RIGHT) && _v.x <= 0.0f)
 					{
 						_a.x = ROCKMAN_ACCELERATE_X;
 						_v.x = ROCKMAN_VERLOCITY_X;
 						_isRight = true;
 					}
 				}
-				if (_input->IsKeyDown(ID_KEY_CODE_FIRE) && (_canFire || _hasRockOnHead) && GetWeapons(_currentSkill) > 0)
+				if (mkeyboard->IsKeyDown_M(ID_KEY_CODE_FIRE) && (_canFire || _hasRockOnHead) && GetWeapons(_currentSkill) > 0)
 				{
 					if (_currentSkill != Skill::GUTS&& _canFire)
 					{
@@ -1365,7 +1366,7 @@ void Megaman::Update(CTimer* gameTime)
 	}
 	else
 	{
-		_deltaTime += gameTime->GetTime();
+		_deltaTime += timetemp;
 
 		if (_deltaTime >= 5000.0f)
 			_behave = Behave::REAL_DIE;
@@ -1386,6 +1387,11 @@ void Megaman::Update(CTimer* gameTime)
 	_collidedObjectGroundDown = new  CollisionInfo(NULL, CDirection::ON_DOWN, std::numeric_limits<float>::infinity());
 	_collidedObjectGroundInside = new  CollisionInfo(NULL, CDirection::INSIDE, std::numeric_limits<float>::infinity());
 #pragma endregion
+}
+
+void Megaman::Update(CTimer* gametime)
+{
+
 }
 
 void Megaman::OnCollideWith(CGameObject* obj, CDirection normalX, CDirection normalY, float collideTime)

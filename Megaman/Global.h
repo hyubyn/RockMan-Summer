@@ -8,10 +8,10 @@
 #define	APP_TITLE		L"RockMan v1"
 #define PI				acosf(-1.0f)
 #define GAME_FPS	60
-#define	ID_KEY_CODE_UP			DIK_I
-#define	ID_KEY_CODE_DOWN		DIK_K
-#define	ID_KEY_CODE_LEFT		DIK_J
-#define	ID_KEY_CODE_RIGHT		DIK_L
+#define	ID_KEY_CODE_UP			DIK_UP
+#define	ID_KEY_CODE_DOWN		DIK_DOWN
+#define	ID_KEY_CODE_LEFT		DIK_LEFT
+#define	ID_KEY_CODE_RIGHT		DIK_RIGHT
 #define	ID_KEY_CODE_FIRE		DIK_Z
 #define	ID_KEY_CODE_JUMP		DIK_X
 #define	ID_KEY_CODE_ENTER		DIK_RETURN
