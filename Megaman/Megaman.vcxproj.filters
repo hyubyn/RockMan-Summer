@@ -41,6 +41,9 @@
     <Filter Include="Megaman\Bullet">
       <UniqueIdentifier>{7ef1f42c-b456-4a9b-aa48-46a4661e6112}</UniqueIdentifier>
     </Filter>
+    <Filter Include="QuadTree">
+      <UniqueIdentifier>{8b552709-3e7d-4bce-9b0f-d153e2beb524}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -90,6 +93,90 @@
     <ClCompile Include="Megaman.cpp">
       <Filter>Megaman</Filter>
     </ClCompile>
+    <ClCompile Include="CBullet.cpp" />
+    <ClCompile Include="CEnemy.cpp" />
+    <ClCompile Include="CEnemyFish.cpp" />
+    <ClCompile Include="CEnemyFishBullet.cpp" />
+    <ClCompile Include="CGameObject.cpp" />
+    <ClCompile Include="CInput.cpp" />
+    <ClCompile Include="CMenuItem.cpp" />
+    <ClCompile Include="CObject.cpp" />
+    <ClCompile Include="CollisionInfo.cpp" />
+    <ClCompile Include="CScressnManager.cpp" />
+    <ClCompile Include="CSprite.cpp" />
+    <ClCompile Include="CTextblock.cpp" />
+    <ClCompile Include="DSUtil.cpp" />
+    <ClCompile Include="ImageItem.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="PlayState.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="SelectBossState.cpp" />
+    <ClCompile Include="StartState.cpp" />
+    <ClCompile Include="Trace.cpp" />
+    <ClCompile Include="Node.cpp">
+      <Filter>QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
+      <Filter>QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletNinja.cpp">
+      <Filter>Megaman\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletRockman.cpp">
+      <Filter>Megaman\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletSnapper.cpp">
+      <Filter>Megaman\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CCutManBullet.cpp">
+      <Filter>Megaman\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyBoom.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyBoomBullet.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyBubble.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyEye.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyHat.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyInk.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyMachine.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyMachineAuto.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyMachineAutoBullet.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyNinja.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyRobot.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemySnapper.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyWallShooter.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyWorker.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyWorkerBullet.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -136,6 +223,91 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Megaman.h">
       <Filter>Megaman</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet.h" />
+    <ClInclude Include="CEnemy.h" />
+    <ClInclude Include="CEnemyFish.h" />
+    <ClInclude Include="CEnemyFishBullet.h" />
+    <ClInclude Include="CGameObject.h" />
+    <ClInclude Include="CInput.h" />
+    <ClInclude Include="CMenuItem.h" />
+    <ClInclude Include="CObject.h" />
+    <ClInclude Include="CollisionInfo.h" />
+    <ClInclude Include="CScressnManager.h" />
+    <ClInclude Include="CSprite.h" />
+    <ClInclude Include="CTextblock.h" />
+    <ClInclude Include="DSUtil.h" />
+    <ClInclude Include="ImageItem.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="PlayState.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Screen.h" />
+    <ClInclude Include="SelectBossState.h" />
+    <ClInclude Include="StartState.h" />
+    <ClInclude Include="Trace.h" />
+    <ClInclude Include="Node.h">
+      <Filter>QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletNinja.h">
+      <Filter>Megaman\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletRockman.h">
+      <Filter>Megaman\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletSnapper.h">
+      <Filter>Megaman\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CCutManBullet.h">
+      <Filter>Megaman\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyBoom.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyBoomBullet.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyBubble.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyEye.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyHat.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyInk.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyMachine.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyMachineAuto.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyMachineAutoBullet.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyNinja.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyRobot.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemySnapper.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyWallShooter.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyWorker.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyWorkerBullet.h">
+      <Filter>GameObject\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
