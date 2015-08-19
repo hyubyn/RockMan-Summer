@@ -12,6 +12,7 @@
 #include "StartState.h"
 #include "SelectBossState.h"
 #include "CEnemyFish.h"
+#include "CGameInfo.h"
 //RSManager* RSManager::instance = NULL;
 class Game
 {

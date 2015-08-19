@@ -146,7 +146,14 @@ void CPlayState::Update(CTimer* gameTime)
 	}
 
 
+	_input->Active();
 
+	vector<CBullet*> bullets = megaman->GetBullets();
+	for (int i = 0; i < bullets.size(); i++)
+		_bulletsRockman.push_back(bullets[i]);
+
+	for (int i = 0; i < bullets.size(); i++)
+		_bulletsRockman[i]->Update(gameTime);
 
 
 	megaman->Update(gameTime);
@@ -174,7 +181,8 @@ void CPlayState::Draw(CTimer* gameTime, MGraphic* graphics)
 
 	megaman->Render(gameTime, graphics);
 
-
+	for (int i = 0; i < _bulletsRockman.size(); i++)
+		_bulletsRockman[i]->Render(gameTime, graphics);
 
 }
 

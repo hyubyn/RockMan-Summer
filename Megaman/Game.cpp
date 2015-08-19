@@ -78,6 +78,7 @@ bool Game::InitWindow()
 void Game::InitGame()
 {
 	
+	CGameInfo::GetInstance()->Load();
 
 	megaman = new Megaman();
 	megaman->Initlize();
