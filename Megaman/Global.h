@@ -7,7 +7,7 @@
 #define FULL_SCREEEN	0
 #define	APP_TITLE		L"RockMan v1"
 #define PI				acosf(-1.0f)
-#define GAME_FPS	60
+#define GAME_FPS	30
 #define	ID_KEY_CODE_UP			DIK_UP
 #define	ID_KEY_CODE_DOWN		DIK_DOWN
 #define	ID_KEY_CODE_LEFT		DIK_LEFT

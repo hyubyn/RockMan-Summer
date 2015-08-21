@@ -83,13 +83,13 @@ void Megaman::Render(CTimer* gameTime, MGraphic* graphics)
 		{
 			if (_deltaTime >= 0.0f)
 			{
-				_deltaTime -= timetemp;
+				_deltaTime -= gameTime->GetTime();
 				if (_deltaTime <= 0.0f)
 					_deltaTime = -50;
 			}
 			else
 			{
-				_deltaTime += timetemp;
+				_deltaTime += gameTime->GetTime();
 				if (_deltaTime >= 0.0f)
 					_deltaTime = 50.0f;
 			}
@@ -153,8 +153,6 @@ D3DXVECTOR2 Megaman::GetPos()
 
 void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 {
-	timetemp = gameTime->GetTime() * 400;
-
 	if (IsDied())
 		return;
 
@@ -807,13 +805,13 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 #pragma region Hoàn tất hành vi của trạng thái cũ hoặc trạng thái chuyển tiếp trong khi va chạm. Nhận dữ liệu bàn phím và điều hướng trạng thái tiếp theo
 
 
-		_position += _v*timetemp;
-		_v += _a*timetemp;
+		_position += _v*gameTime->GetTime();
+		_v += _a*gameTime->GetTime();
 
 		// Việc ràng ở đây chỉ áp dụng cho loại đạn thường. Còn cái đạn kỹ năng khác bị ảnh hưởng bởi luồng xử lý khác
 		if (!_canFire&&_currentSkill == Skill::NORMAL)
 		{
-			_deltaTimeCanFire += timetemp;
+			_deltaTimeCanFire += gameTime->GetTime();
 			if (_deltaTimeCanFire >= 300)
 			{
 				_deltaTimeCanFire = 0;
@@ -822,7 +820,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 		}
 		if (_isInShield)
 		{
-			_deltaTimeInShield += timetemp;
+			_deltaTimeInShield += gameTime->GetTime();
 			if (_deltaTimeInShield >= 2000)
 			{
 				_deltaTimeInShield = 0;
@@ -831,7 +829,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 		}
 		if (_isRequireOverDoor&&_timeOverDoor != 0)
 		{
-			_timeOverDoor += timetemp;
+			_timeOverDoor += gameTime->GetTime();
 			if (_timeOverDoor >= 2500)
 			{
 				_isRequireOverDoor = false;
@@ -848,7 +846,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 		case START:
 			if (_isChangingState)
 			{
-				_deltaTime += timetemp;
+				_deltaTime += gameTime->GetTime();
 				if (_deltaTime >= 75)
 				{
 					_deltaTime = 0;
@@ -866,7 +864,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 			}
 			break;
 		case STAND_FIRE:
-			_deltaTime += timetemp;
+			_deltaTime += gameTime->GetTime();
 			if (_deltaTime >= 300)
 			{
 				_behave = Behave::STAND;
@@ -914,7 +912,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 
 			if (_isChangingState)
 			{
-				_jumpTime += timetemp;
+				_jumpTime += gameTime->GetTime();
 				if (_jumpTime >= 100.0f)
 				{
 					_jumpTime = 0.0f;
@@ -988,7 +986,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 			}
 			break;
 		case STAIR_FIRE:
-			_deltaTime += timetemp;
+			_deltaTime += gameTime->GetTime();
 			if (_deltaTime >= 300)
 			{
 				_behave = Behave::STAIR;
@@ -1072,7 +1070,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 			if (_isChangingState)
 				_isChangingState = false;
 
-			_timeHurted += timetemp;
+			_timeHurted += gameTime->GetTime();
 			if (_timeHurted >= 300)
 			{
 				if (_behave == Behave::HURT_ON_GROUND)
@@ -1084,7 +1082,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 			}
 			break;
 		case PREPARE_RUN:
-			_deltaTime += timetemp;
+			_deltaTime += gameTime->GetTime();
 			if (mkeyboard->IsKeyPress(ID_KEY_CODE_LEFT))
 			{
 				_a.x += -ROCKMAN_ACCELERATE_X / 3.0f;
@@ -1141,7 +1139,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 			}
 			break;
 		case RUN_FIRE:
-			_deltaTime += timetemp;
+			_deltaTime += gameTime->GetTime();
 			if (_deltaTime >= 300)
 			{
 				_behave = Behave::RUN;
@@ -1174,7 +1172,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 
 				if (_isChangingState)
 				{
-					_jumpTime += timetemp;
+					_jumpTime += gameTime->GetTime();
 					if (_jumpTime >= 100.0f)
 					{
 						_jumpTime = 0.0f;
@@ -1250,7 +1248,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 			}
 			break;
 		case JUMP_FIRE:
-			_deltaTime += timetemp;
+			_deltaTime += gameTime->GetTime();
 			if (_deltaTime >= 300)
 			{
 				_behave = Behave::JUMP;
@@ -1280,7 +1278,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 
 			if (mkeyboard->IsKeyPress(ID_KEY_CODE_JUMP) && _canJumpMore)
 			{
-				_deltaTimeJump += timetemp;
+				_deltaTimeJump += gameTime->GetTime();
 				if (_deltaTimeJump >= 50)
 				{
 					_v.y += ROCKMAN_VERLOCITY_Y / 3.0f;
@@ -1313,7 +1311,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 			}
 			break;
 		case FALL_FIRE:
-			_deltaTime += timetemp;
+			_deltaTime += gameTime->GetTime();
 			if (_deltaTime >= 300)
 			{
 				_behave = Behave::JUMP_FIRE;
@@ -1366,7 +1364,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 	}
 	else
 	{
-		_deltaTime += timetemp;
+		_deltaTime += gameTime->GetTime();
 
 		if (_deltaTime >= 5000.0f)
 			_behave = Behave::REAL_DIE;

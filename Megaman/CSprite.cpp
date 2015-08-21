@@ -102,11 +102,17 @@ int CSprite::GetRow()
 
 void CSprite::Update(CTimer* gameTime)
 {
-
+	if (_timeFrame != 0)
+	{
+		_tick += gameTime->GetTime();
+		if (_tick >= _timeFrame){
 			NextSprite();
 			_tick = 0;
 			_isNextFrame = true;
-
+		}
+		else
+			_isNextFrame = false;
+	}
 }
 
 int CSprite::GetFrameHeight()
