@@ -6,16 +6,7 @@
 #include "Tile.h"
 #include "Map.h"
 #include "Megaman.h"
-#include "CEnemyMachine.h"
-#include "CEnemyMachineAuto.h"
-#include "CEnemyNinja.h"
-#include "CEnemyFish.h"
-#include "CElevator.h"
-#include "PowerEnergyX.h"
-#include "CItemObject.h"
-#include "CPopup.h"
-
-
+#include "QuadTree.h"
 
 
 enum PlayState
@@ -133,21 +124,7 @@ private:
 	string		_strBonus, _strTotalBonusScore;
 	D3DCOLOR		_defaultStringColor;
 
-
-
-
-
-
-
-	// khai bao enemy de test
-	CEnemyFish* fish;
-
-	CEnemyMachine* machine;
-
-	CEnemyMachineAuto* machineauto;
-
-	CEnemyNinja* eneNinja;
-
+	CQuadTree* tree;
 
 };
 

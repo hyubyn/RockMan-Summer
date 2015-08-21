@@ -86,6 +86,7 @@
     <ClInclude Include="CDoor.h" />
     <ClInclude Include="CElevator.h" />
     <ClInclude Include="CEnemy.h" />
+    <ClInclude Include="CEnemyBall.h" />
     <ClInclude Include="CEnemyBoom.h" />
     <ClInclude Include="CEnemyBoomBullet.h" />
     <ClInclude Include="CEnemyBubble.h" />
@@ -122,12 +123,14 @@
     <ClInclude Include="CScressnManager.h" />
     <ClInclude Include="CSingleton.h" />
     <ClInclude Include="CSprite.h" />
+    <ClInclude Include="CStair.h" />
     <ClInclude Include="CTextblock.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="DSUtil.h" />
     <ClInclude Include="ExplodingEffect.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectFactory.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="ImageItem.h" />
     <ClInclude Include="ItemControl.h" />
@@ -169,6 +172,7 @@
     <ClCompile Include="CDoor.cpp" />
     <ClCompile Include="CElevator.cpp" />
     <ClCompile Include="CEnemy.cpp" />
+    <ClCompile Include="CEnemyBall.cpp" />
     <ClCompile Include="CEnemyBoom.cpp" />
     <ClCompile Include="CEnemyBoomBullet.cpp" />
     <ClCompile Include="CEnemyBubble.cpp" />
@@ -204,12 +208,14 @@
     <ClCompile Include="CRockCutBullet.cpp" />
     <ClCompile Include="CScressnManager.cpp" />
     <ClCompile Include="CSprite.cpp" />
+    <ClCompile Include="CStair.cpp" />
     <ClCompile Include="CTextblock.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="DSUtil.cpp" />
     <ClCompile Include="ExplodingEffect.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectFactory.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="ImageItem.cpp" />
     <ClCompile Include="ItemControl.cpp" />

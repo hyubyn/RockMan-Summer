@@ -40,15 +40,28 @@ void CQuadTree::LoadMap(int mapId)
 	iss.str(line);
 	iss>>_objectCount;
 	getline(fs, line);								// bo qua dong ObjID	TypeID	PosX	PosY	Width	Height	PosXCollide	PosYCollide	WidthCollide	HeightCollide
-	int id, type, x, y, width, height, xCollide, yCollide, posXCollide, posYCollide; 
+	int id, type = 0, x, y, width, height, xCollide, yCollide, posXCollide, posYCollide; 
 	for (int i = 0; i < _objectCount; ++i)
 	{
+		if (i == _objectCount - 1)
+		{
+			int a = 0;
+		}
+		
 		getline(fs, line);
 		iss.clear();
 		iss.str(line);
 		iss>>id>>type>>x>>y>>width>>height>>xCollide>>yCollide>>posXCollide>>posYCollide;
-		//CGameObject* object = new CGameObject(id, type, x, y, D3DXVECTOR2(width, height), xCollide, yCollide, posXCollide, posYCollide);
-		//_listAllGameObject.push_back(object);
+		if (type == 29)
+		{
+			int b = 1;
+		}
+		CGameObject * object = CGameObjectFactory::GetInstance()->CreateObject(id, type, x, y, width, height, xCollide, yCollide, posXCollide, posYCollide);
+		if (object != NULL)
+		{
+			_listAllGameObject.push_back(object);
+		}
+		
 	}
 	getline(fs, line);		// bo qua dong #objectend
 	getline(fs, line);		// bo qua dong #QuadTree Collision
@@ -134,29 +147,70 @@ void CQuadTree::ClipCamera(CNode* root, RECT viewPort)
 {
 	if (root->ClipCamera(viewPort) == 1)
 	{
-		for (int i = 0; i < root->_objectCount; ++i)
+		if (root->_lt != NULL)
 		{
-			bool isContain = false;
-			for (int j = 0; j < _listObjectOnScreen.size(); ++j)
-			{
-				if (root->_listGameObject.at(i) == _listObjectOnScreen.at(j))
-				{
-					isContain = true;
-				}
-				break;
-			}
-			if (!isContain)
-			{
-				_listObjectOnScreen.push_back(root->_listGameObject.at(i));
-			}
+			ClipCamera(root->_lt,viewPort);
+			ClipCamera(root->_lb,viewPort);
+			ClipCamera(root->_rt,viewPort);
+			ClipCamera(root->_rb,viewPort);
 		}
+		else
+		{
+			
+			try
+			{
+				if (_listObjectOnScreen.size() == 0)
+				{
+					for (int i = 0; i < root->_objectCount - 1; ++i)
+					{
+						_listObjectOnScreen.push_back(root->_listGameObject.at(i));
+					}
+				}
+				else
+				{
+					for (int i = 0; i < root->_objectCount - 1; ++i)
+					{
+						bool isContain = false;
+						for (int j = 0; j < _listObjectOnScreen.size() - 1; ++j)
+						{
+							if (root->_listGameObject.at(i) == _listObjectOnScreen.at(j))
+							{
+								isContain = true;
+							}
+							break;
+						}
+						if (!isContain)
+						{
+							_listObjectOnScreen.push_back(root->_listGameObject.at(i));
+						}
+					}
+				}
+				
+			}
+			catch(std::out_of_range e)
+			{
+				int a = 0;
+			}
+			
+			
+		}
+		
 	}
-	if (root->_lt != NULL)
+	
+}
+
+void CQuadTree::Render(CTimer* gameTime, MGraphic* graphics)
+{
+	for (int i = 0; i < _listObjectOnScreen.size() - 1; ++i)
 	{
-		ClipCamera(root,viewPort);
-		ClipCamera(root,viewPort);
-		ClipCamera(root,viewPort);
-		ClipCamera(root,viewPort);
+		_listObjectOnScreen.at(i)->Render(gameTime,graphics);
 	}
 }
 
+void CQuadTree::Update(CTimer* gameTime, Megaman* rockman)
+{
+	for (int i = 0; i < _listObjectOnScreen.size() - 1; ++i)
+	{
+		_listObjectOnScreen.at(i)->Update(gameTime);
+	}
+}
