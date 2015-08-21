@@ -44,6 +44,9 @@
     <Filter Include="QuadTree">
       <UniqueIdentifier>{8b552709-3e7d-4bce-9b0f-d153e2beb524}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Others">
+      <UniqueIdentifier>{14f8f41a-ee5e-48bb-a585-774bb012b1b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -107,7 +110,6 @@
     <ClCompile Include="CTextblock.cpp" />
     <ClCompile Include="DSUtil.cpp" />
     <ClCompile Include="ImageItem.cpp" />
-    <ClCompile Include="Item.cpp" />
     <ClCompile Include="PlayState.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Screen.cpp" />
@@ -177,6 +179,49 @@
     <ClCompile Include="CEnemyWorkerBullet.cpp">
       <Filter>GameObject\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="CBoomManBullet.cpp">
+      <Filter>Megaman\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoomRockManBullet.cpp">
+      <Filter>Megaman\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CBarMana.cpp">
+      <Filter>GameObject\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlock.cpp">
+      <Filter>GameObject\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="CDieArrow.cpp">
+      <Filter>GameObject\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="CDoor.cpp">
+      <Filter>GameObject\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="CElevator.cpp">
+      <Filter>GameObject\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="CItemEatable.cpp">
+      <Filter>GameObject\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="CItemObject.cpp">
+      <Filter>GameObject\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="CPopup.cpp">
+      <Filter>GameObject\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="CRock.cpp">
+      <Filter>GameObject\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset.cpp" />
+    <ClCompile Include="CExplodingEffectManager.cpp" />
+    <ClCompile Include="CExplodingEffectX.cpp" />
+    <ClCompile Include="CGameInfo.cpp" />
+    <ClCompile Include="CGutsManBullet.cpp" />
+    <ClCompile Include="CGutsRockManBullet.cpp" />
+    <ClCompile Include="CRockCutBullet.cpp" />
+    <ClCompile Include="ExplodingEffect.cpp" />
+    <ClCompile Include="ItemControl.cpp" />
+    <ClCompile Include="PowerEnergyX.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -238,7 +283,6 @@
     <ClInclude Include="CTextblock.h" />
     <ClInclude Include="DSUtil.h" />
     <ClInclude Include="ImageItem.h" />
-    <ClInclude Include="Item.h" />
     <ClInclude Include="PlayState.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -309,5 +353,49 @@
     <ClInclude Include="CEnemyWorkerBullet.h">
       <Filter>GameObject\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="CBoomManBullet.h">
+      <Filter>Megaman\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoomRockManBullet.h">
+      <Filter>Megaman\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CBarMana.h">
+      <Filter>GameObject\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlock.h">
+      <Filter>GameObject\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="CDieArrow.h">
+      <Filter>GameObject\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="CDoor.h">
+      <Filter>GameObject\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="CElevator.h">
+      <Filter>GameObject\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="CItemEatable.h">
+      <Filter>GameObject\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="CItemObject.h">
+      <Filter>GameObject\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="CPopup.h">
+      <Filter>GameObject\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="CRock.h">
+      <Filter>GameObject\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset.h" />
+    <ClInclude Include="CExplodingEffectManager.h" />
+    <ClInclude Include="CExplodingEffectX.h" />
+    <ClInclude Include="CGameInfo.h" />
+    <ClInclude Include="CGutsManBullet.h" />
+    <ClInclude Include="CGutsRockManBullet.h" />
+    <ClInclude Include="CRockCutBullet.h" />
+    <ClInclude Include="ExplodingEffect.h" />
+    <ClInclude Include="ItemControl.h" />
+    <ClInclude Include="PowerEnergyX.h" />
+    <ClInclude Include="SkillInfo.h" />
   </ItemGroup>
 </Project>
