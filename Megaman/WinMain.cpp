@@ -34,7 +34,7 @@ int WINAPI WinMain(HINSTANCE h, HINSTANCE p, LPTSTR a, int c)
 		}
 		else
 		{
-			if (m_pTimer->GetTime() < 1.0f)
+			if (m_pTimer->GetTime() < 1000.0f)
 			{
 				m_pTimer->EndCount();
 

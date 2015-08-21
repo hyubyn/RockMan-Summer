@@ -29,7 +29,7 @@ int CMenuItem::Initlize(MGraphic* graphic)
 	_positionText.y = _position.y - _size.y;
 
 	_replaceColor = _foreground;
-	_timeAnimationText = 10;
+	_timeAnimationText = _border->_timeFrameDefault;
 
 	return 1;
 }
@@ -60,12 +60,15 @@ void CMenuItem::Update(CTimer* gameTime)
 		{
 			_border->SetAllowAnimate(_border->_timeFrameDefault);
 			_border->Update(gameTime);
-
+			_timeAnimationText -= gameTime->GetTime();
 		
+			if (_timeAnimationText <= 0)
+			{
 				if (_replaceColor == _foreground)
 					_replaceColor = D3DCOLOR_XRGB(252, 252, 252);
 				else
 					_replaceColor = _foreground;
+			}
 				
 		}
 		else

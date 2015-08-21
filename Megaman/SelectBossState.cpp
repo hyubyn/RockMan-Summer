@@ -19,7 +19,7 @@ CSelectBossState::CSelectBossState(MGraphic* graphic, LPDIRECT3DDEVICE9 d3ddev):
 	_background.Initlize(graphic);
 
 	// Màn CutMan
-	_boss[0]._border = new CSprite("Resources//sprites//button_menu_state.png", 1, 2, 2, 1, D3DCOLOR_XRGB(0, 255, 0),d3ddev);
+	_boss[0]._border = new CSprite("Resources//sprites//button_menu_state.png", 1, 2, 2, 500, D3DCOLOR_XRGB(0, 255, 0),d3ddev);
 	_boss[0]._background = new CTexture("Resources//sprites//icon_master_cut_man.png", D3DCOLOR_XRGB(0, 255, 0),d3ddev);
 	_boss[0]._size = D3DXVECTOR2(50, 50);
 	_boss[0]._position = D3DXVECTOR2(SCREEN_WIDTH / 2 - 60, SCREEN_HEIGHT / 2 + 130);

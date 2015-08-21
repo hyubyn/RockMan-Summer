@@ -42,6 +42,10 @@ public:
 	///Chữ PressStart
 	CTextblock	*_txtPressStart;
 	
+	int _timeFrame;
+
+	float _tick;
+
 	int _isNextFrame;//Trạng thái phím đã được nhấn hay chưa? Chưa nhấn thì = 0; đã nhấn thì khác 0. Biến này cũng được dùng để thay đổi trạng thái của của frame
 };
 

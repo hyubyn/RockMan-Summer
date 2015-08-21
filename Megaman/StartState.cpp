@@ -23,13 +23,16 @@ CStartState::CStartState(MGraphic* gra): CScreen()
 	_imgBackground.Initlize(_graphic);
 	_isNextFrame = 0;
 	_isFinished = false;
+
+		_tick=0;
+		_timeFrame = 50;
 }
 
 
 
 void CStartState::UpdateKeyboard(MKeyboard *input)
 {
-	if (input->IsKeyDown(DIK_SPACE) && _isNextFrame==0)
+	if (input->GetKeyDown()==DIK_SPACE && _isNextFrame==0)
 	{
 		_isNextFrame++;
 		//ResourceManager::PlayASound(ID_SOUND_GAME_START);
@@ -41,9 +44,12 @@ void CStartState::Update(CTimer* gameTime)
 
 	if (_isNextFrame>0)
 	{
-	
+		_tick += gameTime->GetTime(); 
+		if (_tick >= _timeFrame)
+		{
+			_tick = 0;
 			_isNextFrame++;
-		
+		}
 		
 		//Tự động nháy animation 5 lần rồi chuyển màn hình GameMenu
 		if (_isNextFrame >= 40)
