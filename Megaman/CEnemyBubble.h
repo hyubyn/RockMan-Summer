@@ -11,8 +11,8 @@
 #include "CEnemy.h"
 #include "ResourceManager.h"
 #include "Global.h"
+#include "Timer.h"
 #include "Megaman.h"
-#include "CExplodingEffectManager.h"
 #include <stdlib.h>
 
 enum ENEMYBUBBLE_STATE
@@ -26,7 +26,7 @@ class CEnemyBubble :public CEnemy
 public:
 	CEnemyBubble(int id, int typeID, CSprite sprite, CSprite spriteExplodingEffect, D3DXVECTOR2 v, D3DXVECTOR2 positionBegin, int dame, int blood = 2, int score=SCORE_DEFAULT);
 	~CEnemyBubble();
-	
+
 	int Initlize() override;
 
 	void Update(CTimer* gameTime, Megaman* rockman) override;

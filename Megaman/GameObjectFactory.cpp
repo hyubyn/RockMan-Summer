@@ -211,15 +211,15 @@ CGameObject* CGameObjectFactory::CreateObject(int objID, int typeID, int posX, i
 	case ID_DIE_ARROW:
 		obj = new  CDieArrow();
 		break;
-	/*case ID_CUTMAN:
+	case ID_CUTMAN:
 		obj = new  CCutman();
 		break;
-	case ID_GUTSMAN:
+	/*case ID_GUTSMAN:
 		obj = new  CGutsMan();
-		break;
+		break;*/
 	case ID_BOOMMAN:
 		obj = new  CBoomMan();
-		break;*/
+		break;
 	case ID_ENEMY_SNAPPER:
 		obj = new  CEnemySnapper();	
 		break;

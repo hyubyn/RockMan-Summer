@@ -198,4 +198,8 @@ void Camera::LoadCameraPath(int id)
 		_listMoveLine.push_back(MoveLine(_listPoint.at(i), _listPoint.at(i + 1)));
 	}
 	_pos = _listPoint.at(0);
+	_positionBossRoom = _listPoint.at(_listPoint.size() - 1);
+	iss.clear();
+	fs.close();
+
 }

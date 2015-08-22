@@ -101,6 +101,8 @@ public:
 
 	void OnCollideWith(CGameObject* obj, CDirection normalX, CDirection normalY, float collideTime) override;
 
+	void SetPos(D3DXVECTOR2);
+
 	//-----------------------------------------------------------------------------
 	// Lấy box, nhằm xét va chạm đối tượng, tương ứng với từng sprite ID
 	//-----------------------------------------------------------------------------
@@ -149,7 +151,7 @@ public:
 	void Return();					// Sau khi giết boss thì quay trở về Home;
 	bool IsEndGame();
 
-	friend class CPlayScreen;
+	friend class CPlayState;
 	friend class CRockCutBullet;
 	friend class CGutsRockmanBullet;
 	friend class CBoomRockManBullet;

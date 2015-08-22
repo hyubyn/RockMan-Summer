@@ -153,6 +153,14 @@ D3DXVECTOR2 Megaman::GetPos()
 
 void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 {
+	if (mkeyboard->IsKeyPress(ID_KEY_CODE_RIGHT))
+		_position.x += 5;
+	if (mkeyboard->IsKeyPress(ID_KEY_CODE_UP))
+		_position.y += 5;
+	if (mkeyboard->IsKeyPress(ID_KEY_CODE_DOWN))
+		_position.y -= 5;
+	if (mkeyboard->IsKeyPress(ID_KEY_CODE_LEFT))
+		_position.x -= 5;
 	if (IsDied())
 		return;
 
@@ -1389,6 +1397,12 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 
 void Megaman::Update(CTimer* gametime)
 {
+
+}
+
+void Megaman::SetPos(D3DXVECTOR2 _pos)
+{
+	this->_position=_pos;
 
 }
 

@@ -36,7 +36,7 @@ void CEnemyBubble::Update(CTimer* gameTime, Megaman* rockman)
 	if (_state == ENEMYBUBBLE_STATE::NONE_ATTACK)
 	{
 		//Tính khoảng cách x từ Rockman đến EnemyBubble
-		float space = rockman->GetPos().x - _position.x;
+		float space = rockman->_position.x - this->_position.x;
 		if (space > 0)//Nếu EnemyBubble nằm phía bên trái Rockman
 			_v.x = abs(_v.x);
 		else//Nếu EnemyBubble nằm phía bên phải Rockman
@@ -47,8 +47,8 @@ void CEnemyBubble::Update(CTimer* gameTime, Megaman* rockman)
 		{
 
 			_state = ENEMYBUBBLE_STATE::ATTACKING;//Kích hoạt trạng thái đang tấn công 
-			_endAttackingBox = this->CalcEndAttackingBox(_position, rockman->GetPos() + D3DXVECTOR2(rockman->GetBox()._width / 2, rockman->GetBox()._height / 2));//Tính toán vị trí kết thúc tấn công
-			this->AnalyseParabol(this->_position, rockman->GetPos() + D3DXVECTOR2(rockman->GetBox()._width / 2, rockman->GetBox()._height / 2), D3DXVECTOR2(_endAttackingBox._x, _endAttackingBox._y));
+			_endAttackingBox = this->CalcEndAttackingBox(_position, rockman->GetPositionCenter());//Tính toán vị trí kết thúc tấn công
+			this->AnalyseParabol(this->_position, rockman->GetPositionCenter(), D3DXVECTOR2(_endAttackingBox._x, _endAttackingBox._y));
 			//Tăng vận tốc EnemyBubble thêm 40pixel/s
 			if (abs(space) <= SPACE_X_TO_BUBBLE_ENEMY_ATTACK / 5)
 				_v.x = abs(_v.x);
@@ -68,7 +68,7 @@ void CEnemyBubble::Update(CTimer* gameTime, Megaman* rockman)
 		this->UpdateBox();
 		return;
 	}
-	
+
 	_position.x += gameTime->GetTime()*_v.x;
 	_position.y += gameTime->GetTime()*_v.y;
 	_isHitDame = false;
@@ -123,7 +123,7 @@ CEnemyBubble* CEnemyBubble::ToValue()
 
 void CEnemyBubble::AttackRockman(float frameTime)
 {
-	#pragma region Vùng dừng tấn công bằng phương pháp xét vị postion của điểm dừng. Đang kích hoạt
+#pragma region Vùng dừng tấn công bằng phương pháp xét vị postion của điểm dừng. Đang kích hoạt
 	//Tấn công Rockman đến khi nào vị trí của EnemyBubble gặp 
 	//điểm dừng tấn công - vị trí đối xứng với vị trí cũ qua trục Oy
 	//(lấy y của Rockman làm gốc) thì dừng tấn công
@@ -141,12 +141,37 @@ void CEnemyBubble::AttackRockman(float frameTime)
 		_position.y = _endAttackingBox._y;
 		_position.x = _endAttackingBox._x;
 	}
-	#pragma endregion
-		
+#pragma endregion
+
+#pragma region Vùng dừng tấn công bằng phương phá xét va chạm AABB. Chưa được kích hoạt vì AABB không check được va chạm đối với vật di chuyển không theo công thức: S=v*t;
+	//CDirection directX, directY;
+	////Dừng tấn công bằng phương pháp check va chạm AABB
+	//float timeCollide = this->CheckCollision(_endAttackingBox, directX, directY, frameTime);
+
+	//if (timeCollide != frameTime)
+	//{
+	//	_state = ENEMYBUBBLE_STATE::NONE_ATTACK;
+	//	
+	//	_position.x += timeCollide*_v.x;
+	//	_position.y = _aParabol*_position.x*_position.x + _bParabol*_position.x + _cParabol;
+	//	_v = _vOriginal;
+	//}
+	//else
+	//{
+	//	_position.x += frameTime*_v.x;
+
+	//	float posYPreviousFrame = _position.y;
+	//	_position.y = _aParabol*_position.x*_position.x + _bParabol*_position.x + _cParabol;
+
+	//	_v.y = (_position.y - posYPreviousFrame) / frameTime;
+	//}
+#pragma endregion
 }
 
 void CEnemyBubble::AnalyseParabol(D3DXVECTOR2 point1, D3DXVECTOR2 point2, D3DXVECTOR2 point3) 
 {
+	//Tự biến đối bằng tay trên giấy với Phương trình Parabol có dạng: 
+	//y = ax^2 + bx + c
 	float A = point2.x*point2.x - point3.x*point3.x;
 	float B = point2.x - point3.x;
 	float C = point3.y - point2.y;
@@ -171,7 +196,7 @@ float CEnemyBubble::CheckCollision(Box endAttackingBox, CDirection &normalX, CDi
 	thisBox._vy -= objBox._vy;
 	objBox._vx = 0;
 	objBox._vy = 0;
-	
+
 	// tạo broad phase box để kiểm tra tổng quát với đối tượng đứng yên obj
 	// Nếu có xảy ra va chạm, thì tiến hành kiểm tra bằng AABBSweep và đưa ra thời gian va chạm
 	Box broadBox = CCollision::GetSweptBox(thisBox, frameTime);
@@ -198,7 +223,7 @@ Box CEnemyBubble::CalcEndAttackingBox(D3DXVECTOR2 beginAttackingPosition, D3DXVE
 		endAttackingPosition.x = attackingPosition.x - abs(spaceX);
 	}
 	endAttackingPosition.y = beginAttackingPosition.y;
-	Box resultBox(endAttackingPosition.x, endAttackingPosition.y, 0, 0, 0, 0);
+	Box resultBox(endAttackingPosition.x, endAttackingPosition.y/* + (float)_sprite.GetHeight() / 2.0f*/, 0, 0, 0, 0);
 
 	return resultBox;
 }

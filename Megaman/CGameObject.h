@@ -29,6 +29,7 @@ public:
 
 	virtual void Render(CTimer* gameTime, MGraphic* graphics) override;
 
+
 	virtual CGameObject* ToValue();
 
 	Box GetCollideRegion();

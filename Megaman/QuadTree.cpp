@@ -5,6 +5,8 @@ CQuadTree::CQuadTree(void)
 {
 	_nodeRoot = NULL;
 	nodeCountForDebug = 1;
+	_prepareForBoss = 0;
+	_isBossDied = false;
 }
 
 
@@ -73,7 +75,7 @@ void CQuadTree::LoadMap(int mapId)
 	INT32 nodeId;
 	int nodeX, nodeY, nodeWidth, nodeHeight, objectCount;
 	getline(fs, line);	// bo qua dong #NodeID ....
-
+	int sumObjectInNode = 0;
 	for (int i = 0; i < _nodeCount; ++i)
 	{
 		vector<int> listId;
@@ -81,6 +83,7 @@ void CQuadTree::LoadMap(int mapId)
 		iss.clear();
 		iss.str(line);
 		iss>>nodeId>>nodeX>>nodeY>>nodeWidth>>nodeHeight>>objectCount;
+		sumObjectInNode += objectCount;
 		for (int i = 0; i < objectCount; i++)
 		{
 			int objectId;
@@ -145,6 +148,7 @@ void CQuadTree::BuildTree(CNode* root)
 
 void CQuadTree::ClipCamera(CNode* root, RECT viewPort)
 {
+
 	if (root->ClipCamera(viewPort) == 1)
 	{
 		if (root->_lt != NULL)
@@ -156,36 +160,12 @@ void CQuadTree::ClipCamera(CNode* root, RECT viewPort)
 		}
 		else
 		{
-			
 			try
 			{
-				if (_listObjectOnScreen.size() == 0)
+				for (int i = 0; i < root->_objectCount; i++)
 				{
-					for (int i = 0; i < root->_objectCount - 1; ++i)
-					{
-						_listObjectOnScreen.push_back(root->_listGameObject.at(i));
-					}
-				}
-				else
-				{
-					for (int i = 0; i < root->_objectCount - 1; ++i)
-					{
-						bool isContain = false;
-						for (int j = 0; j < _listObjectOnScreen.size() - 1; ++j)
-						{
-							if (root->_listGameObject.at(i) == _listObjectOnScreen.at(j))
-							{
-								isContain = true;
-							}
-							break;
-						}
-						if (!isContain)
-						{
-							_listObjectOnScreen.push_back(root->_listGameObject.at(i));
-						}
-					}
-				}
-				
+					_listObjectOnScreen[root->_listGameObject.at(i)->_id] = root->_listGameObject.at(i);
+				}				
 			}
 			catch(std::out_of_range e)
 			{
@@ -196,21 +176,56 @@ void CQuadTree::ClipCamera(CNode* root, RECT viewPort)
 		}
 		
 	}
-	
+	else
+	{
+		for (int j = 0; j < root->_listGameObject.size(); ++j)
+		{
+			for(map<int,CGameObject*>::iterator i = _listObjectOnScreen.begin();i != _listObjectOnScreen.end();++i)
+			{
+				
+				if ((*i).second->_id == root->_listGameObject.at(j)->_id)
+				{
+					map<int, CGameObject*>::iterator toErase = i;
+					_listObjectOnScreen.erase(toErase);
+				}
+			}
+		}
+		
+	}
 }
 
 void CQuadTree::Render(CTimer* gameTime, MGraphic* graphics)
 {
-	for (int i = 0; i < _listObjectOnScreen.size() - 1; ++i)
-	{
-		_listObjectOnScreen.at(i)->Render(gameTime,graphics);
-	}
+	// objects = tree->getObjects(camera);
+
+	// for (int i=0;i< all objects) 
+		//re
+
+	// objects->delete();
+
+	
+	//for (int i = 0; i < _groundObjs.size(); ++i)
+	//{
+	//	_groundObjs.at(i)->Render(gameTime, graphics);
+	//}
+
+	//for (int i = 0; i < _elevators.size(); ++i)
+	//{
+	//	_elevators.at(i)->Render(gameTime, graphics);
+	//}
+
+	//for (int i = 0; i <  _enemies.size(); ++i)
+	//{
+	//	_enemies.at(i)->Render(gameTime, graphics);
+	//}
+
+	//for (int i = 0; i < _items.size(); i++)
+	//{
+	//	_items.at(i)->Render(gameTime, graphics);
+	//}
 }
 
-void CQuadTree::Update(CTimer* gameTime, Megaman* rockman)
+void CQuadTree::Update(CTimer* gameTime, Megaman* _rockman, Camera* cam)
 {
-	for (int i = 0; i < _listObjectOnScreen.size() - 1; ++i)
-	{
-		_listObjectOnScreen.at(i)->Update(gameTime);
-	}
+	
 }

@@ -108,10 +108,13 @@ Camera* Game::GetCam()
 void Game::Update(CTimer* gameTime)
 {	
 	keyboard->GetState();
+
+	keyboard->Update();
+
 	CScreenManager::GetInstance()->UpdateInput(keyboard);
 	CScreenManager::GetInstance()->Update(gameTime);
 		//megaman->Update(gameTime,keyboard,Cam,map->listGameObject);
-	
+	//keyboard->SaveKeyStateHistory();
 	
 }
 void Game::Render(CTimer* gameTime)

@@ -2,12 +2,13 @@
 #define _CPLAY_STATE_H_
 
 #pragma once
+#include <map>
 #include "Screen.h"
 #include "Tile.h"
 #include "Map.h"
 #include "Megaman.h"
 #include "QuadTree.h"
-
+using namespace std;
 
 enum PlayState
 {
@@ -45,11 +46,10 @@ private:
 	char* mappath;
 
 	//khai báo megaman
-	Megaman* megaman;
 
 
 	//khai báo map
-	Map* map;
+	Map* _map;
 
 	//Tile
 	CTile* tileManager;
@@ -88,7 +88,7 @@ private:
 	int						_totalTile;		// Tổng số tile được cắt
 	CTexture				_textureBkg;	// Đối tượng nắm giữ ảnh nền
 	
-	Megaman				_rockman;		// Đối tượng Rockman
+	Megaman*				_rockman;		// Đối tượng Rockman
 	vector<CBullet*>		_bulletsEnemy;	// Danh sách các đối tượng đạn của quái
 	vector<CBullet*>		_bulletsRockman;// Danh sách các đối tượng đạn của Rockman
 	vector<CGameObject*>	_groundObjs;	// Danh sách các đối tượng nằm không thể phá hủy bởi bất kì hình thức gì, bao gồm cầu thang, nền, tường, cửa qua màn, gai chết người
@@ -123,9 +123,12 @@ private:
 	string		_strClearPoint;
 	string		_strBonus, _strTotalBonusScore;
 	D3DCOLOR		_defaultStringColor;
-
 	CQuadTree* tree;
+	// enemy for test
 
+	CEnemyBubble* bubble;
+
+	vector<CEnemyBubble*> listBubble;
 };
 
 #endif

@@ -222,6 +222,11 @@
     <ClCompile Include="ExplodingEffect.cpp" />
     <ClCompile Include="ItemControl.cpp" />
     <ClCompile Include="PowerEnergyX.cpp" />
+    <ClCompile Include="GameObjectFactory.cpp" />
+    <ClCompile Include="CStair.cpp" />
+    <ClCompile Include="CEnemyBall.cpp" />
+    <ClCompile Include="CBoomMan.cpp" />
+    <ClCompile Include="CCutMan.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -397,5 +402,10 @@
     <ClInclude Include="ItemControl.h" />
     <ClInclude Include="PowerEnergyX.h" />
     <ClInclude Include="SkillInfo.h" />
+    <ClInclude Include="GameObjectFactory.h" />
+    <ClInclude Include="CStair.h" />
+    <ClInclude Include="CEnemyBall.h" />
+    <ClInclude Include="CBoomMan.h" />
+    <ClInclude Include="CCutMan.h" />
   </ItemGroup>
 </Project>
