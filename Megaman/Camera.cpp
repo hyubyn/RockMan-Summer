@@ -11,7 +11,7 @@ Camera::Camera()
 	_MatrixTransform._22 = -1;
 	_pos.x = 0;
 	_pos.y = 256;
-	
+	isMovingOverDoor = false;
 }
 
 
@@ -34,7 +34,30 @@ void Camera::Update(D3DXVECTOR2 megamanPosition)
 	} 
 	else
 	{
-		if (_pos.y < endPoint.y)
+
+		if (isMovingOverDoor)
+		{
+			if (_pos.x < doorPoint.x)
+			{
+				_pos.x += 3;
+			}
+			else
+			{
+				isMovingOverDoor = false;
+				endMap = _listPoint.at(count - 2);
+				doorPoint = _listPoint.at(count - 1);
+				isMoving = false;
+			}
+		}
+		else if (_pos.y < endPoint.y - 3)
+		{
+			_pos.y += 2;
+		}
+		else if (_pos.y > endPoint.y + 3)
+		{
+			_pos.y -= 2;
+		}
+		else if (_pos.y < endPoint.y)
 		{
 			_pos.y ++;
 		}
@@ -52,33 +75,42 @@ void Camera::Update(D3DXVECTOR2 megamanPosition)
 
 void Camera::Move(D3DXVECTOR2 megamanPos, int index)
 {
-	
 	MoveLine line = _listMoveLine.at(index);
 	if (_pos != endMap)
 	{
+		
 		if (line.direct == horizontal)											// camera di chuyen theo phuong ngang
 		{
-			if (line.endPoint.x - line.startPoint.x < limitX && _pos.x < line.endPoint.x)	//neu la toa do camera di chuyen qua thi cho camera chay len
+			if (!isMovingOverDoor)
 			{
-				_pos.y = line.endPoint.y;
-				_pos.x += 1;
-				if (_pos.x > line.endPoint.x)
+				if (_pos != doorPoint)
 				{
-					_pos.x = line.endPoint.x;
-				}
-			} 
-			else
-			{
-				_pos.x = megamanPos.x - SCREEN_WIDTH / 2;
-				if (_pos.x < line.startPoint.x )
-				{
-					_pos = line.startPoint;
-				}
-				else if (_pos.x > line.endPoint.x)
-				{
-					_pos = line.endPoint;
-				}
+					if (line.endPoint.x - line.startPoint.x < limitX && _pos.x < line.endPoint.x)	//neu la toa do camera di chuyen qua thi cho camera chay len
+					{
+						_pos.y = line.endPoint.y;
+						_pos.x += 5;
+						if (_pos.x > line.endPoint.x)
+						{
+							_pos.x = line.endPoint.x;
+						}
+					} 
+					else
+					{
+					
+							_pos.x = megamanPos.x - SCREEN_WIDTH / 2;
+							if (_pos.x < line.startPoint.x )
+							{
+								_pos = line.startPoint;
+							}
+							else if (_pos.x > line.endPoint.x)
+							{
+								_pos = line.endPoint;
+							}
+					
+					}
 			}
+			}
+			
 		} 
 		else if(line.direct == vertical)
 		{
@@ -112,7 +144,14 @@ void Camera::Move(D3DXVECTOR2 megamanPos, int index)
 			}
 		}
 	}
-	
+	else
+	{
+		if (megamanPos.x > doorPoint.x - 20)
+		{
+			isMovingOverDoor = true;
+			isMoving = true;
+		}
+	}
 }
 
 D3DXVECTOR3 Camera::GetPointTransform(int x, int y)
@@ -192,7 +231,6 @@ void Camera::LoadCameraPath(int id)
 		iss>>x>>y;
 		_listPoint.push_back(D3DXVECTOR2(x,y));
 	}
-	endMap = _listPoint.at(count - 1);										// lay toa do cuoi cung cua camera
 	for (int i = 0; i < count - 1; i++)
 	{
 		_listMoveLine.push_back(MoveLine(_listPoint.at(i), _listPoint.at(i + 1)));
@@ -201,5 +239,19 @@ void Camera::LoadCameraPath(int id)
 	_positionBossRoom = _listPoint.at(_listPoint.size() - 1);
 	iss.clear();
 	fs.close();
+	switch (id)
+	{
+	case 1: endMap = _listPoint.at(count - 5); doorPoint = _listPoint.at(count - 4); break;
+	case 2: 
+	case 3: endMap = _listPoint.at(count - 4);doorPoint = _listPoint.at(count - 3);break;
 
+	default:
+		break;
+	}
+}
+
+void Camera::MoveOverDoor()
+{
+	isMovingOverDoor = true;
+	isMoving = true;
 }
