@@ -10,6 +10,7 @@
 #include "CGameObject.h"
 #include "CEnemy.h"
 #include "ResourceManager.h"
+#include "Global.h"
 #include "Megaman.h"
 #include "CEnemyMachineAutoBullet.h"
 #include <stdlib.h>

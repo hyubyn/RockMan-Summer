@@ -12,15 +12,13 @@ CEnemyMachineAuto::CEnemyMachineAuto(int id, int typeID, CSprite sprite, CSprite
 	_lstBullet = vector<CBullet*>();
 	_timeAttackRemain = 0;
 	_timeDelayFireRemain = 0;
-	_timeDelayAnimation = 0;
 	_blood = blood;
 	_score = score;
 	_isHitDame = false;
 	_spriteIdBullet = spriteIDBullet;
 	_spriteExplodingEffect = spriteExplodingEffect;
-	_sprite.SetAllowAnimate(150);
 }
- 
+
 CEnemyMachineAuto::~CEnemyMachineAuto()
 {
 }
@@ -28,23 +26,17 @@ CEnemyMachineAuto::~CEnemyMachineAuto()
 int CEnemyMachineAuto::Initlize()
 {
 	_origin = D3DXVECTOR2(_size.x / 2, _size.y / 2);
-	//_sprite.SetIndex(0);
+	_sprite.SetIndex(0);
 	UpdateBox();
 	return 1;
 }
 
 void CEnemyMachineAuto::Update(CTimer* gameTime, Megaman* rockman)
 {
-	
-
 	_sprite.Update(gameTime);
-		_timeDelayAnimation = 0;
-	
-	_timeDelayAnimation++;
 
-	/* Khi nao co rockman thi se xet
 	//Nếu Rockman nằm trong vùng cho phép tấn công và thời gian tấn công còn lại đã hết
-	if (abs( rockman->GetPos().x - this->_position.x) <= SPACE_X_TO_MACHINE_AUTO_ENEMY_ATTACK
+	if (abs(rockman->_position.x - this->_position.x) <= SPACE_X_TO_MACHINE_AUTO_ENEMY_ATTACK
 		&& _timeAttackRemain <= 0)
 	{
 		_timeAttackRemain = TIME_ATTACK_OF_MACHINE_AUTO_ENEMY + TIME_DELAY_ATTACK_OF_MACHINE_AUTO_ENEMY;//Gán lại thời gian tấn công còn lại
@@ -63,12 +55,9 @@ void CEnemyMachineAuto::Update(CTimer* gameTime, Megaman* rockman)
 		_timeDelayFireRemain = 0;
 		_sprite.SetIndex(0);
 	}
-
-	*/
 	_timeAttackRemain -= gameTime->GetTime();
 	_isHitDame = false;
 	this->UpdateBox();	
-
 }
 
 void CEnemyMachineAuto::Render(CTimer* gameTime, MGraphic* graphics)
@@ -183,10 +172,6 @@ vector<CBullet*> CEnemyMachineAuto::Fire()
 {
 	vector<CBullet*> result = _lstBullet;
 	//Xóa hết đạn trong danh sách vì bên ngoài đã nhận rồi
-	for (int i = 0; i < 5; i++)
-	{
-
-	}
 	_lstBullet.clear();
 	return result;
 }

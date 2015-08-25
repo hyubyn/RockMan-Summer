@@ -8,6 +8,8 @@
 #include "Map.h"
 #include "Megaman.h"
 #include "QuadTree.h"
+#include "CGameInfo.h"
+#include "CGameOver.h"
 using namespace std;
 
 enum PlayState

@@ -9,8 +9,8 @@
 
 #include "CGameObject.h"
 #include "CEnemy.h"
-#include "CExplodingEffectManager.h"
 #include "ResourceManager.h"
+#include "Global.h"
 #include "Megaman.h"
 #include "CEnemyMachineAutoBullet.h"
 #include <stdlib.h>
@@ -60,8 +60,6 @@ private:
 	int _spriteIdBullet;
 	// Cho biết là đã trừ máu vì va chạm đạn chưa
 	bool _isHitDame;
-	// Thời gian delay animation
-	int _timeDelayAnimation;
 };
 
 #endif // !_CENEMY_MACHINE_AUTO_H_

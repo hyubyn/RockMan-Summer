@@ -34,7 +34,15 @@ void Camera::Update(D3DXVECTOR2 megamanPosition)
 	} 
 	else
 	{
-		if (_pos.y < endPoint.y)
+		if (_pos.y < endPoint.y - 3)
+		{
+			_pos.y += 2;
+		}
+		else if (_pos.y > endPoint.y + 3)
+		{
+			_pos.y -= 2;
+		}
+		else if (_pos.y < endPoint.y)
 		{
 			_pos.y ++;
 		}

@@ -10,10 +10,9 @@
 #include "CGameObject.h"
 #include "CEnemy.h"
 #include "ResourceManager.h"
-//#include "Config.h"
-//#include "CGlobal.h"
+#include "Global.h"
 #include "Megaman.h"
-//#include "CBlock.h"
+#include "CBlock.h"
 #include <stdlib.h>
 #include "CollisionInfo.h"
 #include <list>

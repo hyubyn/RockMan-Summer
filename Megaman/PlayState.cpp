@@ -3,6 +3,8 @@
 
 CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, MKeyboard* input, Camera* cam, int id)
 {
+	_isStopScreen = false;
+		_isPause =  false;
 		cam->LoadCameraPath(id);
 		this->_camera = cam;
 		this->_graphic = gra;
@@ -15,7 +17,7 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 		_rockman->Initlize();
 		_changingScreen = 0;
 		_pointAfterDoor = D3DXVECTOR2(0, 0);
-		_pointBeforeDoor = D3DXVECTOR2(0, 0);
+		_pointBeforeDoor =D3DXVECTOR2(0, 0);
 		_isBossDied = false;
 		
 		//Load map - Load quadtree
@@ -139,7 +141,7 @@ void CPlayState::Update(CTimer* gameTime)
 		}
 
 
-	}
+	
 	vector<CBullet*> bullets = _rockman->GetBullets();
 	for (int i = 0; i < bullets.size(); i++)
 		_bulletsRockman.push_back(bullets[i]);
@@ -165,7 +167,7 @@ void CPlayState::Update(CTimer* gameTime)
 		case ID_ROCK_IN_GUT_STAGE:
 		case ID_ROCK:
 			if (((CRock*)(*i).second)->IsGot())
-				_groundObjs.push_back((*i).second);
+				//_groundObjs.push_back((*i).second);
 				break;
 		case  ID_BLOCK_TROUBLE_OF_ELEVATOR:
 		case ID_BLOCK:
@@ -303,7 +305,7 @@ void CPlayState::Update(CTimer* gameTime)
 		}
 #pragma endregion
 	}
-
+	else if (_playState == PlayState::PLAYING)
 	{
 #pragma region Xử lý khi vào phòng boss
 
@@ -514,39 +516,455 @@ void CPlayState::Update(CTimer* gameTime)
 			return;
 		}
 
-
-
-
-
-	// update cac doi tuong
-	for (int i = 0; i < _groundObjs.size(); ++i)
-	{
-		_groundObjs.at(i)->Update(gameTime);
-		_groundObjs.at(i)->UpdateBox();
-	}
-
-	for (int i = 0; i < _elevators.size(); ++i)
-	{
-		_elevators.at(i)->Update(gameTime);
-		_elevators.at(i)->UpdateBox();
-	}
-
-	for (int i = 0; i <  _enemies.size(); ++i)
-	{
-		if (_enemies.at(i)->GetBox().IntersecWith(_camera->getViewPort()))
+		if (_changingScreen == 0)
 		{
-			_enemies.at(i)->Update(gameTime, _rockman);
-			_enemies.at(i)->UpdateBox();
-		}
-		
-	}
+			int countRockmanBullet = _bulletsRockman.size();
+				for (int i = 0; i < countRockmanBullet; i++)
+				{
+					for (int j = 0; j < _groundObjs.size(); j++)		// Kiểm tra va chạm với các khối tường, gạch đá
+					{
+						collideTime = CheckCollision(_bulletsRockman[i], _groundObjs[j], normalX, normalY, gameTime->GetTime());
+						if (collideTime < gameTime->GetTime())
+							((CBullet*)_bulletsRockman[i])->OnCollideWith(_groundObjs[j], normalX, normalY, collideTime);
+					}
+					for (int j = 0; j < _enemies.size(); j++)		// Kiểm tra va chạm với các khối tường, gạch đá
+					{
+						collideTime = CheckCollision(_bulletsRockman[i], _enemies[j], normalX, normalY, gameTime->GetTime());
+						if (collideTime < gameTime->GetTime())
+							((CBullet*)_bulletsRockman[i])->OnCollideWith(_enemies[j], normalX, normalY, collideTime);
+					}
+					if (_door != NULL)
+					{
+						collideTime = CheckCollision(_bulletsRockman[i], _door, normalX, normalY, gameTime->GetTime());
+						if (collideTime < gameTime->GetTime())
+							((CBullet*)_bulletsRockman[i])->OnCollideWith(_door, normalX, normalY, collideTime);
+					}
+					_bulletsRockman[i]->Update(gameTime);
+					if (_bulletsRockman[i]->GetState() == BULLET_BASE_STATE::DIE || (!_bulletsRockman[i]->GetBox().IntersecWith(Box(_camera->getViewPort())) && _bulletsRockman[i]->GetBox()._y - _camera->getViewPort().top < 0))
+					{
+						_bulletsRockman[i]->Destroy();
+						_bulletsRockman.erase(_bulletsRockman.begin() + i);
+						i -= 1;
+						countRockmanBullet -= 1;
+					}
+				}
 
-	for (int i = 0; i < _items.size(); i++)
-	{
-		_items.at(i)->Update(gameTime);
-		_items.at(i)->UpdateBox();
-	}
+				for (int i = 0; i < _enemies.size(); i++)			// Kiểm tra va chạm với các đối tượng quái trên màn hình
+				{
+					collideTime = CheckCollision(_rockman, _enemies[i], normalX, normalY, gameTime->GetTime());
+					if (collideTime < gameTime->GetTime())
+					{
+						_rockman->OnCollideWith(_enemies[i], normalX, normalY, collideTime);
+						((CEnemy*)_enemies[i])->OnCollideWith(_rockman, normalX, normalY, collideTime);
+					}
+				}
+
+				for (int i = 0; i < _bulletsEnemy.size(); i++)			// Kiểm tra va chạm với đạn của quái trên màn hình
+				{
+					if (((CBullet*)_bulletsEnemy[i])->GetState() == BULLET_BASE_STATE::FLYING)
+					{
+						collideTime = CheckCollision(_rockman, _bulletsEnemy[i], normalX, normalY, gameTime->GetTime());
+						if (collideTime < gameTime->GetTime())
+						{
+							_rockman->OnCollideWith(_bulletsEnemy[i], normalX, normalY, collideTime);
+							((CBullet*)_bulletsEnemy[i])->OnCollideWith(_rockman, normalX, normalY, collideTime);
+						}
+					}
+				}
+
+				//-----------------------------------------------------------------------------
+				// Cập nhật quái và đạn của quái
+				//
+				//-----------------------------------------------------------------------------
+				int countEnemies = _enemies.size();
+				for (int i = 0; i < countEnemies; i++)
+				{
+					_enemies[i]->Update(gameTime);
+					_enemies[i]->Update(gameTime, _rockman);
+					_enemies[i]->UpdateCamera(*_camera);
+					if (_enemies[i]->IsDied() && !_rockman->IsDied())
+					{
+						if (_enemies[i]->_typeID == ID_CUTMAN)
+						{
+							CExplodingEffectX* explode = new CExplodingEffectX(_enemies[i]->_position, ResourceManager::GetSprite(ID_SPRITE_EXPLODING_EFFECT_BASE), false);
+							explode->SetSoundEffect(ID_EFFECT_BOSS_DIE);
+							CExplodingEffectManager::Add(explode);
+							_items.push_back(new CItemObject(ID_ITEM_BOSS_CUT,_camera->_listPoint.at(_camera->_listPoint.size()-1) + D3DXVECTOR2(0, SCREEN_HEIGHT / 2), true));
+							_items[0]->Initlize();
+							_isBossDied = true;
+							_clearPoint = _enemies[i]->GetScore();
+						}
+						else if (_enemies[i]->_typeID == ID_BOOMMAN)
+						{
+							CExplodingEffectX* explode = new CExplodingEffectX(_enemies[i]->_position, ResourceManager::GetSprite(ID_SPRITE_EXPLODING_EFFECT_BASE), false);
+							explode->SetSoundEffect(ID_EFFECT_BOSS_DIE);
+							CExplodingEffectManager::Add(explode);
+							_items.push_back(new CItemObject(ID_ITEM_BOSS_BOOM, _camera->_listPoint.at(_camera->_listPoint.size()-1) + D3DXVECTOR2(0, SCREEN_HEIGHT / 2), true));
+							_items[0]->Initlize();
+							_isBossDied = true;
+							_clearPoint = _enemies[i]->GetScore();
+						}
+						else if (_enemies[i]->_typeID == ID_GUTSMAN)
+						{
+							CExplodingEffectX* explode = new CExplodingEffectX(_enemies[i]->_position, ResourceManager::GetSprite(ID_SPRITE_EXPLODING_EFFECT_BASE), false);
+							explode->SetSoundEffect(ID_EFFECT_BOSS_DIE);
+							CExplodingEffectManager::Add(explode);
+							_items.push_back(new CItemObject(ID_ITEM_BOSS_GUTS, _camera->_listPoint.at(_camera->_listPoint.size()-1) + D3DXVECTOR2(0, SCREEN_HEIGHT / 2), true));
+							_items[0]->Initlize();
+							_isBossDied = true;
+							_clearPoint = _enemies[i]->GetScore();
+						}
+						else
+						{
+							CExplodingEffectManager::Add(new CExplodingEffect(_enemies[i]->_position, ResourceManager::GetSprite(ID_SPRITE_EXPLODING_EFFECT_BASE)));
+
+							srand(time(NULL));
+							int rand = std::rand() % 7 + 1;
+							if (rand == 1)
+							{
+								CItemObject *item = new CItemObject(ID_ITEM_BLOOD_SMALL, _enemies[i]->_position);
+								item->Initlize();
+								_items.push_back(item);
+							}
+							else if (rand == 2)
+							{
+								CItemObject *item = new CItemObject(ID_ITEM_BLOOD_BIG, _enemies[i]->_position);
+								item->Initlize();
+								_items.push_back(item);
+							}
+							else if (rand == 3)
+							{
+								CItemObject *item = new CItemObject(ID_ITEM_MANA_BIG, _enemies[i]->_position);
+								item->Initlize();
+								_items.push_back(item);
+							}
+							else if (rand == 4)
+							{
+								CItemObject *item = new  CItemObject(ID_ITEM_MANA_SMALL, _enemies[i]->_position);
+								item->Initlize();
+								_items.push_back(item);
+							}
+							else if (rand == 5)
+							{
+								CItemObject *item = new CItemObject(ID_ITEM_BONUS, _enemies[i]->_position);
+								item->Initlize();
+								_items.push_back(item);
+							}
+							else if (rand == 7)
+							{
+								CItemObject *item = new CItemObject(ID_ITEM_LIFE, _enemies[i]->_position);
+								item->Initlize();
+								_items.push_back(item);
+							}
+						}
+						CGameInfo::GetInstance()->SetScore(CGameInfo::GetInstance()->GetScore() + _enemies[i]->GetScore());
+						_enemies.erase(_enemies.begin() + i);
+						i -= 1;
+						countEnemies -= 1;
+					}
+					else if ((!_enemies[i]->GetBox().IntersecWith(Box(_camera->getViewPort())) && _enemies[i]->IsInViewPort())
+						|| (!_enemies[i]->GetCollideRegion().IntersecWith(Box(_camera->getViewPort())) && !_enemies[i]->IsInViewPort()))
+					{
+						_enemies.erase(_enemies.begin() + i);
+						i -= 1;
+						countEnemies -= 1;
+					}
+					else
+					{
+						vector<CBullet*> bullets = _enemies[i]->Fire();
+						for (int j = 0; j < bullets.size(); j++)
+							_bulletsEnemy.push_back(bullets[j]);
+
+						// Kiểm tra quái va chạm với đạn của rockman trên màn hình
+						for (int j = 0; j < _bulletsRockman.size(); j++)
+						{
+							if (_bulletsRockman[j]->GetState() == BULLET_BASE_STATE::FLYING)
+							{
+								collideTime = CheckCollision(_enemies[i], _bulletsRockman[j], normalX, normalY, gameTime->GetTime());
+								if (collideTime < gameTime->GetTime())
+								{
+									((CEnemy*)_enemies[i])->OnCollideWith(_bulletsRockman[j], normalX, normalY, collideTime);
+								}
+							}
+						}
+						// Kiểm tra quái va chạm với tường, gạch đá trên màn  hình
+
+						for (int j = 0; j < _groundObjs.size(); j++)
+						{
+							collideTime = CheckCollision(_enemies[i], _groundObjs[j], normalX, normalY, gameTime->GetTime());
+							if (collideTime < gameTime->GetTime())
+								((CEnemy*)_enemies[i])->OnCollideWith(_groundObjs[j], normalX, normalY, collideTime);
+						}
+
+						if (_door != NULL)
+						{
+							collideTime = CheckCollision(_enemies[i], _door, normalX, normalY, gameTime->GetTime());
+							if (collideTime < gameTime->GetTime())
+								((CEnemy*)_enemies[i])->OnCollideWith(_door, normalX, normalY, collideTime);
+						}
+					}
+				}
+
+				// Cập nhật item
+				int countItem = _items.size();
+				for (int i = 0; i < countItem; i++)
+				{
+					if (_items[i]->IsGot() || !(_items[i]->GetCollideRegion().IntersecWith(_camera->getViewPort())))
+					{
+						_items.erase(_items.begin() + i);
+						countItem -= 1;
+						i -= 1;
+					}
+					else
+					{
+						_items[i]->Update(gameTime);
+						for (int j = 0; j < _groundObjs.size(); j++)
+						{
+							collideTime = CheckCollision(_items[i], _groundObjs[j], normalX, normalY, gameTime->GetTime());
+							if (collideTime < gameTime->GetTime())
+								_items[i]->UpdateCollision(_groundObjs[j], normalX, normalY, collideTime, gameTime->GetTime() - collideTime);
+						}
+					}
+				}
+
+				// Cập nhật đạn của quái, xóa các đạn chuyển sang trạng thái DIE
+				int countBulletEnemy = _bulletsEnemy.size();
+				for (int i = 0; i < countBulletEnemy; i++)
+				{
+					if (_bulletsEnemy[i]->_typeID != ID_BULLET_CUTMAN)
+					{
+						_bulletsEnemy[i]->Update(gameTime);
+
+						// Kiểm tra quái va chạm với tường, gạch đá trên màn  hình
+						for (int j = 0; j < _groundObjs.size(); j++)
+						{
+							collideTime = CheckCollision(_bulletsEnemy[i], _groundObjs[j], normalX, normalY, gameTime->GetTime());
+							if (collideTime < gameTime->GetTime())
+								((CBullet*)_bulletsEnemy[i])->OnCollideWith(_groundObjs[j], normalX, normalY, collideTime);
+						}
+					}
+
+					if (_bulletsEnemy[i]->GetState() == BULLET_BASE_STATE::DIE || !_bulletsEnemy[i]->GetBox().IntersecWith(Box(_camera->getViewPort())))
+					{
+						_bulletsEnemy[i]->Destroy();
+						_bulletsEnemy.erase(_bulletsEnemy.begin() + i);
+						countBulletEnemy -= 1;
+						i -= 1;
+					}
+				}
+
+			}
+
+
+			for (int i = 0; i < _powerEnegies.size(); i++)
+			{
+				_powerEnegies[i]->UpdateCamera(_camera);
+
+				switch (_powerEnegies[i]->_typeID)
+				{
+				case ID_BAR_BLOOD_ROCKMAN:
+					_powerEnegies[i]->SetValue(_rockman->_blood);
+					break;
+				case ID_BAR_WEAPONS_CUT:
+				case ID_BAR_WEAPONS_GUTS:
+				case ID_BAR_WEAPONS_BOOM:
+					_powerEnegies[i]->SetValue(_rockman->GetWeapons(_rockman->GetCurrentSkill()));
+					break;
+				case ID_BAR_BLOOD_CUTMAN:
+				case ID_BAR_BLOOD_GUTSMAN:
+				case ID_BAR_BLOOD_BOOMMAN:
+					if (_prepareForBoss == 3)
+						_powerEnegies[i]->SetValue(__max(0, _powerEnegies[i]->GetMaster()->_blood));
+					break;
+				}
+				_powerEnegies[i]->Update(gameTime);
+
+				if (!_powerEnegies[i]->IsCompleted())
+				{
+					_playState = PlayState::PAUSE;
+				}
+			}
+		#pragma endregion
+		}
+		else if(_playState == PlayState::GAMEOVER)
+		{
+#pragma region Xử lý game over, có thể là Rockman mất mạng hoặc GameOver
+			CInput::GetInstance()->Active();
+			//int startIndex = _cameraPath->GetStartIndex();
+			//LoadMap();
+
+			if (_rockman->GetLife() == -1)
+			{
+				_isFinished = true;
+				_nextScreen = new CGameOver(CGameInfo::GetInstance()->GetScore(), this->_camera);
+			}
+			else
+			{
+				//FindScene(startIndex);
+
+				// Khởi động trạng thái
+				_playState = PlayState::READY;
+				_deltaTime = 0;
+				_rockman->_behave = Behave::START;
+				_prepareForBoss = 0;
+				_isBossDied = false;
+
+				_enemies.clear();
+				_bulletsRockman.clear();
+				_bulletsEnemy.clear();
+				_powerEnegies.clear();
+				_items.clear();
+
+				_pointAfterDoor = D3DXVECTOR2(0, 0);
+				_pointBeforeDoor = D3DXVECTOR2(0, 0);
+				_shakePointRand = D3DXVECTOR2(0.0f, 0.0f);
+				CInput::GetInstance()->Active();
+
+				switch (CGameInfo::GetInstance()->GetLevel())
+				{
+				case ID_LEVEL_BOOM:
+					ResourceManager::PlayASound(ID_SOUND_BOMBMAN_STAGE);
+					break;
+				case ID_LEVEL_CUT:
+					ResourceManager::PlayASound(ID_SOUND_CUTMAN_STAGE);
+					break;
+				case ID_LEVEL_GUTS:
+					ResourceManager::PlayASound(ID_SOUND_GUTSMAN_STAGE);
+					break;
+				}
+			}
+#pragma endregion
+		}
+		else if (_playState == PlayState::PAUSE)
+		{
+#pragma region Xử lý dừng game
+			bool isCompleted = true;
+			for (int i = 0; i < _powerEnegies.size(); i++)
+			{
+				_powerEnegies[i]->Update(gameTime);
+				if (!_powerEnegies[i]->IsCompleted())
+					isCompleted = false;
+			}
+			if (isCompleted)
+			{
+				CInput::GetInstance()->Active();
+				_playState = PlayState::PLAYING;
+			}
+#pragma endregion
+
+		}
+
+		else if (_playState == PlayState::WIN)
+		{
+#pragma region Xử lý chiến thắng game
+
+			_deltaTime += gameTime->GetTime();
+			if (_deltaTime >= 6000)
+			{
+
+				// Vẽ clear point
+				if (_deltaTime >= 6000 && _deltaTime < 10000)
+				{
+					_strClearPoint = CGameInfo::GetInstance()->to_string(1000, 6);
+					if (_deltaTime > 7000)
+						_deltaTime = 10000;
+				}
+
+				// Vẽ điểm tăng dần
+				if (_deltaTime >= 10000 && _deltaTime < 20000)
+				{
+					_deltaClearPoint += 200;
+					ResourceManager::PlayASound(ID_EFFECT_ANIMATION_SCORE);
+					CGameInfo::GetInstance()->SetScore(CGameInfo::GetInstance()->GetScore() + 200);
+					if (_deltaClearPoint > _clearPoint)
+					{
+						_deltaClearPoint = _clearPoint;
+						CGameInfo::GetInstance()->SetScore(CGameInfo::GetInstance()->GetScore() - 200);
+						_totalScore = CGameInfo::GetInstance()->GetScore();
+						_deltaTime = 20000;
+					}
+					_strClearPoint = CGameInfo::GetInstance()->to_string(_deltaClearPoint, 6);
+				}
+
+				// Vẽ bonus, dừng khoảng 1s
+				if (_deltaTime >= 20000 && _deltaTime < 30000)
+				{
+					ResourceManager::StopSound(ID_EFFECT_ANIMATION_SCORE);
+					_strBonus = std::to_string(CGameInfo::GetInstance()->GetBonusValue()) + "X00";
+					_strTotalBonusScore = CGameInfo::GetInstance()->to_string(0, 6);
+					if (_deltaTime > 20100)
+						_deltaTime = 30000;
+				}
+
+				// Vẽ bonus tăng dần
+				if (_deltaTime >= 30000 && _deltaTime < 50000)
+				{
+					_strBonus = std::to_string(CGameInfo::GetInstance()->GetBonusValue()) + "X" + std::to_string(CGameInfo::GetInstance()->GetTotalBonus());
+					_strTotalBonusScore = CGameInfo::GetInstance()->to_string(CGameInfo::GetInstance()->GetBonusValue()*CGameInfo::GetInstance()->GetTotalBonus(), 6);
+
+					CGameInfo::GetInstance()->SetScore(_totalScore + CGameInfo::GetInstance()->GetTotalBonus()* CGameInfo::GetInstance()->GetBonusValue());
+
+					if (_deltaTime > 35000)
+					{
+						ResourceManager::StopSound(ID_SOUND_BOSS);
+						switch (CGameInfo::GetInstance()->GetLevel())
+						{
+						case ID_LEVEL_CUT:
+							CGameInfo::GetInstance()->AddSkill(Skill::CUT);
+							break;
+						case ID_LEVEL_GUTS:
+							CGameInfo::GetInstance()->AddSkill(Skill::GUTS);
+							break;
+						case ID_LEVEL_BOOM:
+							CGameInfo::GetInstance()->AddSkill(Skill::BOOM);
+							break;
+
+						}
+						CGameInfo::GetInstance()->SetBonus(0);
+						CGameInfo::GetInstance()->Save();
+						_isFinished = true;
+						_nextScreen = new CSelectBossState( MGraphic::GetInstance(),  MGraphic::GetInstance()->GetDevice());
+					}
+				}
+
+#pragma endregion
+			}
+		}
+
+
+	//// update cac doi tuong
+	//for (int i = 0; i < _groundObjs.size(); ++i)
+	//{
+	//	_groundObjs.at(i)->Update(gameTime);
+	//	_groundObjs.at(i)->UpdateBox();
+	//}
+
+	//for (int i = 0; i < _elevators.size(); ++i)
+	//{
+	//	_elevators.at(i)->Update(gameTime);
+	//	_elevators.at(i)->UpdateBox();
+	//}
+
+	//for (int i = 0; i <  _enemies.size(); ++i)
+	//{
+	//	if (_enemies.at(i)->GetBox().IntersecWith(_camera->getViewPort()))
+	//	{
+	//		_enemies.at(i)->Update(gameTime, _rockman);
+	//		_enemies.at(i)->UpdateBox();
+	//	}
+	//	
+	//}
+
+	//for (int i = 0; i < _items.size(); i++)
+	//{
+	//	_items.at(i)->Update(gameTime);
+	//	_items.at(i)->UpdateBox();
+	//}
 }
+
+	
+	
+	
 }
 
 void CPlayState::Draw(CTimer* gameTime, MGraphic* graphics)
@@ -564,25 +982,73 @@ void CPlayState::Draw(CTimer* gameTime, MGraphic* graphics)
 		(*i).second->Render(gameTime,graphics);
 	}*/
 
-	for (int i = 0; i < _groundObjs.size(); ++i)
+	D3DXVECTOR2 oldCameraPoint = _camera->_pos;
+
+	if (Asset::GetInstance()->__is_require_shake_screen)
 	{
-		_groundObjs.at(i)->Render(gameTime, graphics);
+		_deltatTimeShakingScreen += gameTime->GetTime();
+		if (_deltatTimeShakingScreen > 50)
+		{
+			_deltatTimeShakingScreen = 0;
+			_shakePointRand.x = rand() % 7 + 1;
+			_shakePointRand.y = rand() % 3 + 1;
+
+			_camera->_pos = (oldCameraPoint + _shakePointRand);
+		}
+	}
+	RenderBackground(graphics, _camera->getViewPort());
+
+	if (_prepareForBoss == 1)
+	{
+		graphics->Draw(_spriteIntroBoss.GetTexture(), _spriteIntroBoss.GetDestinationRectangle(), _camera->_listPoint.at(_camera->_listPoint.size()-1), true, D3DXVECTOR2(1.0f, 1.0f), SpriteEffects::NONE);
+		_spriteIntroBoss.Update(gameTime);
 	}
 
-	for (int i = 0; i < _elevators.size(); ++i)
-	{
-		_elevators.at(i)->Render(gameTime, graphics);
-	}
+	for (int i = 0; i < _groundObjs.size(); i++)
+		_groundObjs[i]->Render(gameTime, graphics);
+	if (_door != NULL)
+		_door->Render(gameTime, graphics);
 
-	for (int i = 0; i <  _enemies.size(); ++i)
-	{
-		_enemies.at(i)->Render(gameTime, graphics);
-	}
+	_camera->_pos = (oldCameraPoint);
 
+	for (int i = 0; i < _bulletsRockman.size(); i++)
+		_bulletsRockman[i]->Render(gameTime, graphics);
+	for (int i = 0; i < _bulletsEnemy.size(); i++)
+		_bulletsEnemy[i]->Render(gameTime, graphics);
+	for (int i = 0; i < _enemies.size(); i++)
+		_enemies[i]->Render(gameTime, graphics);
 	for (int i = 0; i < _items.size(); i++)
+		_items[i]->Render(gameTime, graphics);
+	for (int i = 0; i < _elevators.size(); i++)
+		_elevators[i]->Render(gameTime, graphics);
+	if (_playState != PlayState::WIN)
+		for (int i = 0; i < _powerEnegies.size(); i++)
+			_powerEnegies[i]->Render(gameTime, graphics);
+	_rockman->Render(gameTime, graphics);
+
+	// Vẽ điểm màn chơi
+	if (_playState == PlayState::READY)
+		graphics->DrawString("READY", D3DXVECTOR2(_camera->_pos.x + SCREEN_WIDTH / 2, _camera->_pos.y - SCREEN_HEIGHT / 2), _defaultStringColor, true,this->_camera);
+	else
+		graphics->DrawString(CGameInfo::GetInstance()->to_string(CGameInfo::GetInstance()->GetScore(), 7), D3DXVECTOR2(_camera->_pos.x + SCREEN_WIDTH / 2, _camera->_pos.y - FONT_SIZE), _defaultStringColor, true, this->_camera);
+
+	// Vẽ điểm khi WIN GAME
+	if (_playState == PlayState::WIN)
 	{
-		_items.at(i)->Render(gameTime, graphics);
+		graphics->DrawString("CLEAR", D3DXVECTOR2(_camera->_pos.x + SCREEN_WIDTH / 2 - FONT_SIZE * 2, _camera->_pos.y - FONT_SIZE * 6), _defaultStringColor, true,this->_camera);
+		graphics->DrawString("POINTS", D3DXVECTOR2(_camera->_pos.x + SCREEN_WIDTH / 2 + FONT_SIZE, _camera->_pos.y - FONT_SIZE * 7), _defaultStringColor, true,this->_camera);
+		graphics->DrawString(_strClearPoint, D3DXVECTOR2(_camera->_pos.x + SCREEN_WIDTH / 2, _camera->_pos.y - FONT_SIZE * 9), _defaultStringColor, true,this->_camera);
+		if (_strBonus != "")
+		{
+			graphics->DrawString(_strBonus, D3DXVECTOR2(_camera->_pos.x + SCREEN_WIDTH / 2 + FONT_SIZE, _camera->_pos.y - FONT_SIZE * 11), _defaultStringColor, true, this->_camera);
+			graphics->DrawString("BONUS", D3DXVECTOR2(_camera->_pos.x + SCREEN_WIDTH / 2 + FONT_SIZE, _camera->_pos.y - FONT_SIZE * 12), _defaultStringColor, true, this->_camera);
+			graphics->DrawString(_strTotalBonusScore, D3DXVECTOR2(_camera->_pos.x + SCREEN_WIDTH / 2 + FONT_SIZE, _camera->_pos.y - FONT_SIZE * 14), _defaultStringColor, true,this->_camera);
+			graphics->Draw(ResourceManager::GetSprite(ID_SPRITE_ITEM_BONUS_RED).GetTexture(), ResourceManager::GetSprite(ID_SPRITE_ITEM_BONUS_RED).GetDestinationRectangle(), D3DXVECTOR2(_camera->_pos.x + SCREEN_WIDTH / 2 - 4 * FONT_SIZE, _camera->_pos.y - FONT_SIZE * 12), true);
+		}
 	}
+
+	if (!_isStopScreen)
+		CExplodingEffectManager::Render(gameTime, graphics);
 
 
 

@@ -2,7 +2,7 @@
 CEnemyInk::CEnemyInk(int kindInk) :CEnemy()
 {
 	_dame = DAME_ENEMY_INK;
-	_PositionRockMan = D3DXVECTOR2(100, 100);
+	//_PositionRockMan = D3DXVECTOR2(100, 100);
 	if (kindInk == 0)
 	{
 		_kindInk = ID_SPRITE_ENEMY_INK_RED;
@@ -35,9 +35,9 @@ int CEnemyInk::Initlize()
 
 	_timeJump = 1500;
 	_sprite = ResourceManager::GetSprite(_kindInk);
-	_v = D3DXVECTOR2(50.0f / 1000.0f, 50.0f / 1000.0f);
+	_v = D3DXVECTOR2(30 / 1000.0f, 30 / 1000.0f);
 	_g = 0.2f / 1000.0f;//0.098f / 1000.0f;
-	_V0 = 172.0f / 1000.0f;
+	_V0 = 130 / 1000.0f;
 	_static = StaticEnemyInk::STAND;
 	_spriteStatus = ID_ENEMY_INK_STAND;
 	UpdateBox();
@@ -46,6 +46,7 @@ int CEnemyInk::Initlize()
 void CEnemyInk::Render(CTimer* gameTime, MGraphic* graphics)
 {
 	graphics->Draw(_sprite.GetTexture(), _sprite.GetDestinationRectangle(), _position, true);
+	//CMoveableObject::Render(gameTime, graphics);
 }
 void CEnemyInk::Update(CTimer* gameTime)
 {
@@ -101,6 +102,15 @@ void CEnemyInk::Jump(D3DXVECTOR2 positionRockman)
 
 
 	_V0 = (float)sqrt((_lenghtMax*abs(_g)) / sin(2 * _anpha));
+
+	OutputDebugStringW((L"V0: " + wstring(::to_wstring(_V0) + L"\n")).c_str());
+
+	OutputDebugStringW((L"a: " + wstring(::to_wstring(_anpha) + L"\n")).c_str());
+
+	OutputDebugStringW((L"leght: " + wstring(::to_wstring(_lenghtMax) + L"\n")).c_str());
+
+	OutputDebugStringW((L"height: " + wstring(::to_wstring(_heightInk) + L"\n")).c_str());
+
 
 	_v.x = _V0*cosf(_anpha);
 	_v.y = _V0*sinf(_anpha);
@@ -166,20 +176,20 @@ void CEnemyInk::Update(CTimer* gameTime, Megaman* rockman)
 	switch (_static)
 	{
 	case CEnemyInk::JUMP:
-		_position.x += _v.x*(gameTime->GetTime() * 1000);
-		_position.y += _v.y*(gameTime->GetTime() * 1000);
+		_position.x += _v.x*(gameTime->GetTime());
+		_position.y += _v.y*(gameTime->GetTime());// -0.5f*_g*pow((gameTime->GetTime()*_timeaddspeed), 2);
 
-		_v.y -= _g*(gameTime->GetTime() * 1000);
+		_v.y -= _g*(gameTime->GetTime());// 1000/ 33 + 90 
 
 		break;
 	case CEnemyInk::STAND:
-		_timeStand -= gameTime->GetTime() * 1000;
+		_timeStand -= gameTime->GetTime();
 		if (_timeStand <= 0)
-			Jump(rockman->GetPos());
+			Jump(rockman->_position);
 		break;
 	case CEnemyInk::FALL:
-		_position.y += _v.y*(gameTime->GetTime() * 1000);
-		_v.y -= _g*(gameTime->GetTime() * 1000);
+		_position.y += _v.y*(gameTime->GetTime());
+		_v.y -= _g*(gameTime->GetTime());
 		break;
 	default:
 		break;
@@ -233,6 +243,8 @@ void CEnemyInk::OnCollideWith(CGameObject *gameObject, CDirection normalX, CDire
 				_historyCollide = CDirection::ON_DOWN;
 			}
 		}
+		OutputDebugStringW((L"va cham y: " + wstring(::to_wstring(normalY) + L"\n")).c_str());
+		OutputDebugStringW((L"va cham x: " + wstring(::to_wstring(normalX) + L"\n")).c_str());
 
 		break;
 	case ID_BULLET_ROCKMAN_NORMAL: case ID_BULLET_ROCKMAN_BOOM : case ID_BULLET_ROCKMAN_CUT : case ID_BULLET_ROCKMAN_GUTS:

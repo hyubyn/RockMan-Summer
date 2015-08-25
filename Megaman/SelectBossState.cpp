@@ -115,16 +115,19 @@ void CSelectBossState::UpdateKeyboard(MKeyboard* input)
 		switch (_stageIndex + 1)
 		{
 		case 1:
+			CGameInfo::GetInstance()->SetLevel(ID_LEVEL_CUT);
 			_nextScreen = new CPlayState("Resources//Resources//Maps//cut_man_stage.txt", this->_graphic, this->_graphic->GetDevice(), input, this->_camera, 2);
 			_isFinished = true;
 			
 			break;
 		case 2:
+			CGameInfo::GetInstance()->SetLevel(ID_LEVEL_GUTS);
 			_nextScreen = new CPlayState("Resources//Resources//Maps//guts_man_stage.txt", this->_graphic, this->_graphic->GetDevice(), input, this->_camera, 3);
 			_isFinished = true;
 
 			break;
 		case 4:
+			CGameInfo::GetInstance()->SetLevel(ID_LEVEL_BOOM);
 			_nextScreen = new CPlayState("Resources//Resources//Maps//boom_man_stage.txt", this->_graphic, this->_graphic->GetDevice(), input, this->_camera, 1);
 			_isFinished = true;
 			

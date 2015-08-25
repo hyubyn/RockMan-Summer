@@ -11,7 +11,7 @@ CEnemyRobot::CEnemyRobot(int id, int typeID, CSprite sprite, CSprite spriteExplo
 	_id = id;
 	_typeID = typeID;
 	_sprite = sprite;
-	_v = D3DXVECTOR2(10,0);
+	_v = D3DXVECTOR2(0,0);
 	_dame = dame;
 	_position = positionBegin;
 	_pyOriginal = positionBegin.y;
@@ -39,12 +39,6 @@ int CEnemyRobot::Initlize()
 void CEnemyRobot::Update(CTimer* gameTime, Megaman* rockman)
 {
 #pragma region Vùng xử lý va chạm với BLOCK, ROCK objects (các đối tượng mà khi va chạm EnemyRobot phải dừng lại)
-	
-	if(_position.y <50)
-	{
-		_state = ENEMYROBOT_STATE::STANDING;
-	}
-	
 	for (std::list<CollisionInfo>::iterator item=_collidedInfoLst.begin(); item!=_collidedInfoLst.end(); ++item)
 	{
 		switch (item->_direction)
@@ -97,10 +91,10 @@ void CEnemyRobot::Update(CTimer* gameTime, Megaman* rockman)
 		else//Vừa hết trạng thái nghỉ
 		{
 			//Xét dấu cho Vector vận tốc X (đi sang phải hay sang trái)
-			if ((rockman->GetPos().x - this->_position.x) > 0)//Nếu EnemyRobot nằm phía bên trái Rockman
-				_v.x = 100;
+			if ((rockman->_position.x - this->_position.x) > 0)//Nếu EnemyRobot nằm phía bên trái Rockman
+				_v.x = 1;
 			else//Nếu EnemyRobot nằm phía bên phải Rockman
-				_v.x = -100;
+				_v.x = -1;
 			//-----Tính toán lực sẽ cấp cho EnemyRobot để nhảy-----
 			//Áp dụng công thức Lmax=(v0^2*Sin2@)/g trong chuyển động ném xiên để tính vận tốc bắt đầu chuyển động của EnemyRobot
 			float v0 = sqrt(SPACE_X_JUMP_OF_ROBOT_ENEMY * GRAVITY / sinf(2 * ANGLE_OF_JUMP_OF_ROBOT_ENEMY));
@@ -131,7 +125,7 @@ void CEnemyRobot::Update(CTimer* gameTime, Megaman* rockman)
 			continues:
 			float lowRand = 1.3, highRand = 2.0;//Biến max, min Random để chọn giá trị nhân vận tốc _v.y lên
 			float r3 = lowRand + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (highRand - lowRand)));
-			_v.y = v0*sinf(ANGLE_OF_JUMP_OF_ROBOT_ENEMY) * ((r3<1.68)?1.4:2);// -GRAVITY*gameTime->GetDeltaTime();//Chỗ này không hiểu từ phần "-GRAVITY*gameTime->GetDeltaTime()" để làm gì nên tạm thời khóa lại không sử dụng nữa.
+			_v.y = v0*sinf(ANGLE_OF_JUMP_OF_ROBOT_ENEMY) * ((r3<1.68)?1.4:2);// -GRAVITY*gameTime->GetTime();//Chỗ này không hiểu từ phần "-GRAVITY*gameTime->GetTime()" để làm gì nên tạm thời khóa lại không sử dụng nữa.
 
 			//Chuyển trạng thái của Enemy
 			_state = ENEMYROBOT_STATE::JUMPING;
@@ -244,9 +238,9 @@ CEnemyRobot* CEnemyRobot::ToValue()
 void CEnemyRobot::Jump(float deltaTime)
 {
 	_position.x += deltaTime*_v.x;
-	_position.y += (deltaTime*_v.y*1000);// -0.5f*GRAVITY*pow(deltaTime, 2));
+	_position.y += (deltaTime*_v.y);// -0.5f*GRAVITY*pow(deltaTime, 2));
 
-	_v.y -= GRAVITY*deltaTime*1000 * 5;
+	_v.y -= GRAVITY*deltaTime * 4;
 }
 
 void CEnemyRobot::ResetCollideVariable()

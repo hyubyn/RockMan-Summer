@@ -45,7 +45,7 @@ public:
 	//-----------------------------------------------------------------------------
 	// Update đối tượng có liên quang đến rockman, những enemy khi hoạt động cần logic của rockman
 	//-----------------------------------------------------------------------------
-	void Update(CTimer* gameTime,Megaman* rockman) override;
+	void Update(CTimer* gameTime, Megaman* rockman) override;
 	//-----------------------------------------------------------------------------
 	// Lấy ra va chạm của đối tượng 
 	//-----------------------------------------------------------------------------

@@ -112,7 +112,7 @@ void Game::Update(CTimer* gameTime)
 	keyboard->Update();
 
 	CScreenManager::GetInstance()->UpdateInput(keyboard);
-	CScreenManager::GetInstance()->Update(gameTime);
+ 	CScreenManager::GetInstance()->Update(gameTime);
 		//megaman->Update(gameTime,keyboard,Cam,map->listGameObject);
 	//keyboard->SaveKeyStateHistory();
 	

@@ -122,7 +122,6 @@ void CEnemyWallShooter::Update(CTimer* gameTime, Megaman* rockman)
 
 	_isHitDame = false;
 	this->UpdateBox();
-	_sprite.SetAllowAnimate(100);
 	_sprite.Update(gameTime);
 }
 

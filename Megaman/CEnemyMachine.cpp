@@ -9,10 +9,10 @@ CEnemyMachine::CEnemyMachine() :CEnemy()
 int CEnemyMachine::Initlize()
 {
 	_dame = DAME_ENEMY_MACHINE;
-	_v = D3DXVECTOR2(20, 0);
+	_v = D3DXVECTOR2(50.0f / 1000.0f, 0.0f / 1000.0f);
 	_static = STATICMACHINE::RunSlowMachine;
 	_sprite = ResourceManager::GetSprite(ID_SPRITE_ENEMY_MACHINE);
-	_timeFrame = 40;
+	_timeFrame = 200;
 	_timeStand = 0;
 	_timeStandDefault = 2000;
 	_timeFrame = TIMEFRAME::TimeSlow;
@@ -45,13 +45,12 @@ void CEnemyMachine::Update(CTimer* gameTime, Megaman* rockman)
 		break;
 	case STATICMACHINE::RunSlowMachine:
 		
-	/*	if (_box._x<=this->GetCollideRegion()._x || _box._x+_box._width>=this->GetCollideRegion()._x + this->GetCollideRegion()._width)
+		if (_box._x<=this->GetCollideRegion()._x || _box._x+_box._width>=this->GetCollideRegion()._x + this->GetCollideRegion()._width)
 		{
 			_v.x *= -1;
-		}*/
+		}
 		_position.x += _v.x*gameTime->GetTime();
-
-		if (rockman->GetPos().x>this->GetCollideRegion()._x&&rockman->GetPos().x<this->GetCollideRegion()._x + this->GetCollideRegion()._width)
+		if (rockman->_position.x>this->GetCollideRegion()._x&&rockman->_position.x<this->GetCollideRegion()._x + this->GetCollideRegion()._width)
 		{
 			_static = STATICMACHINE::RunFastMachine;
 			_timeFrame = TIMEFRAME::TimeFast;
@@ -66,7 +65,7 @@ void CEnemyMachine::Update(CTimer* gameTime, Megaman* rockman)
 			_v.x *= -1;
 		}
 		_position.x += _v.x*gameTime->GetTime();
-		if (rockman->GetPos().x<this->GetCollideRegion()._x||rockman->GetPos().x>this->GetCollideRegion()._x + this->GetCollideRegion()._width)
+		if (rockman->_position.x<this->GetCollideRegion()._x||rockman->_position.x>this->GetCollideRegion()._x + this->GetCollideRegion()._width)
 		{
 			_static = STATICMACHINE::RunSlowMachine;
 			_timeFrame = TIMEFRAME::TimeSlow;
@@ -78,10 +77,8 @@ void CEnemyMachine::Update(CTimer* gameTime, Megaman* rockman)
 		break;
 	}
 	OutputDebugStringW((L"va toc" + wstring(::to_wstring(_v.x) + L"\n")).c_str());
-	
- 	_sprite.Update(gameTime);
-	_timeFrame = 0;
-
+	UpdateBox();
+	_sprite.Update(gameTime);
 	
 }
 void CEnemyMachine::OnCollideWith(CGameObject *gameObject, CDirection normalX, CDirection normalY, float deltaTime)
