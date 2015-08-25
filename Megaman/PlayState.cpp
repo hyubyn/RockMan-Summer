@@ -126,9 +126,7 @@ void CPlayState::Update(CTimer* gameTime)
 				_powerEnegies.push_back(new CPowerEnergyX(ID_BAR_WEAPONS_BOOM, _rockman, ResourceManager::GetSprite(ID_SPRITE_BAR_BOOM_VERTICAL), D3DXVECTOR2(19, -37), 0, WEASPON_DEFAULT, WEASPON_DEFAULT));
 				break;
 			}
-			
 		}
-
 		if (_isStopScreen)
 		{
 			_deltaTimeStopScreen += gameTime->GetTime();
@@ -142,14 +140,9 @@ void CPlayState::Update(CTimer* gameTime)
 
 
 	
-	vector<CBullet*> bullets = _rockman->GetBullets();
-	for (int i = 0; i < bullets.size(); i++)
-		_bulletsRockman.push_back(bullets[i]);
-
-	for (int i = 0; i < bullets.size(); i++)
-		_bulletsRockman[i]->Update(gameTime);
-	_rockman->Update(gameTime, _input);
-	_camera->Update(_rockman->_position);
+	
+	
+	//_camera->Update(_rockman->_position);
 	tree->_listObjectOnScreen.clear();
 	tree->ClipCamera(tree->_nodeRoot, _camera->getViewPort());
 	
@@ -206,6 +199,7 @@ void CPlayState::Update(CTimer* gameTime)
 			}
 		case ID_ELEVATOR_TROUBLE:
 		case ID_ELEVATOR:
+			if ((*i).second->GetBox().IntersecWith(_camera->getViewPort()) || _playState == PlayState::READY)
 			{
 				bool existed = false;
 				for (int j = 0; j < _elevators.size(); j++)
@@ -224,21 +218,21 @@ void CPlayState::Update(CTimer* gameTime)
 			if (_prepareForBoss == 0)
 			{
 				_prepareForBoss = 1;
-				//_deltaTime = 0;
+				_deltaTime = 0;
 				_spriteIntroBoss = ResourceManager::GetSprite(ID_SPRITE_ROOM_CUT_STAGE);
 			}
 		case ID_BOOMMAN:
 			if (_prepareForBoss == 0)
 			{
 				_prepareForBoss = 1;
-				//_deltaTime = 0;
+				_deltaTime = 0;
 				_spriteIntroBoss = ResourceManager::GetSprite(ID_SPRITE_ROOM_BOOM_STAGE);
 			}
 		case ID_GUTSMAN:
 			if (_prepareForBoss == 0)
 			{
 				_prepareForBoss = 1;
-				//_deltaTime = 0;
+				_deltaTime = 0;
 				_spriteIntroBoss = ResourceManager::GetSprite(ID_SPRITE_ROOM_GUTS_STAGE);
 			}
 			if (_isBossDied)
@@ -261,6 +255,8 @@ void CPlayState::Update(CTimer* gameTime)
 			}
 			break;
 		default:
+			if ((*i).second->GetBox().IntersecWith(_camera->getViewPort()) || _playState == PlayState::READY)
+			{
 			bool existed = false;
 
 			for (int j = 0; j < _enemies.size(); j++)
@@ -273,9 +269,19 @@ void CPlayState::Update(CTimer* gameTime)
 			}
 			if (!existed)
 				_enemies.push_back(((CEnemy*)(*i).second->ToValue()));
+			}
 			break;
 		}
 	}
+
+
+		if (_elevators.size() == 0)
+			ResourceManager::StopSound(ID_EFFECT_ELEVATOR_RUNNING);
+		else
+			ResourceManager::PlayASound(ID_EFFECT_ELEVATOR_RUNNING);
+
+		if (_changingScreen == 2)
+			_changingScreen = 0;
 
 	if (_playState == PlayState::READY)
 	{
@@ -283,8 +289,8 @@ void CPlayState::Update(CTimer* gameTime)
 		_deltaTime += gameTime->GetTime();
 		if (_deltaTime >= 1000)
 		{
-			_rockman->Update(gameTime);
-
+			_rockman->Update(gameTime, _input);
+			_camera->Update(_rockman->_position);
 			CDirection normalX, normalY;
 			float collideTime;
 
@@ -360,17 +366,17 @@ void CPlayState::Update(CTimer* gameTime)
 				case ID_DOOR1_CUTMAN:
 				case ID_DOOR1_GUTSMAN:
 				case ID_DOOR1_BOOMMAN:
-					//_pointBeforeDoor = _door->_position - D3DXVECTOR2(SCREEN_WIDTH / 2, 0);
-					//_pointAfterDoor = _door->_position + D3DXVECTOR2(SCREEN_WIDTH / 2 + _door->GetBox()._width / 2, 0);
+					_pointBeforeDoor = _door->_position - D3DXVECTOR2(SCREEN_WIDTH / 2, 0);
+					_pointAfterDoor = _door->_position + D3DXVECTOR2(SCREEN_WIDTH / 2 + _door->GetBox()._width / 2, 0);
 					break;
 				case ID_DOOR2_CUTMAN:
 				case ID_DOOR2_GUTSMAN:
-					//_pointBeforeDoor = _door->_position - D3DXVECTOR2(SCREEN_WIDTH / 2, 0);
-					//_pointAfterDoor = _camera->_listPoint.at(_camera->_listPoint.size()-1);
+					_pointBeforeDoor = _door->_position - D3DXVECTOR2(SCREEN_WIDTH / 2, 0);
+					_pointAfterDoor = _camera->_listPoint.at(_camera->_listPoint.size()-1);
 					break;
 				case ID_DOOR2_BOOMMAN:
-					//_pointBeforeDoor = _door->_position + D3DXVECTOR2(0, SCREEN_HEIGHT / 2);
-					//_pointAfterDoor = _camera->_listPoint.at(_camera->_listPoint.size()-1);
+					_pointBeforeDoor = _door->_position + D3DXVECTOR2(0, SCREEN_HEIGHT / 2);
+					_pointAfterDoor = _camera->_listPoint.at(_camera->_listPoint.size()-1);
 					break;
 				}
 				_pointDoor = _door->_position;
@@ -418,8 +424,8 @@ void CPlayState::Update(CTimer* gameTime)
 		if (_doorState == -1)
 			return;
 
-		_rockman->Update(gameTime);
-
+		_rockman->Update(gameTime, _input);
+		_camera->Update(_rockman->_position);
 		vector<CBullet*> bullets = _rockman->GetBullets();
 		for (int i = 0; i < bullets.size(); i++)
 			_bulletsRockman.push_back(bullets[i]);
@@ -431,7 +437,7 @@ void CPlayState::Update(CTimer* gameTime)
 		for (int i = 0; i < _groundObjs.size(); i++)		// Kiểm tra va chạm với các khối tường, gạch đá
 		{
 			collideTime = CheckCollision(_rockman, _groundObjs[i], normalX, normalY, gameTime->GetTime());
-			if (collideTime < gameTime->GetTime())
+			if (collideTime <= gameTime->GetTime())
 				_rockman->OnCollideWith(_groundObjs[i], normalX, normalY, collideTime);
 		}
 		if (_door != NULL)
@@ -571,7 +577,6 @@ void CPlayState::Update(CTimer* gameTime)
 						}
 					}
 				}
-
 				//-----------------------------------------------------------------------------
 				// Cập nhật quái và đạn của quái
 				//
@@ -756,6 +761,8 @@ void CPlayState::Update(CTimer* gameTime)
 			}
 
 
+
+
 			for (int i = 0; i < _powerEnegies.size(); i++)
 			{
 				_powerEnegies[i]->UpdateCamera(_camera);
@@ -790,7 +797,7 @@ void CPlayState::Update(CTimer* gameTime)
 		{
 #pragma region Xử lý game over, có thể là Rockman mất mạng hoặc GameOver
 			CInput::GetInstance()->Active();
-			//int startIndex = _cameraPath->GetStartIndex();
+			//int startIndex = _camera->_listPoint.at(0);
 			//LoadMap();
 
 			if (_rockman->GetLife() == -1)
@@ -931,7 +938,7 @@ void CPlayState::Update(CTimer* gameTime)
 			}
 		}
 
-
+			CExplodingEffectManager::Update(gameTime);
 	//// update cac doi tuong
 	//for (int i = 0; i < _groundObjs.size(); ++i)
 	//{
@@ -1059,8 +1066,6 @@ void CPlayState::Draw(CTimer* gameTime, MGraphic* graphics)
 
 	_rockman->Render(gameTime, graphics);
 
-	for (int i = 0; i < _bulletsRockman.size(); i++)
-		_bulletsRockman[i]->Render(gameTime, graphics);
 
 }
 
@@ -1075,7 +1080,24 @@ void CPlayState::RenderBackground(MGraphic* graphics, RECT viewport)
 
 float CPlayState::CheckCollision(CGameObject* obj1, CGameObject* obj2, CDirection &normalX, CDirection &normalY, float frameTime)
 {
-	return 0;
+	float timeCollision = frameTime;
+	Box moveBox = obj1->GetBox();
+	Box staticBox = obj2->GetBox();
+
+	// Cố định lại box của object và tính lại vận tốc của box nội tại
+	moveBox._vx -= staticBox._vx;
+	moveBox._vy -= staticBox._vy;
+	staticBox._vx = 0;
+	staticBox._vy = 0;
+
+
+	// tạo broad phase box để kiểm tra tổng quát với đối tượng đứng yên obj
+	// Nếu có xảy ra va chạm, thì tiến hành kiểm tra bằng AABBSweep và đưa ra thời gian va chạm
+	Box broadBox = CCollision::GetSweptBox(moveBox, frameTime);
+	if (CCollision::AABBCheck(staticBox, broadBox))
+		timeCollision = CCollision::SweepAABB(moveBox, staticBox, normalX, normalY, frameTime);
+
+	return timeCollision;
 }
 
 void CPlayState::ChangeScreen(CDirection direction)
