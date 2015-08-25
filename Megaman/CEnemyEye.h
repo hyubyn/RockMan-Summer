@@ -10,6 +10,7 @@
 #include "DSUtil.h"
 #include "CGameObject.h"
 #include "CEnemy.h"
+#include "Global.h"
 #include "ResourceManager.h"
 
 class CEnemyEye :public CEnemy
