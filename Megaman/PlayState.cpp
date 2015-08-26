@@ -34,8 +34,9 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 		_shakePointRand = D3DXVECTOR2(0.0f, 0.0f);
 		_defaultStringColor = D3DCOLOR_XRGB(255, 255, 255);
 		D3DXVECTOR2 pos = cam->_listPoint.at(0);
-		_rockman->SetPos(D3DXVECTOR2(pos.x + SCREEN_WIDTH / 2, pos.y));
-/*
+		_rockman->SetPos(D3DXVECTOR2(pos.x + SCREEN_WIDTH / 2,pos.y));
+/*		pos.x = 3088;
+		pos.y = 1423;
 		_rockman = new _rockman();
 		_rockman->Initlize();
 */
@@ -155,6 +156,7 @@ void CPlayState::Update(CTimer* gameTime)
 	// lay danh sach cac doi tuong chia ra theo tung loai
 	for(map<int,CGameObject*>::iterator i = tree->_listObjectOnScreen.begin();i != tree->_listObjectOnScreen.end();++i)
 	{
+		
 		switch ((*i).second->_typeID)
 		{
 		case ID_ROCK_IN_GUT_STAGE:
@@ -261,6 +263,8 @@ void CPlayState::Update(CTimer* gameTime)
 
 			for (int j = 0; j < _enemies.size(); j++)
 			{
+				if((*i).second->_typeID == 344)
+					int a = 0;
 				if ((*i).second->_id == _enemies[j]->_id)
 				{
 					existed = true;
@@ -290,7 +294,7 @@ void CPlayState::Update(CTimer* gameTime)
 		if (_deltaTime >= 1000)
 		{
 			_rockman->Update(gameTime, _input);
-			_camera->Update(_rockman->_position);
+			//_camera->Update(_rockman->_position);
 			CDirection normalX, normalY;
 			float collideTime;
 
@@ -437,7 +441,7 @@ void CPlayState::Update(CTimer* gameTime)
 		for (int i = 0; i < _groundObjs.size(); i++)		// Kiểm tra va chạm với các khối tường, gạch đá
 		{
 			collideTime = CheckCollision(_rockman, _groundObjs[i], normalX, normalY, gameTime->GetTime());
-			if (collideTime <= gameTime->GetTime())
+			if (collideTime < gameTime->GetTime())
 				_rockman->OnCollideWith(_groundObjs[i], normalX, normalY, collideTime);
 		}
 		if (_door != NULL)

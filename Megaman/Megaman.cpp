@@ -154,6 +154,7 @@ D3DXVECTOR2 Megaman::GetPos()
 void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 {
 
+
 	if (IsDied())
 		return;
 
@@ -291,10 +292,10 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 				case  ID_BLOCK:
 					break;
 				case  ID_DIE_ARROW:
-					_position += _v*collidedLst[i]->_timeCollide;
+					/*_position += _v*collidedLst[i]->_timeCollide;
 					Attack(0, true);
 					if (_behave == Behave::DYING)
-						return;
+						return;*/
 					break;
 				default:
 					if (_behave != Behave::HURT_IN_AIR&&_behave != Behave::HURT_ON_GROUND&& !_isInShield)
@@ -1403,6 +1404,10 @@ void Megaman::OnCollideWith(CGameObject* obj, CDirection normalX, CDirection nor
 {
 	if (!_isTheFirstTime)
 	{
+		if(obj->_typeID == 23)
+		{
+			int a = 3;
+		}
 		switch (obj->_typeID)
 		{
 		case ID_DOOR1_BOOMMAN:

@@ -24,9 +24,9 @@ void CEnemySnapper::Update(CTimer* gameTime, Megaman* rockman)
 	{
 		_timeFire = _timeFireDefault;
 		_lstBullet.clear();
-		_lstBullet.push_back(new CBulletSnapper(0, ID_BULLET_ENEMY_SNAPPER, ResourceManager::GetSprite(ID_SPRITE_BULLET_ENEMY_SNAPPER), DAME_BULLET_SNAPPER, 0, D3DXVECTOR2(0, 0), 0, _position.x, _position.y, rockman->GetPos().x));
+		_lstBullet.push_back(new CBulletSnapper(0, ID_BULLET_ENEMY_SNAPPER, ResourceManager::GetSprite(ID_SPRITE_BULLET_ENEMY_SNAPPER), DAME_BULLET_SNAPPER, 0, D3DXVECTOR2(0, 0), 0, _position.x, _position.y, rockman->_position.x));
 	}
-	if (abs(rockman->GetPos().x - _position.x) < 50)
+	if (abs(rockman->_position.x - _position.x) < 50)
 	{
 		_acceptFire = true;
 	}

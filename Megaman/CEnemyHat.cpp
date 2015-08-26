@@ -39,12 +39,12 @@ void CEnemyHat::Render(CTimer* gameTime, MGraphic* graphics)
 
 void CEnemyHat::Update(CTimer* gameTime, Megaman* rockman)
 {
-	if (abs(rockman->GetPos().x - this->_position.x) <= _spaceFire)
+	if (abs(rockman->_position.x - this->_position.x) <= _spaceFire)
 	{
-		_timeDistant -= gameTime->GetTime() * 1000;
+		_timeDistant -= gameTime->GetTime();
 		if (_timeDistant <= 0)
 		{
-			FireRockMan(gameTime->GetTime() * 1000);
+			FireRockMan(gameTime->GetTime());
 			_timeDistant = TIMEDISTANTDEFAULT;
 			_timeChangeFrame = 0;
 			_sprite.SetIndex(1);
@@ -54,7 +54,7 @@ void CEnemyHat::Update(CTimer* gameTime, Megaman* rockman)
 	}
 	if (_timeChangeFrame >= 0)
 	{
-		_timeChangeFrame += gameTime->GetTime() * 1000;
+		_timeChangeFrame += gameTime->GetTime();
 		if (_timeChangeFrame > TIMECHANGEFRAME)
 		{
 			_timeChangeFrame = -1;
@@ -62,7 +62,7 @@ void CEnemyHat::Update(CTimer* gameTime, Megaman* rockman)
 			_statusEnemyHat = StaTusEnemyHat::Stand;
 		}
 	}
-	if (rockman->GetPos().x < _position.x)
+	if (rockman->_position.x < _position.x)
 		_isChangeDirection = false;
 	else
 		_isChangeDirection = true;
@@ -108,6 +108,7 @@ void CEnemyHat::OnCollideWith(CGameObject *gameObject, CDirection normalX, CDire
 		else
 		{
 			ResourceManager::PlayASound(ID_EFFECT_BULLET_HIT_ENEMY_WITH_SHIELD);
+			//((CBullet*)gameObject)->Die();
 		}
 		break;
 	case ID_BULLET_ROCKMAN_BOOM: case ID_BULLET_ROCKMAN_CUT: case ID_BULLET_ROCKMAN_GUTS:

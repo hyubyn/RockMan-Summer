@@ -2,6 +2,7 @@
 
 Asset::Asset()
 {
+		__is_require_shake_screen = false;
 }
 
 Asset::~Asset()
