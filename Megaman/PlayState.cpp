@@ -33,10 +33,10 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 		_prepareForBoss = 0;
 		_shakePointRand = D3DXVECTOR2(0.0f, 0.0f);
 		_defaultStringColor = D3DCOLOR_XRGB(255, 255, 255);
-		D3DXVECTOR2 pos = cam->_listPoint.at(0);
+		D3DXVECTOR2 pos = _camera->_positionBossRoom;
+		_camera->_pos = pos;
 		_rockman->SetPos(D3DXVECTOR2(pos.x + SCREEN_WIDTH / 2,pos.y));
-/*		pos.x = 3088;
-		pos.y = 1423;
+/*		
 		_rockman = new _rockman();
 		_rockman->Initlize();
 */
@@ -162,7 +162,7 @@ void CPlayState::Update(CTimer* gameTime)
 		case ID_ROCK_IN_GUT_STAGE:
 		case ID_ROCK:
 			if (((CRock*)(*i).second)->IsGot())
-				//_groundObjs.push_back((*i).second);
+				_groundObjs.push_back((*i).second);
 				break;
 		case  ID_BLOCK_TROUBLE_OF_ELEVATOR:
 		case ID_BLOCK:
@@ -263,7 +263,7 @@ void CPlayState::Update(CTimer* gameTime)
 
 			for (int j = 0; j < _enemies.size(); j++)
 			{
-				if((*i).second->_typeID == 344)
+				if((*i).second->_typeID == 5000)
 					int a = 0;
 				if ((*i).second->_id == _enemies[j]->_id)
 				{
@@ -564,8 +564,8 @@ void CPlayState::Update(CTimer* gameTime)
 					collideTime = CheckCollision(_rockman, _enemies[i], normalX, normalY, gameTime->GetTime());
 					if (collideTime < gameTime->GetTime())
 					{
-						_rockman->OnCollideWith(_enemies[i], normalX, normalY, collideTime);
-						((CEnemy*)_enemies[i])->OnCollideWith(_rockman, normalX, normalY, collideTime);
+						//_rockman->OnCollideWith(_enemies[i], normalX, normalY, collideTime);
+						//((CEnemy*)_enemies[i])->OnCollideWith(_rockman, normalX, normalY, collideTime);
 					}
 				}
 
@@ -576,8 +576,8 @@ void CPlayState::Update(CTimer* gameTime)
 						collideTime = CheckCollision(_rockman, _bulletsEnemy[i], normalX, normalY, gameTime->GetTime());
 						if (collideTime < gameTime->GetTime())
 						{
-							_rockman->OnCollideWith(_bulletsEnemy[i], normalX, normalY, collideTime);
-							((CBullet*)_bulletsEnemy[i])->OnCollideWith(_rockman, normalX, normalY, collideTime);
+							//_rockman->OnCollideWith(_bulletsEnemy[i], normalX, normalY, collideTime);
+							//((CBullet*)_bulletsEnemy[i])->OnCollideWith(_rockman, normalX, normalY, collideTime);
 						}
 					}
 				}
