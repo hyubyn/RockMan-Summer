@@ -39,7 +39,7 @@ void Camera::Update(D3DXVECTOR2 megamanPosition)
 		{
 			if (_pos.x < doorPoint.x)
 			{
-				_pos.x += 3;
+				_pos.x += 5;
 			}
 			else
 			{
@@ -49,13 +49,13 @@ void Camera::Update(D3DXVECTOR2 megamanPosition)
 				isMoving = false;
 			}
 		}
-		else if (_pos.y < endPoint.y - 3)
+		else if (_pos.y < endPoint.y - 4)
 		{
-			_pos.y += 2;
+			_pos.y += 5;
 		}
-		else if (_pos.y > endPoint.y + 3)
+		else if (_pos.y > endPoint.y + 4)
 		{
-			_pos.y -= 2;
+			_pos.y -= 5;
 		}
 		else if (_pos.y < endPoint.y)
 		{
@@ -78,7 +78,8 @@ void Camera::Move(D3DXVECTOR2 megamanPos, int index)
 	MoveLine line = _listMoveLine.at(index);
 	if (_pos != _positionBossRoom)
 	{
-		
+		if (_pos != endMap)
+		{
 		if (line.direct == horizontal)											// camera di chuyen theo phuong ngang
 		{
 			if (!isMovingOverDoor)
@@ -118,7 +119,7 @@ void Camera::Move(D3DXVECTOR2 megamanPos, int index)
 			if (line.startPoint.y < line.endPoint.y)		// neu la huong di len
 			{
 
-				if (_pos == line.startPoint && megamanPos.y > line.startPoint.y)
+				if (_pos == line.startPoint && megamanPos.y > line.startPoint.y + 20)
 				{
 					isMoving = true;
 					endPoint = line.endPoint;
@@ -151,6 +152,7 @@ void Camera::Move(D3DXVECTOR2 megamanPos, int index)
 			isMovingOverDoor = true;
 			isMoving = true;
 		}
+	}
 	}
 }
 
