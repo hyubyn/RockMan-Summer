@@ -213,27 +213,17 @@ CGameObject* CGameObjectFactory::CreateObject(int objID, int typeID, int posX, i
 		break;
 	case ID_CUTMAN:
 		obj = new  CCutman();
-		obj->_position = D3DXVECTOR2((float)posX, (float)posY);
-		obj->_id = objID;
-		obj->_typeID = typeID;
-		obj->_size = D3DXVECTOR2((float)width, (float)height);
-		obj->Initlize();
-		obj->SetCollideRegion(posXCollide, posYCollide, widthCollide, heightCollide);
+		
 		break;
-	/*case ID_GUTSMAN:
+	case ID_GUTSMAN:
 		obj = new  CGutsMan();
-		break;*/
+		break;
 	case ID_BOOMMAN:
 		obj = new  CBoomMan();
-		obj->_position = D3DXVECTOR2((float)posX, (float)posY);
-		obj->_id = objID;
-		obj->_typeID = typeID;
-		obj->_size = D3DXVECTOR2((float)width, (float)height);
-		obj->Initlize();
-		obj->SetCollideRegion(posXCollide, posYCollide, widthCollide, heightCollide);
 		break;
 	case ID_ENEMY_SNAPPER:
 		obj = new  CEnemySnapper();	
+
 		break;
 	 default: return obj;
 	}

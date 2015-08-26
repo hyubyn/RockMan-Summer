@@ -17,7 +17,7 @@ int CCutman::Initlize()
 {
 	this->_dame = DAME_BULLET_CUTMAN;
 	this->_blood = BLOOD_CUTMAN;
-	this->_id = ID_CUTMAN;
+	//this->_id = ID_CUTMAN;
 	this->_speed = 1.5f;
 	this->_isFire = false;
 	this->_isWaepon = true;

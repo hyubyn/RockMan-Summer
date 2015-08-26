@@ -1,11 +1,11 @@
-﻿#include "CBoomMan.h"
+﻿#include "CGutsMan.h"
 
-CBoomMan::CBoomMan() : CEnemy()
+CGutsMan::CGutsMan() :CEnemy()
 {
-
+	
 }
 
-CBoomMan::~CBoomMan()
+CGutsMan::~CGutsMan()
 {
 	SAFE_DELETE(_bullet);
 	SAFE_DELETE(_bulletRockMan);
@@ -14,59 +14,58 @@ CBoomMan::~CBoomMan()
 	this->_bulletRockMan = nullptr;
 }
 
-int CBoomMan::Initlize()
+int CGutsMan::Initlize()
 {
-	this->_blood = BLOOD_BOOMMAN;
-	//this->_id = ID_BOOMMAN;
-	//this->_isFire = true;
+	this->_blood = BLOOD_GUTSMAN;
+	//this->_id = ID_GUTSMAN;
+	this->_isFire = false;
 	this->_isJump = false;
-	this->_spriteStatus = ID_SPRITE_BOOMMAN_BOOM_PUSH;
-	this->_currentDirec = DIRECTIONACTION::START;
+	this->_speed = 2.0f;
+	this->_spriteStatus = ID_SPRITE_GUSTMAN_STAND;
+	this->_currentDirec = DIRECTIONACTION::STANDLEFT;
 	this->_previousDirec = this->_currentDirec;
 	this->_sprite = ResourceManager::GetSprite(this->_spriteStatus);
-	this->_v = D3DXVECTOR2(-50.0f / 1000.0f , 100.0f / 1000.0f); // đơn vị pixel / tick
-	this->_gravity = -9.8f / 1000.0f; // pixel / tick
-	this->_positionOld = D3DXVECTOR2(0,0);
+	this->_v = D3DXVECTOR2(-50.0f / 1000.0f , 0.0f / 1000.0f); // đơn vị pixel / tick
+	this->_gravity = -GRAVITY * 1000.0f; // pixel / tick
 	this->_dieDistance = 50.0f / 1000.0f;
+	this->_positionOld = D3DXVECTOR2(0,0);
 	this->_timeDelay = 0; // tick
-	this->_timeFire = 0.0f;
-	this->_timeStart = 0.0f;
-	this->_speed = 1.3f;
+	this->_score = 5000;
+
 	this->_isStartJump = false;
 	this->_isLockRun = true;
 	this->_isCollideBullet = false;
+	this->_isSkillJump = true;
 	this->_isOneHit = true;
-	this->_score = 5000;
-
-	this->_collideNormalY = CDirection::NONE_DIRECT;
-	this->_collideNormalX = CDirection::NONE_DIRECT;
 
 	this->_timeHistoryCollideX=std::numeric_limits<float>::infinity();
 	this->_timeHistoryCollideY=std::numeric_limits<float>::infinity();
 	this->_timeHistoryCollideXBullet=std::numeric_limits<float>::infinity();
 	this->_timeHistoryCollideYBullet=std::numeric_limits<float>::infinity();
 
+	this->_collideNormalY = CDirection::NONE_DIRECT;
+	this->_collideNormalX = CDirection::NONE_DIRECT;
+
 	this->_collideNormalXBullet = CDirection::NONE_DIRECT;
 	this->_collideNormalYBullet = CDirection::NONE_DIRECT;
 
 	this->_bulletRockMan = nullptr;
-	this->_timeEffectCollide = 600.0f;
+	this->_timeEffectCollide = 600.0f; // thời gian xãy ra vụ nổ chết
 
-	//bullet	
-	this->_positionBullet = D3DXVECTOR2(this->_position.x - 10.0f, this->_position.y + this->_sprite.GetFrameHeight() / 2); //Vector2(this->_position.x, this->_position.y + this->_sprite.GetFrameHeight() / 2);
-	this->_bullet = new CBoomManBullet(10, ID_BULLET_BOOMMAN, ResourceManager::GetSprite(ID_SPRITE_BULLET_BOSS_BOOM)
-		, DAME_BULLET_BOOMMAN, D3DXVECTOR2(0.0f / 1000.0f, 00.0f / 1000.0f), this->_positionBullet);
+	//bullet
+	D3DXVECTOR2 _positionBullet = D3DXVECTOR2(this->_position.x, this->_position.y + this->_sprite.GetFrameHeight() / 2 + 90.0f);
+	this->_bullet = new CGutsManBullet(10, ID_GUTSMAN, ResourceManager::GetSprite(ID_SPRITE_GUSTMAN_ROCKFIRE)
+		, DAME_BULLET_GUTSMAN, D3DXVECTOR2(0.0f / 1000.0f, 00.0f / 1000.0f), _positionBullet);
 
-	this->_posStartDefault = this->_position;
 	return 1;
 }
 
-void CBoomMan::Render(CTimer* gametime, MGraphic* graphics)
+void CGutsMan::Render(CTimer* gametime, MGraphic* graphics)
 {
 	switch (this->_currentDirec)
 	{
 	case DIRECTIONACTION::DIE:
-		{
+		{			
 			break;
 		}
 	default:
@@ -75,33 +74,28 @@ void CBoomMan::Render(CTimer* gametime, MGraphic* graphics)
 		else
 			graphics->Draw(this->_sprite.GetTexture(), this->_sprite.GetDestinationRectangle(), this->_position, true);
 
-			if(this->_isCollideBullet) // hiệu ứng trúng đạn
-			{
-				CSprite _spEffectCollideBullet = ResourceManager::GetSprite(ID_SPRITE_CUTMAN_COLLIDE);
-				graphics->Draw(_spEffectCollideBullet.GetTexture(), _spEffectCollideBullet.GetDestinationRectangle(), this->_position, true);
+		//this->_bullet->Render(gametime, graphics);
 
-				//tắt hiệu ứng khi bị chạm đạn của cut man
-				this->_timeEffectCollide -= gametime->GetTime();
-				if(this->_timeEffectCollide <= 0.0f)
-				{
-					this->_isCollideBullet = false;
-					this->_timeEffectCollide = 600.0f;
-				}
+		if(this->_isCollideBullet) // hiệu ứng trúng đạn
+		{
+			CSprite _spEffectCollideBullet = ResourceManager::GetSprite(ID_SPRITE_CUTMAN_COLLIDE);
+			graphics->Draw(_spEffectCollideBullet.GetTexture(), _spEffectCollideBullet.GetDestinationRectangle(), this->_position, true);
+
+			//tắt hiệu ứng khi bị chạm đạn của cut man
+			this->_timeEffectCollide -= gametime->GetTime();
+			if(this->_timeEffectCollide <= 0.0f)
+			{
+				this->_isCollideBullet = false;
+				this->_timeEffectCollide = 600.0f;
 			}
+		}
 		break;
 	}
 	CMoveableObject::Render(gametime, graphics);
 }
 
-void CBoomMan::Update(CTimer* gameTime, Megaman* rockman)
-{	
-	// lấy vị trí đứng đầu tiên của rock man.
-	if(this->_bullet->_posRockManStand == D3DXVECTOR2(0,0))
-	{
-		this->_bullet->_posRockManStand = this->_position;
-		this->_posStartDefault = this->_position;
-	}
-
+void CGutsMan::Update(CTimer* gameTime, Megaman* rockman)
+{
 	float t = gameTime->GetTime();
 	float t2 = gameTime->GetTime();
 
@@ -113,27 +107,26 @@ void CBoomMan::Update(CTimer* gameTime, Megaman* rockman)
 		if(this->_collideNormalXBullet == CDirection::ON_LEFT 
 			|| this->_collideNormalXBullet == CDirection::ON_RIGHT 
 			|| this->_collideNormalYBullet == CDirection::ON_UP 
-			|| this->_collideNormalYBullet == CDirection::ON_DOWN 
+			|| this->_collideNormalYBullet == CDirection::ON_DOWN
 			|| this->_collideNormalYBullet == CDirection::INSIDE 
 			|| this->_collideNormalXBullet == CDirection::INSIDE
 			)
 		{
-			if(this->_bulletRockMan != nullptr && this->_isOneHit)
+			if(this->_bulletRockMan != nullptr  && this->_isOneHit)
 			{
 				// giảm máu cut man
 				this->_blood -= this->_bulletRockMan->GetDame();
 
-				if(this->_blood <= 0.0f && this->_currentDirec != DIRECTIONACTION::DIE) // hết máu bật hiệu ứng díe
+				if (this->_blood <= 0.0f) // hết máu bật hiệu ứng díe
 				{
-					this->_bullet->SetStatus(false); // hủy viên đạn
-					this->_currentDirec = DIRECTIONACTION::DIE;
-					this->_bullet->_isBoomManDie = true;
+					Asset::GetInstance()->__is_require_shake_screen = false;
+					_currentDirec = DIRECTIONACTION::DIE;
 				}
+					
 
 				// bất hiệu ứng chạm đạn.
 				this->_isCollideBullet = true;
 				this->_bulletRockMan = nullptr;
-
 				this->_isOneHit = false;
 			}
 		}
@@ -141,11 +134,11 @@ void CBoomMan::Update(CTimer* gameTime, Megaman* rockman)
 	else
 		this->_isOneHit = true;
 
-	//các xử lý tien va chạm với các nền.
+	//các xử lý tien va chạm.
 	if (_collideNormalX != CDirection::NONE_DIRECT
 		|| _collideNormalY != CDirection::NONE_DIRECT)
 	{
-		if(this->_collideNormalX == CDirection::ON_RIGHT)
+		if (this->_collideNormalX == CDirection::ON_RIGHT && _timeHistoryCollideX <= 0.001f)
 		{
 			t = _timeHistoryCollideX;
 			if(!this->_isStartJump && this->_isLockRun)
@@ -155,22 +148,21 @@ void CBoomMan::Update(CTimer* gameTime, Megaman* rockman)
 			this->_gravity = -50.0f/1000.0f;			
 		}
 
-		if(this->_collideNormalX == CDirection::ON_LEFT)
+		if (this->_collideNormalX == CDirection::ON_LEFT && _timeHistoryCollideX <= 0.001f)
 		{
 			t = _timeHistoryCollideX;			
 			if(!this->_isStartJump && this->_isLockRun)
 				this->_currentDirec = DIRECTIONACTION::DOWNLEFT;
-			this->_position.x += _v.x * t * _speed;			
 
-			this->_gravity = -50.0f/1000.0f;
-			// va chạm trái sẽ ko làm gì cả, đứng đó ném kéo.
+			this->_position.x += _v.x * t * _speed;					
+			this->_gravity = -50.0f/1000.0f;	
 		}
 
 
 		if(_collideNormalY == CDirection::ON_DOWN)
 		{
 			t2 = _timeHistoryCollideY;		
-	  
+
 			if(this->_currentDirec == DIRECTIONACTION::DOWNRIGHT || this->_currentDirec == DIRECTIONACTION::DOWNLEFT)
 			{
 				// Khi chạm trái và còn chạm dưới thì ko dùng _gravity để kéo cutman xuống.
@@ -185,29 +177,29 @@ void CBoomMan::Update(CTimer* gameTime, Megaman* rockman)
 					this->_position.y += _v.y * t2 * _speed;
 
 				if(this->_position.x - this->_posRockMan.x > 0 && t2==0.0f && this->_isLockRun)
-					{
-						this->_isLockRun = false;
-						this->_isStartJump = true;
-						this->_isJump = true;
-						this->_currentDirec = DIRECTIONACTION::STANDLEFT;
-						if(this->_v.x > 0)
-							this->_v.x *= -1.0f;
-					}
-					else if(t2==0.0f && this->_isLockRun)
-					{
-						this->_isLockRun = false;
-						this->_isStartJump = true;
-						this->_isJump = true;
-						this->_currentDirec = DIRECTIONACTION::STANDRIGHT;
-						if(this->_v.x < 0)
-							this->_v.x *= -1.0f;
-					}		
+				{
+					this->_isLockRun = false;
+					this->_isStartJump = true;
+					this->_isJump = true;
+					this->_currentDirec = DIRECTIONACTION::STANDLEFT;
+					if(this->_v.x > 0)
+						this->_v.x *= -1.0f;
+				}
+				else if(t2==0.0f && this->_isLockRun)
+				{
+					this->_isLockRun = false;
+					this->_isStartJump = true;
+					this->_isJump = true;
+					this->_currentDirec = DIRECTIONACTION::STANDRIGHT;
+					if(this->_v.x < 0)
+						this->_v.x *= -1.0f;
+				}	
 
 			}
 
 			if((this->_currentDirec == DIRECTIONACTION::JUMPLEFT || this->_currentDirec == DIRECTIONACTION::JUMPRIGHT))
 			{
-				
+
 				this->_position.y += _v.y * t2 * _speed;						
 
 				// Khi chạm trái và còn chạm dưới thì ko dùng _gravity để kéo cutman xuống.
@@ -234,8 +226,16 @@ void CBoomMan::Update(CTimer* gameTime, Megaman* rockman)
 						this->_currentDirec = DIRECTIONACTION::STANDRIGHT;
 						if(this->_v.x < 0)
 							this->_v.x *= -1.0f;
-					}					
-				}			
+					}		
+
+					//Xử lý va chạm rung đất.
+					if (!this->_isSkillJump && !Asset::GetInstance()->__is_require_shake_screen)
+					{
+						Asset::GetInstance()->__is_require_shake_screen = true;
+					}
+				}
+
+				
 			}
 
 			// Va chạm tạo góc trái và phải
@@ -254,75 +254,57 @@ void CBoomMan::Update(CTimer* gameTime, Megaman* rockman)
 	}
 
 	this->_posRockMan = rockman->_position;
-	this->_bullet->_posRockMan = rockman->_position;
-	if(!this->_bullet->_isBoomManDie) // khi boom man đã chết thì ko lấy vị trí nửa. 
-		this->_bullet->_posBoomMan = this->_position;
-	else // reset lại đạn boom man mới
-		this->_bullet->_posBoomMan = this->_posStartDefault;
+
+	//Lưu lại vị trí củ của Cut man khi nó đang đứng.(xet va cham)
+	if(this->_currentDirec == DIRECTIONACTION::STANDLEFT || this->_currentDirec == DIRECTIONACTION::STANDRIGHT)
+		this->_positionOld = this->_position;
 
 	// Lưu lại spriteStatus vừa rồi, nếu khác thì mới chuyển sprite nếu không thì không chuyển sprite
 	int previousSpriteID = this->_spriteStatus;
 
+
 	//Di chuyển boss
 	switch (this->_currentDirec)
 	{
-		case DIRECTIONACTION::DOWNRIGHT:
-			{
+	case DIRECTIONACTION::DOWNLEFT:
+	case DIRECTIONACTION::DOWNRIGHT:
+		{
 			this->_v.y = _gravity * gameTime->GetTime();
 			this->_position.y += this->_v.y * _speed;
-			this->_positionBullet = D3DXVECTOR2(this->_position.x + 10.0f, this->_position.y + this->_sprite.GetFrameHeight() / 2 + 5.0f);
 			break;
-			}
-	case DIRECTIONACTION::DOWNLEFT:		
-		{						
-			this->_v.y = _gravity * gameTime->GetTime();
-			this->_position.y += this->_v.y * _speed;
-
-			this->_positionBullet = D3DXVECTOR2(this->_position.x - 10.0f, this->_position.y + this->_sprite.GetFrameHeight() / 2 + 5.0f);
 		}
-		break;
 	case DIRECTIONACTION::JUMPLEFT:
-		{	
-			this->_position.x += _v.x * gameTime->GetTime() * this->_speed;
+		{
+			if(this->_isSkillJump)
+				this->_position.x += _v.x * gameTime->GetTime() * this->_speed;
+
 			this->_position.y += _v.y * gameTime->GetTime() * this->_speed;
 			this->_isStartJump = false;
 			this->_v.y += _gravity;
-
-			this->_positionBullet = D3DXVECTOR2(this->_position.x - 10.0f, this->_position.y + this->_sprite.GetFrameHeight() / 2 + 5.0f);
 		}
 		break;
 	case DIRECTIONACTION::JUMPRIGHT:
 		{
-			this->_position.x += _v.x * gameTime->GetTime() * this->_speed;
+			if(this->_isSkillJump)
+				this->_position.x += _v.x * gameTime->GetTime() * this->_speed;
+
 			this->_position.y += _v.y * gameTime->GetTime() * this->_speed;
 			this->_isStartJump = false;
 			this->_v.y += _gravity;
-
-			this->_positionBullet = D3DXVECTOR2(this->_position.x + 10.0f, this->_position.y + this->_sprite.GetFrameHeight() / 2 + 5.0f);
 		}
 		break;
 	case DIRECTIONACTION::STANDLEFT:
 	case DIRECTIONACTION::STANDRIGHT:
 		{
-			this->_v.y = -100.0f / 1000.0f;
+			this->_v.y =-100.0f / 1000.0f;
 		}
 		break;
 	default:
 		break;
 	} 
 
-	/////Start boss
-	this->_timeStart += gameTime->GetTime();
-	if(this->_timeStart >= 2000.0f && this->_currentDirec == DIRECTIONACTION::START)
-	{
-		this->_bullet->_sttBoom = STTBOOM::NONE;
-		this->_currentDirec = DIRECTIONACTION::STANDLEFT;
-		this->_spriteStatus = ID_SPRITE_BOOMMAN_JUMP_STAND;
-	}
-
 	// Kiểm tra và thay đổi trạng thái của Cut man
-	if(this->_currentDirec != DIRECTIONACTION::START)
-		this->CheckStatus(gameTime);
+	this->CheckStatus(gameTime);
 
 	//Thay đổi sprite
 	if (previousSpriteID != this->_spriteStatus)
@@ -331,18 +313,8 @@ void CBoomMan::Update(CTimer* gameTime, Megaman* rockman)
 	//aminition
 	this->_sprite.Update(gameTime);
 
-	//set position boom để nó bắn
-	if(this->_bullet->_isfire)
-	{
-
-	}
-	else if(this->_bullet->_sttBoom == STTBOOM::NONE && this->_currentDirec != DIRECTIONACTION::START)
-	{
-		this->_bullet->_position = _positionBullet;
-	}
-
 	//amination bullet
-//	this->_bullet->Update(gameTime);
+	//this->_bullet->Update(gameTime);		
 
 	this->UpdateBox();
 
@@ -355,17 +327,20 @@ void CBoomMan::Update(CTimer* gameTime, Megaman* rockman)
 	_collideNormalXBullet=_collideNormalYBullet=CDirection::NONE_DIRECT;
 }
 
-void CBoomMan::OnCollideWith(CGameObject *gameObject, CDirection normalX, CDirection normalY, float deltaTime)
+void CGutsMan::OnCollideWith(CGameObject *gameObject, CDirection normalX, CDirection normalY, float deltaTime)
 {
 	// Nếu va chạm với .......
 	switch (gameObject->_typeID)
 	{
+	case ID_ROCK:
 	case ID_BLOCK:
+	case ID_ROCK_IN_GUT_STAGE:
 
 		if(normalX == CDirection::ON_RIGHT||normalX==CDirection::ON_LEFT)
 			if (_timeHistoryCollideX > deltaTime)
 			{
 				_timeHistoryCollideX = deltaTime;
+
 				_collideNormalX = normalX;		
 			}
 
@@ -377,11 +352,11 @@ void CBoomMan::OnCollideWith(CGameObject *gameObject, CDirection normalX, CDirec
 					_timeHistoryCollideY = deltaTime;
 					_collideNormalY = normalY;		
 				}
+
 				break;
 	case ID_ROCKMAN: // xử lý va chạm với rockman
 		break;
-
-		case ID_BULLET_ROCKMAN_NORMAL: case ID_BULLET_ROCKMAN_BOOM : case ID_BULLET_ROCKMAN_CUT : case ID_BULLET_ROCKMAN_GUTS:
+	case ID_BULLET_ROCKMAN_NORMAL: case ID_BULLET_ROCKMAN_BOOM : case ID_BULLET_ROCKMAN_CUT : case ID_BULLET_ROCKMAN_GUTS:
 		this->_bulletRockMan = (CBullet*)gameObject;
 
 		if(normalX == CDirection::ON_RIGHT||normalX==CDirection::ON_LEFT)
@@ -398,87 +373,89 @@ void CBoomMan::OnCollideWith(CGameObject *gameObject, CDirection normalX, CDirec
 					_collideNormalYBullet = normalY;		
 				}
 
-				if(normalY == CDirection::INSIDE || normalX == CDirection::INSIDE)
-				if (_timeHistoryCollideYBullet > deltaTime)
-				{
-					_timeHistoryCollideYBullet = deltaTime;
-					_collideNormalYBullet = normalY;		
-				}				
-				break;
+					if(normalY == CDirection::INSIDE || normalX == CDirection::INSIDE)
+						if (_timeHistoryCollideYBullet > deltaTime)
+						{
+							_timeHistoryCollideYBullet = deltaTime;
+							_collideNormalYBullet = normalY;		
+						}	
+					break;
 	default:	
 		break;
-
 	}	
 }
 
-void CBoomMan::CheckStatus(CTimer* gameTime)
+void CGutsMan::CheckStatus(CTimer* gameTime)
 {
 	if(this->_currentDirec == DIRECTIONACTION::DIE)
 	{
+
 		return;
 	}
 
-	if((this->_previousDirec == DIRECTIONACTION::JUMPLEFT && this->_v.y == -100.0f / 1000.0f) && this->_position.x - this->_posRockMan.x < 0)
+	if((this->_previousDirec == DIRECTIONACTION::JUMPLEFT && this->_v.y == -100.0f / 1000.0f) )
 	{
 		this->_currentDirec = DIRECTIONACTION::STANDRIGHT;		
 
-		this->_spriteStatus = ID_SPRITE_BOOMMAN_JUMP_STAND;
-		//this->_position.y += 4.0f;
+		this->_spriteStatus = ID_SPRITE_GUSTMAN_STAND;
 
 		this->_timeDelay = 0.0f;
 		if(this->_v.x < 0)
 			this->_v.x *= -1;
+
 		this->_isJump = true;
 		this->_isLockRun = true;
-
-		this->_positionBullet = D3DXVECTOR2(this->_position.x + 10.0f, this->_position.y + this->_sprite.GetFrameHeight() / 2);
 	}
-	else if((this->_previousDirec == DIRECTIONACTION::JUMPRIGHT && this->_v.y == -100.0f / 1000.0f) && this->_position.x - this->_posRockMan.x > 0)
+	else if((this->_previousDirec == DIRECTIONACTION::JUMPRIGHT && this->_v.y == -100.0f / 1000.0f) )
 	{
+
 		this->_currentDirec = DIRECTIONACTION::STANDLEFT;
 
-		this->_spriteStatus = ID_SPRITE_BOOMMAN_JUMP_STAND;
+		this->_spriteStatus = ID_SPRITE_GUSTMAN_STAND;
+
 		this->_timeDelay = 0.0f;
 
 		if(this->_v.x > 0)
 			this->_v.x *= -1;
+
 		this->_isJump = true;
 		this->_isLockRun = true;
-
-		this->_positionBullet = D3DXVECTOR2(this->_position.x - 10.0f, this->_position.y + this->_sprite.GetFrameHeight() / 2);
 	}
 	else
-	{
-		//sau khi nhảy dừng 1s sau đó hoạt động tiếp
+	{			
+		//sau khi nhảy dừng 1.5s sau đó hoạt động tiếp
 		this->_timeDelay += gameTime->GetTime();
 
-		if(this->_timeDelay >= 1000)
+		if(this->_timeDelay >= 3100)
 		{
-			this->_timeDelay = 1000.0f;
-
-			if(abs(this->_posRockMan.x - this->_position.x) > RANK_BOOMMAN && this->_v.y == -100.0f / 1000.0f)// điều kiện là nhảy phải xa hơn rank quy định
-			{	  				
-				//Jump	
-				this->JumpAI();	
-				this->_isJump = false;
-			}
-			else
-			{				
-				//Jump			
-				this->JumpAI();
-				this->_isJump = false;
-			}				
+			this->_timeDelay = 3100.0f;		
+			//Jump			
+			this->JumpAI();
+			this->_isJump = false;
 		}	
 		else 
-			if(this->_timeDelay >= 800)
-			{	
-				if(this->_spriteStatus == ID_SPRITE_BOOMMAN_FIRE)
-					this->_sprite.SetIndex(1);
+			if(this->_timeDelay >= 2000)
+			{				
+				srand (time(NULL));
+				int r = rand() % 2 + 1;
+				if(0 == 0)
+				{	
+					// lấy vị trí để bắn
+					this->_bullet->_posGutsMan = this->_position;
+					this->_bullet->_posRockMan = this->_posRockMan;
 
-				this->_bullet->_isfire = true;
-				this->_spriteStatus = ID_SPRITE_BOOMMAN_FIRE;	
+					if(this->_spriteStatus != ID_SPRITE_GUSTMAN_THROW)
+					{
+						this->_bullet->_isfire = true;
+						this->_bullet->_position = D3DXVECTOR2(this->_position.x, this->_position.y + this->_sprite.GetFrameHeight() + 100.0f);
+					}	
+					this->_spriteStatus = ID_SPRITE_GUSTMAN_THROW;
+				}
+				else
+				{
+					this->_timeDelay = 3100.0f;
+				}
 			}
-
 	}
 
 	// Nếu boom man đang đứng thì kiểm tra hướng đứng(trái or phải)
@@ -486,23 +463,20 @@ void CBoomMan::CheckStatus(CTimer* gameTime)
 	{
 		this->_currentDirec = DIRECTIONACTION::STANDRIGHT;
 		if(this->_previousDirec != this->_currentDirec)
-			this->_v.x *= -1;
-
-		this->_positionBullet = D3DXVECTOR2(this->_position.x + 10.0f, this->_position.y + this->_sprite.GetFrameHeight() / 2);
+			this->_v.x *= -1;	
 	}
 	else if(this->_currentDirec == DIRECTIONACTION::STANDRIGHT && this->_position.x - this->_posRockMan.x > 0)
 	{	
 		this->_currentDirec = DIRECTIONACTION::STANDLEFT;
 		if(this->_previousDirec != this->_currentDirec)
 			if(this->_v.x > 0)
-				this->_v.x *= -1;
-		this->_positionBullet = D3DXVECTOR2(this->_position.x - 10.0f, this->_position.y + this->_sprite.GetFrameHeight() / 2);
+				this->_v.x *= -1;		
 	}
 
 	this->_previousDirec = this->_currentDirec;
 }
 
-void CBoomMan::JumpAI()
+void CGutsMan::JumpAI()
 {
 	this->_gravity = -9.8f/1000.0f;
 	if(this->_v.x > 0)
@@ -515,63 +489,56 @@ void CBoomMan::JumpAI()
 	}
 
 	if( this->_currentDirec != this->_previousDirec || this->_isJump)
-	{	
-		this->_isJump = false;
-		this->_isStartJump = true;
+	{			
 		srand (time(NULL));
 		int r = rand() % 2 + 1;
 		if(r % 2 == 0)
 		{	
-			//xét độ cao để nhảy thấp.
-			this->_v.y += 210.0f / (1000.0f);
-			this->_spriteStatus = ID_SPRITE_BOOMMAN_JUMP_LOW;	
+			this->_isSkillJump = false; // nhảy thẳng làm động đất			
 		}
 		else
-		{
-			//xét độ cao để nhảy cao.
-			this->_v.y += 250.0f / (1000.0f);
-			this->_spriteStatus = ID_SPRITE_BOOMMAN_JUMP_HEIGHT;	
-		}
-	}
+			this->_isSkillJump = true; // nhảy cong
+
+		Asset::GetInstance()->__is_require_shake_screen = false;
+		this->_isJump = false;
+		this->_isStartJump = true;
+		//xét độ cao để nhảy.
+		this->_v.y +=  200.0f/ (1000.0f);
+		this->_spriteStatus = ID_SPRITE_GUSTMAN_STOMING;					
+
+	}	
 }
 
-void CBoomMan::GetPositioRockMan(D3DXVECTOR2 pos)
+void CGutsMan::GetPositioRockMan(D3DXVECTOR2 pos)
 {
 	this->_posRockMan = pos;
 }
 
-void CBoomMan::UpdateBox()
+void CGutsMan::UpdateBox()
 {
-	switch(this->_spriteStatus)
-	{
-	case ID_SPRITE_BOOMMAN_FIRE:
-	case ID_SPRITE_BOOMMAN_JUMP_LOW:
-	case ID_SPRITE_BOOMMAN_JUMP_HEIGHT:
-	case ID_SPRITE_BOOMMAN_JUMP_STAND:
-	case ID_SPRITE_BOOMMAN_BOOM_PUSH:
-		this->_box._width = 25.0f;
-		this->_box._height = 28.0f;
-		this->_box._x = this->_position.x - this->_sprite.GetFrameWidth() / 2;
-		this->_box._y = this->_position.y + this->_sprite.GetFrameHeight() / 2;
-		this->_box._vx = this->_v.x * _speed;
-		this->_box._vy = this->_v.y * _speed;
-		break;	
-	}
+	this->_box._width = 30.0f;
+	this->_box._height = 30.0f;
+	this->_box._x = this->_position.x - this->_box._width / 2;
+	this->_box._y = this->_position.y + this->_box._height / 2;
+	this->_box._vx = this->_v.x * _speed;
+	this->_box._vy = this->_v.y * _speed;
+
 }
 
-vector<CBullet*> CBoomMan::Fire()
+vector<CBullet*> CGutsMan::Fire()
 {
 	vector<CBullet*> vbullet = vector<CBullet*>();
+
 	if (this->_bullet->_isOneHitBullet)
 	{
 		vbullet.push_back(this->_bullet);
 		this->_bullet->_isOneHitBullet = false;
-		this->_bullet->SetStatus(true);
+		this->_bullet->SetStatus();
 	}
 	return vbullet;
 }
 
-CBoomMan* CBoomMan::ToValue()
+CGutsMan* CGutsMan::ToValue()
 {
-	return new CBoomMan(*this);
+	return new CGutsMan(*this);
 }

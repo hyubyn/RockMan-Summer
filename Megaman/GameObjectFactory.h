@@ -17,7 +17,7 @@
 #include "Global.h"
 #include "CBoomMan.h"
 #include "CCutMan.h"
-//#include "CGutsMan.h"
+#include "CGutsMan.h"
 #include "CBullet.h"
 #include "CDieArrow.h"
 #include "CDoor.h"
