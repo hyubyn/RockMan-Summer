@@ -63,17 +63,21 @@ class Camera
 	vector<MoveLine> _listMoveLine;	// list cac duong thang ma camera di chuyen ben tren
 	bool isMoving;		// bien xac dinh camera co dang di chuyen hay ko
 	D3DXVECTOR2 endPoint;	// toa do camera di chuyen toi
-	D3DXVECTOR2 endMap;	// toa do cuoi cung cua Camera
 	int count;	// bien dem luu tru so luong point path
 	int limitX; // hieu cua hai toa do camera di chuyen. moi map moi khac
+	D3DXVECTOR2 doorPoint;
+
 public:
 	Camera();
 	~Camera();
 	vector<D3DXVECTOR2> _listPoint;	// list cac toa do duoc doc tu file txt
+	D3DXVECTOR2 endMap;	// toa do cuoi cung cua Camera
 	D3DXVECTOR2 _pos;
 	D3DXVECTOR2 _positionBossRoom;
+	bool isMovingOverDoor;
 	RECT getViewPort();
 	void LoadCameraPath(int id);	// Ham load file txt lay cac toa do cua camera path, id: 1 = boom state, 2 = cut state, 3 = guts state
+	void MoveOverDoor();
 	int width;
 	int height;
 	void Update(D3DXVECTOR2 megamanPos);
