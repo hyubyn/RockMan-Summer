@@ -76,7 +76,7 @@ void Camera::Update(D3DXVECTOR2 megamanPosition)
 void Camera::Move(D3DXVECTOR2 megamanPos, int index)
 {
 	MoveLine line = _listMoveLine.at(index);
-	if (_pos != endMap)
+	if (_pos != _positionBossRoom)
 	{
 		
 		if (line.direct == horizontal)											// camera di chuyen theo phuong ngang
