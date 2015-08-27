@@ -193,6 +193,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 
 		for (int i = 0; i < collidedLst.size(); i++)
 		{
+			#pragma region INSIDE
 			if (collidedLst[i]->_direction == CDirection::INSIDE)
 			{
 				switch (collidedLst[i]->_object->_typeID)
@@ -227,7 +228,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 						case RUN:
 						case JUMP:
 						case FALL:
-							if (CInput::GetInstance()->IsKeyPress(ID_KEY_CODE_UP))
+							if (mkeyboard->IsKeyPress(ID_KEY_CODE_UP))
 							{
 								_behave = Behave::STAIR;
 								_a.x = 0.0f;
@@ -236,6 +237,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 								_v.y = 0.0f;
 								_position.x = collidedLst[i]->_object->_position.x;
 								isFalled = false;
+								_canJump=true;
 							}
 							else if (_collidedObjectGroundDown->_object == NULL)
 								isFalled = true;
@@ -294,10 +296,10 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 				case  ID_BLOCK:
 					break;
 				case  ID_DIE_ARROW:
-					/*_position += _v*collidedLst[i]->_timeCollide;
+					_position += _v*collidedLst[i]->_timeCollide;
 					Attack(0, true);
 					if (_behave == Behave::DYING)
-						return;*/
+						return;
 					break;
 				default:
 					if (_behave != Behave::HURT_IN_AIR&&_behave != Behave::HURT_ON_GROUND&& !_isInShield)
@@ -377,6 +379,9 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 					break;
 				}
 			}
+#pragma endregion INSIDE
+
+			#pragma region LEFT
 			if (collidedLst[i]->_direction == CDirection::ON_LEFT)
 			{
 				switch (collidedLst[i]->_object->_typeID)
@@ -458,6 +463,9 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 					break;
 				}
 			}
+#pragma endregion LEFT
+
+			#pragma region RIGHT
 			if (collidedLst[i]->_direction == CDirection::ON_RIGHT)
 			{
 				switch (collidedLst[i]->_object->_typeID)
@@ -539,6 +547,9 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 					break;
 				}
 			}
+#pragma endregion RIGHT
+
+			#pragma region UP
 			if (collidedLst[i]->_direction == CDirection::ON_UP)
 			{
 				switch (collidedLst[i]->_object->_typeID)
@@ -621,6 +632,10 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 					break;
 				}
 			}
+#pragma endregion UP
+
+			#pragma region DOWN
+
 			if (collidedLst[i]->_direction == CDirection::ON_DOWN)
 			{
 				switch (collidedLst[i]->_object->_typeID)
@@ -767,6 +782,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 					break;
 				}
 			}
+			#pragma endregion DOWN
 		}
 
 		if (isFalled)
@@ -840,7 +856,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 				_isGoingOverDoor = false;
 				_isOverDoor = true;
 				_timeOverDoor = 0;
-				CInput::GetInstance()->Deactive();
+				mkeyboard->Deactive();
 				_behave = Behave::STAND;
 				_v.x = _v.y = _a.x = _a.y = 0.0f;
 			}
@@ -1500,7 +1516,7 @@ void Megaman::UpdateBox()
 
 void Megaman::Attack(int dame, bool isRealKill)
 {
-	//_blood -= dame;
+	_blood -= dame;
 
 	if (isRealKill || _blood <= 0)
 	{
