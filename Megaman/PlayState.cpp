@@ -33,10 +33,16 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 		_prepareForBoss = 0;
 		_shakePointRand = D3DXVECTOR2(0.0f, 0.0f);
 		_defaultStringColor = D3DCOLOR_XRGB(255, 255, 255);
-		D3DXVECTOR2 pos = _camera->endMap;
+//<<<<<<< HEAD
+//		D3DXVECTOR2 pos = _camera->endMap;
+//		_camera->_pos = pos;
+//		_camera->_pos.x = pos.x - 200;
+//		_rockman->SetPos(D3DXVECTOR2(pos.x - 200 + SCREEN_WIDTH / 2,pos.y));
+//=======
+			D3DXVECTOR2 pos = _camera->_listPoint.at(0);
 		_camera->_pos = pos;
-		_camera->_pos.x = pos.x - 200;
-		_rockman->SetPos(D3DXVECTOR2(pos.x - 200 + SCREEN_WIDTH / 2,pos.y));
+		_rockman->SetPos(D3DXVECTOR2(pos.x - 30 + SCREEN_WIDTH / 2,pos.y)); 
+
 /*		
 		_rockman = new _rockman();
 		_rockman->Initlize();
@@ -583,8 +589,8 @@ void CPlayState::Update(CTimer* gameTime)
 					collideTime = CheckCollision(_rockman, _enemies[i], normalX, normalY, gameTime->GetTime());
 					if (collideTime < gameTime->GetTime())
 					{
-						//_rockman->OnCollideWith(_enemies[i], normalX, normalY, collideTime);
-						//((CEnemy*)_enemies[i])->OnCollideWith(_rockman, normalX, normalY, collideTime);
+						_rockman->OnCollideWith(_enemies[i], normalX, normalY, collideTime);
+						((CEnemy*)_enemies[i])->OnCollideWith(_rockman, normalX, normalY, collideTime);
 					}
 				}
 
@@ -595,8 +601,8 @@ void CPlayState::Update(CTimer* gameTime)
 						collideTime = CheckCollision(_rockman, _bulletsEnemy[i], normalX, normalY, gameTime->GetTime());
 						if (collideTime < gameTime->GetTime())
 						{
-							//_rockman->OnCollideWith(_bulletsEnemy[i], normalX, normalY, collideTime);
-							//((CBullet*)_bulletsEnemy[i])->OnCollideWith(_rockman, normalX, normalY, collideTime);
+							_rockman->OnCollideWith(_bulletsEnemy[i], normalX, normalY, collideTime);
+							((CBullet*)_bulletsEnemy[i])->OnCollideWith(_rockman, normalX, normalY, collideTime);
 						}
 					}
 				}
