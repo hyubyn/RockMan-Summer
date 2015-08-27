@@ -18,8 +18,8 @@ Megaman::~Megaman()
 
 int Megaman::Initlize()
 {
-	_isOverDoor = true;
-	_isInBossRoom = true;
+	//_isOverDoor = true;
+	//_isInBossRoom = true;
 	// Cài đặt trạng thái Ready cho Rockman
 	_v.x = 0.0f;
 	_v.y = -ROCKMAN_VERLOCITY_Y;
@@ -29,7 +29,7 @@ int Megaman::Initlize()
 	_life = LIFE_DEFAULT;
 	_blood = BLOOD_DEFAULT;
 	_isRequireEndGame = false;
-	//_isInBossRoom = false;
+	_isInBossRoom = false;
 	_isRight = true;
 	_canJump = true;
 	_canJumpMore = true;
@@ -288,6 +288,7 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 				case ID_DOOR1_CUTMAN:
 				case ID_DOOR1_GUTSMAN:
 				case ID_DOOR1_BOOMMAN:
+					_isRequireOverDoor = true;
 				case ID_ELEVATOR:
 				case ID_ROCK_IN_GUT_STAGE:
 				case  ID_ROCK:

@@ -119,7 +119,7 @@ private:
 	int			_deltatTimeShakingScreen;
 	D3DXVECTOR2		_shakePointRand;
 	CDoor*		_door;
-
+	vector<CDoor*> _listDoor;
 	// Các biến điều khiển việc tính điểm màn hình
 	int			_deltaClearPoint, _clearPoint, _totalScore;			// Biến tăng giá trị để tính điểm trên màn hình
 	string		_strClearPoint;

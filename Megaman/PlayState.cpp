@@ -33,9 +33,10 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 		_prepareForBoss = 0;
 		_shakePointRand = D3DXVECTOR2(0.0f, 0.0f);
 		_defaultStringColor = D3DCOLOR_XRGB(255, 255, 255);
-		D3DXVECTOR2 pos = _camera->_positionBossRoom;
+		D3DXVECTOR2 pos = _camera->endMap;
 		_camera->_pos = pos;
-		_rockman->SetPos(D3DXVECTOR2(pos.x + SCREEN_WIDTH / 2,pos.y));
+		_camera->_pos.x = pos.x - 200;
+		_rockman->SetPos(D3DXVECTOR2(pos.x - 200 + SCREEN_WIDTH / 2,pos.y));
 /*		
 		_rockman = new _rockman();
 		_rockman->Initlize();
@@ -152,6 +153,7 @@ void CPlayState::Update(CTimer* gameTime)
 	_elevators.clear();
 	//_enemies.clear();
 	_items.clear();
+	_listDoor.clear();
 
 	// lay danh sach cac doi tuong chia ra theo tung loai
 	for(map<int,CGameObject*>::iterator i = tree->_listObjectOnScreen.begin();i != tree->_listObjectOnScreen.end();++i)
@@ -178,6 +180,7 @@ void CPlayState::Update(CTimer* gameTime)
 		case ID_DOOR1_BOOMMAN:
 		case ID_DOOR2_BOOMMAN:
 			_door = ((CDoor*)((*i).second));
+			_listDoor.push_back(((CDoor*)((*i).second)));
 			break;
 		case ID_ITEM_BLOOD_BIG:
 		case ID_ITEM_BLOOD_SMALL:
@@ -355,75 +358,87 @@ void CPlayState::Update(CTimer* gameTime)
 			_deltaTime = 0;						// Bắt đầu đếm thời gian chờ chuyển màn
 			return;
 		}
-
-		if (_door != NULL)
+		for (int i = 0; i < _listDoor.size(); i++)
 		{
-			if (_door->_typeID == ID_DOOR1_CUTMAN ||
-				_door->_typeID == ID_DOOR2_CUTMAN ||
-				_door->_typeID == ID_DOOR1_GUTSMAN ||
-				_door->_typeID == ID_DOOR2_GUTSMAN ||
-				_door->_typeID == ID_DOOR1_BOOMMAN ||
-				_door->_typeID == ID_DOOR2_BOOMMAN)
+			if (_listDoor.at(i) != NULL)
+		{
+			if (_listDoor.at(i)->_typeID == ID_DOOR1_CUTMAN ||
+				_listDoor.at(i)->_typeID == ID_DOOR2_CUTMAN ||
+				_listDoor.at(i)->_typeID == ID_DOOR1_GUTSMAN ||
+				_listDoor.at(i)->_typeID == ID_DOOR2_GUTSMAN ||
+				_listDoor.at(i)->_typeID == ID_DOOR1_BOOMMAN ||
+				_listDoor.at(i)->_typeID == ID_DOOR2_BOOMMAN)
 			{
-				switch (_door->_typeID)
+				switch (_listDoor.at(i)->_typeID)
 				{
 				case ID_DOOR1_CUTMAN:
 				case ID_DOOR1_GUTSMAN:
 				case ID_DOOR1_BOOMMAN:
-					_pointBeforeDoor = _door->_position - D3DXVECTOR2(SCREEN_WIDTH / 2, 0);
-					_pointAfterDoor = _door->_position + D3DXVECTOR2(SCREEN_WIDTH / 2 + _door->GetBox()._width / 2, 0);
+					_pointBeforeDoor = _listDoor.at(i)->_position - D3DXVECTOR2(SCREEN_WIDTH / 2, 0);
+					_pointAfterDoor = _listDoor.at(i)->_position + D3DXVECTOR2(SCREEN_WIDTH / 2 + _listDoor.at(i)->GetBox()._width / 2, 0);
 					break;
 				case ID_DOOR2_CUTMAN:
 				case ID_DOOR2_GUTSMAN:
-					_pointBeforeDoor = _door->_position - D3DXVECTOR2(SCREEN_WIDTH / 2, 0);
+					_pointBeforeDoor = _listDoor.at(i)->_position - D3DXVECTOR2(SCREEN_WIDTH / 2, 0);
 					_pointAfterDoor = _camera->_listPoint.at(_camera->_listPoint.size()-1);
 					break;
 				case ID_DOOR2_BOOMMAN:
-					_pointBeforeDoor = _door->_position + D3DXVECTOR2(0, SCREEN_HEIGHT / 2);
+					_pointBeforeDoor = _listDoor.at(i)->_position + D3DXVECTOR2(0, SCREEN_HEIGHT / 2);
 					_pointAfterDoor = _camera->_listPoint.at(_camera->_listPoint.size()-1);
 					break;
 				}
-				_pointDoor = _door->_position;
+				_pointDoor = _listDoor.at(i)->_position;
 
 				if (_rockman->IsRequireOpenDoor())
 				{
-					if (_door->GetState() == DoorState::WAITING)
+					if (_listDoor.at(i)->GetState() == DoorState::WAITING)
 					{
 						_doorState = -1;
-						_door->OpenDoor();
+						_listDoor.at(i)->OpenDoor();
 						ResourceManager::PlayASound(ID_EFFECT_OPEN_THE_DOOR);
 					}
-					_door->Update(gameTime);
+					_listDoor.at(i)->Update(gameTime);
 
-					if (_door->GetState() == DoorState::WAITING_FOR_THROUGH&&!_rockman->IsGoingOverDoor())
+					if (_listDoor.at(i)->GetState() == DoorState::WAITING_FOR_THROUGH&&!_rockman->IsGoingOverDoor())
 					{
 						_doorState = 0;
-						_rockman->ThroughOverDoor(_door->_typeID);
+						_rockman->ThroughOverDoor(_listDoor.at(i)->_typeID);
 						_changingScreen = 1;
 
-						_enemies.clear();
-						_bulletsEnemy.clear();
-						_bulletsRockman.clear();
-						_items.clear();
+						//_enemies.clear();
+						//_bulletsEnemy.clear();
+						//_bulletsRockman.clear();
+						//_items.clear();
 						_rockman->_canFire = true;
 
-						if (_door->_typeID != ID_DOOR2_BOOMMAN)
+						if (_listDoor.at(i)->_typeID != ID_DOOR2_BOOMMAN)
 						{
 							_newScreenPosition = _pointAfterDoor;
 							_changeScreenDirection = CDirection::ON_RIGHT;
 						}
 					}
 				}
-				else if (_rockman->IsOverDoor() && _door->GetState() == DoorState::WAITING_FOR_THROUGH)
+				else if (_rockman->IsOverDoor() && _listDoor.at(i)->GetState() == DoorState::WAITING_FOR_THROUGH)
 				{
-					_door->CloseDoor();
+
+					if(_camera->_pos == _camera->_positionBossRoom)
+					{
+						_rockman->_isInBossRoom= true;
+						_rockman->_isOverDoor = true;
+					}
+					_doorState = 0;
+					_listDoor.at(i)->CloseDoor();
+					_changingScreen = 0 ;
+					_camera->MoveOverDoor();
 					ResourceManager::PlayASound(ID_EFFECT_OPEN_THE_DOOR);
-					_door->Update(gameTime);
+					_listDoor.at(i)->Update(gameTime);
 				}
 			}
 
-			_door->Update(gameTime);
+			_listDoor.at(i)->Update(gameTime);
 		}
+		}
+		
 		// Chặn mọi hoạt động khi cửa hoạt động
 		if (_doorState == -1)
 			return;
@@ -444,13 +459,17 @@ void CPlayState::Update(CTimer* gameTime)
 			if (collideTime < gameTime->GetTime())
 				_rockman->OnCollideWith(_groundObjs[i], normalX, normalY, collideTime);
 		}
-		if (_door != NULL)
+		for (int i = 0; i < _listDoor.size(); i++)
 		{
-			collideTime = CheckCollision(_rockman, _door, normalX, normalY, gameTime->GetTime());
-			if (collideTime < gameTime->GetTime())
-				_rockman->OnCollideWith(_door, normalX, normalY, collideTime);
-		}
+			if (_listDoor.at(i) != NULL)
+			{
+				collideTime = CheckCollision(_rockman, _listDoor.at(i), normalX, normalY, gameTime->GetTime());
+				if (collideTime < gameTime->GetTime())
+					_rockman->OnCollideWith(_listDoor.at(i), normalX, normalY, collideTime);
+			}
 
+		}
+		
 		for (int i = 0; i < _items.size(); i++)		// Kiểm tra va chạm với các items
 		{
 			collideTime = CheckCollision(_rockman, _items[i], normalX, normalY, gameTime->GetTime());
@@ -1017,9 +1036,11 @@ void CPlayState::Draw(CTimer* gameTime, MGraphic* graphics)
 
 	for (int i = 0; i < _groundObjs.size(); i++)
 		_groundObjs[i]->Render(gameTime, graphics);
-	if (_door != NULL)
-		_door->Render(gameTime, graphics);
 
+	for (int i = 0; i < _listDoor.size(); i++)
+	{
+		_listDoor.at(i)->Render(gameTime, graphics);
+	}
 	_camera->_pos = (oldCameraPoint);
 
 	for (int i = 0; i < _bulletsRockman.size(); i++)

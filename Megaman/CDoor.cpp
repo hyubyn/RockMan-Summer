@@ -4,6 +4,7 @@ CDoor::CDoor(CSprite doorSprite) :CMoveableObject()
 {
 	_sprite = doorSprite;
 	_state = DoorState::WAITING;
+	_tick = 0;
 }
 
 CDoor::~CDoor()
@@ -30,7 +31,7 @@ void CDoor::Update(CTimer* gameTime)
 	{
 	case OPENING:
 		_tick += gameTime->GetTime();
-		if (_tick >= 200.0f)
+		if (_tick >= 30.0f)
 		{
 			_sprite.SetIndex((_sprite.GetIndex() + 1) % _sprite.GetCountFrame());
 			_tick = 0.0f;

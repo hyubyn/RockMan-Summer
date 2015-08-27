@@ -159,6 +159,8 @@ public:
 
 	Behave _behave;
 
+	bool	_isOverDoor;					// Đã qua cửa hay chưa
+	bool	_isInBossRoom;
 	bool	_canFire;						// Kiểm tra có hể bắn đạn hay không
 private:
 	//-----------------------------------------------------------------------------
@@ -202,10 +204,10 @@ private:
 	bool	_isRight;						// Giá trị hướng quay mặt của rockman
 	bool	_isUndying;						// Chỉ định có bật chế độ bất tử hay không
 	bool	_isChangingState;				// Có đang chuyển trạng thái hay không
-	bool	_isOverDoor;					// Đã qua cửa hay chưa
+	
 	bool	_isRequireOverDoor;				// Có đang yêu cầu qua cửa hay không
 	bool	_isRequireStopScreen;
-	bool	_isInBossRoom;
+	
 	bool	_isRequireEndGame;
 
 	bool	_isGoingOverDoor;				// Kiểm tra rockman có đang đi qua cửa hay không

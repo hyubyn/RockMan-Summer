@@ -147,11 +147,11 @@ void Camera::Move(D3DXVECTOR2 megamanPos, int index)
 	}
 	else
 	{
-		if (megamanPos.x > doorPoint.x - 20)
+		/*if (megamanPos.x > doorPoint.x - 20)
 		{
 			isMovingOverDoor = true;
 			isMoving = true;
-		}
+		}*/
 	}
 	}
 }
