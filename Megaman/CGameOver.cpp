@@ -3,6 +3,8 @@
 CGameOver::CGameOver(int score, Camera* cam) :CScreen()
 {
 	this->_camera = cam;
+	this->_camera->_pos.x = 0;
+	this->_camera->_pos.y = SCREEN_HEIGHT;
 	_score = score;
 	string stringScore = std::to_string(_score);
 	string stringZero = GetStringZero(stringScore.length());
