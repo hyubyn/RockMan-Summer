@@ -129,6 +129,7 @@ private:
 	// enemy for test
 
 	CEnemyBubble* bubble;
+	CEnemyFish* fish;
 
 	vector<CEnemyBubble*> listBubble;
 };

@@ -50,6 +50,7 @@ class CGameObjectFactory : public CSingleton<CGameObjectFactory>
 {
 	friend class CSingleton<CGameObjectFactory>;
 public:
+	Camera* cam;
 	CGameObjectFactory();
 public:
 	~CGameObjectFactory();

@@ -14,7 +14,7 @@ CQuadTree::~CQuadTree(void)
 {
 }
 
-void CQuadTree::LoadMap(int mapId)
+void CQuadTree::LoadMap(int mapId, Camera* cam)
 {
 	wchar_t* state = nullptr;
 	switch (mapId)
@@ -58,6 +58,7 @@ void CQuadTree::LoadMap(int mapId)
 		{
 			int b = 1;
 		}
+		CGameObjectFactory::GetInstance()->cam = cam;
 		CGameObject * object = CGameObjectFactory::GetInstance()->CreateObject(id, type, x, y, width, height, xCollide, yCollide, posXCollide, posYCollide);
 		if (object != NULL)
 		{

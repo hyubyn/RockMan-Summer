@@ -22,7 +22,7 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 		
 		//Load map - Load quadtree
 		tree = new CQuadTree();
-		tree->LoadMap(id);
+		tree->LoadMap(id, this->_camera);
 		// Khởi động trạng thái
 		_playState = PlayState::READY;
 		_deltaClearPoint = 0;
@@ -39,9 +39,10 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 //		_camera->_pos.x = pos.x - 200;
 //		_rockman->SetPos(D3DXVECTOR2(pos.x - 200 + SCREEN_WIDTH / 2,pos.y));
 //=======
-			D3DXVECTOR2 pos = _camera->_listPoint.at(0);
+			D3DXVECTOR2 pos = _camera->_listPoint.at(2);
+			
 		_camera->_pos = pos;
-		_rockman->SetPos(D3DXVECTOR2(pos.x - 30 + SCREEN_WIDTH / 2,pos.y)); 
+		_rockman->SetPos(D3DXVECTOR2(pos.x - 30 + SCREEN_WIDTH / 2,pos.y + 100)); 
 
 /*		
 		_rockman = new _rockman();
@@ -60,7 +61,9 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 		bubble->Initlize();
 		//obj->SetCollideRegion(posXCollide, posYCollide, widthCollide, heightCollide);
 	listBubble.push_back(bubble);
-		
+		 
+
+	//fish->SetCollideRegion(posXCollide, posYCollide, widthCollide, heightCollide);
 
 		/*_rockman->_position = D3DXVECTOR2(100, 200);
 		_rockman->_behave = STAND;*/
