@@ -59,14 +59,14 @@ private:
 	// + loop: Có lặp lại audio đó không
 	// + fileName: Đường dẫn file audio
 	//-----------------------------------------------------------------------------
-	void AddSound(int soundID, bool isLooping, wchar_t* fileName);
+	void AddSound(int soundID, bool isLooping, LPTSTR fileName);
 
 	//-----------------------------------------------------------------------------
 	// Load file audio
 	// + loop: Có lặp lại audio đó không
 	// + fileName: Đường dẫn file audio
 	//-----------------------------------------------------------------------------
-	CSound* LoadSound(bool isLooping, wchar_t* fileName);
+	CSound* LoadSound(bool isLooping, LPTSTR fileName);
 
 	static ResourceManager* _instance;
 	CSoundManager* _soundManage;
