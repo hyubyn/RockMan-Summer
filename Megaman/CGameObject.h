@@ -42,10 +42,10 @@ public:
 
 	int _id;		// Mã xác định đối tượng
 	int _typeID;	// Mã xác định loại đối tượng
-
+	bool _isInViewPort;
 private:
 	CTexture	_border;
-	bool _isInViewPort;
+	
 };
 
 class CStaticObject : public CGameObject

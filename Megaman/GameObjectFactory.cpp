@@ -45,7 +45,7 @@ CGameObject* CGameObjectFactory::CreateObject(int objID, int typeID, int posX, i
 		obj = new  CEnemyEye(0);
 		break;
 	case ID_ENEMY_FISH_ORANGE:
-		obj = new  CEnemyFish(posY);
+		obj = new  CEnemyFish(posY, cam);
 		break;
 	case ID_ENEMY_INK_RED:
 		obj = new  CEnemyInk(0);

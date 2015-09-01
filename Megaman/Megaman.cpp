@@ -857,7 +857,6 @@ void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 				_isGoingOverDoor = false;
 				_isOverDoor = true;
 				_timeOverDoor = 0;
-				mkeyboard->Deactive();
 				_behave = Behave::STAND;
 				_v.x = _v.y = _a.x = _a.y = 0.0f;
 			}

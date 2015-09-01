@@ -3,7 +3,7 @@
 CScreenManager* CScreenManager::_instance = NULL;
 
 CScreenManager::CScreenManager(){
-
+	isShowingPopup = false;
 }
 
 CScreenManager::~CScreenManager(){
@@ -75,6 +75,7 @@ void CScreenManager::Update(CTimer* gameTime){
 }
 
 void CScreenManager::UpdateInput(MKeyboard* input){
+	
 
 	vector<int> list;
 
@@ -88,6 +89,7 @@ void CScreenManager::UpdateInput(MKeyboard* input){
 	else // Nếu có màn hình popup thì cập nhật màn hình này
 	{
 		_popupScreen->UpdateKeyboard(input);
+	
 	}
 }
 
@@ -104,4 +106,5 @@ void CScreenManager::ShowPopupScreen(CScreen* popupScreen){
 		((CPopup*)_popupScreen)->Initilize();
 
 	}
+	isShowingPopup = true;
 }

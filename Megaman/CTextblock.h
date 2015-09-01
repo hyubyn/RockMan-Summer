@@ -115,14 +115,15 @@ public:
 	// Nội dung đoạn text muốn hiển thị
 	//-----------------------------------------------------------------------------
 	string _text;
-	
+
+	RECT _boundingRectText; // Khung hình chữ nhật bao đoạn text
 private:
 	float _tick;			// biến đếm thời gian cộng dồn, quản lý thời gian animation
 	float _tickAnimation;	// biến đếm thời gian cộng dồn, hỗ trợ cho hiệu ứng nhấp nháy
 	bool _isAnimation;		// Chỉ định hiệu ứng nhấp nháy
 	float _animationTime;	//Thời gian thực hiện animation
 	int _animationMode;		//Chế độ animation
-	RECT _boundingRectText; // Khung hình chữ nhật bao đoạn text
+
 };
 
 #endif //!CTEXT_BLOCK_H

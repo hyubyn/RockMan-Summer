@@ -24,14 +24,17 @@ int CItemObject::Initlize()
 	case ID_ITEM_BOSS_CUT:
 		_spriteStatus = ID_SPRITE_ITEM_BOSS_CUT;
 		_sprite = ResourceManager::GetSprite(_spriteStatus);
+		//_isInViewPort = true;
 		break;
 	case ID_ITEM_BOSS_GUTS:
 		_spriteStatus = ID_SPRITE_ITEM_BOSS_GUTS;
 		_sprite = ResourceManager::GetSprite(_spriteStatus);
+		//_isInViewPort = true;
 		break;
 	case ID_ITEM_BOSS_BOOM:
 		_spriteStatus = ID_SPRITE_ITEM_BOSS_BOOM;
 		_sprite = ResourceManager::GetSprite(_spriteStatus);
+		//_isInViewPort = true;
 		break;
 	case ID_ITEM_LIFE:
 		_spriteStatus = ID_SPRITE_ITEM_LIFE;

@@ -44,7 +44,7 @@ void CTimer::EndCount()
 
 float CTimer::GetTime()
 {
-	return m_fDeltaTime*1000;
+	return m_fDeltaTime*800;
 }
 
 

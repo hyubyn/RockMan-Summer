@@ -3,6 +3,8 @@
 CGameOver::CGameOver(int score, Camera* cam) :CScreen()
 {
 	this->_camera = cam;
+	this->_camera->_pos.x = 0;
+	this->_camera->_pos.y = SCREEN_HEIGHT;
 	_score = score;
 	string stringScore = std::to_string(_score);
 	string stringZero = GetStringZero(stringScore.length());
@@ -35,7 +37,7 @@ CGameOver::CGameOver(int score, Camera* cam) :CScreen()
 	_textContinue->Initlize(MGraphic::GetInstance());
 
 	_textStageSelect = new CTextblock();
-	_textStageSelect->_position = D3DXVECTOR2(0, _textContinue->_position.y - 40);
+	_textStageSelect->_position = D3DXVECTOR2(0, _textContinue->_position.y - 20);
 	_textStageSelect->_size = D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT);
 	_textStageSelect->_text = "STAGE SELECT";
 	_textStageSelect->_color = D3DCOLOR_XRGB(255, 255, 255);
@@ -75,7 +77,7 @@ void CGameOver::UpdateKeyboard(MKeyboard* input)
 		}
 	}
 
-	if (input->IsKeyDown(DIK_RETURN))
+	if (input->IsKeyUp(DIK_RETURN))
 	{
 		if (_statusKey == 1)
 		{
@@ -83,13 +85,13 @@ void CGameOver::UpdateKeyboard(MKeyboard* input)
 		switch (CGameInfo::GetInstance()->GetLevel())
 		{
 		case ID_LEVEL_CUT:
-			_nextScreen = new CPlayState("Resources//Resources//Maps//cut_man_stage.txt", this->_graphic, this->_graphic->GetDevice(), input, this->_camera, 2);
+			_nextScreen = new CPlayState("Resources//Resources//Maps//cut_man_stage.txt", MGraphic::GetInstance(), MGraphic::GetInstance()->GetDevice(), input, this->_camera, 2);
 			break;
 		case ID_LEVEL_GUTS:
-				_nextScreen = new CPlayState("Resources//Resources//Maps//guts_man_stage.txt", this->_graphic, this->_graphic->GetDevice(), input, this->_camera, 3);
+				_nextScreen = new CPlayState("Resources//Resources//Maps//guts_man_stage.txt", MGraphic::GetInstance(), MGraphic::GetInstance()->GetDevice(), input, this->_camera, 3);
 			break;
 		case ID_LEVEL_BOOM:
-		_nextScreen = new CPlayState("Resources//Resources//Maps//boom_man_stage.txt", this->_graphic, this->_graphic->GetDevice(), input, this->_camera, 1);
+		_nextScreen = new CPlayState("Resources//Resources//Maps//boom_man_stage.txt", MGraphic::GetInstance(), MGraphic::GetInstance()->GetDevice(), input, this->_camera, 1);
 			break;
 			default:return;
 		}

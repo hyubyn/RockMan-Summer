@@ -71,12 +71,12 @@ public:
 	// Chỉ định MenuItem có được focus hay không
 	//-----------------------------------------------------------------------------
 	bool _isFocused;
-
+	D3DCOLOR _replaceColor;	// Biến hỗ trợ chạy hiệu ứng chữ
 private:
 	D3DXVECTOR2 _borderPosition;
 	D3DXVECTOR2 _positionText;
 	RECT    _boundingRectBkg;
-	D3DCOLOR _replaceColor;	// Biến hỗ trợ chạy hiệu ứng chữ
+	
 	float _timeAnimationText;//Thời gian vẽ của 1 màu của Text
 };
 

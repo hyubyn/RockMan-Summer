@@ -56,6 +56,8 @@ public:
 	//-----------------------------------------------------------------------------
 	void ShowPopupScreen(CScreen* popupScreen);
 
+	bool isShowingPopup;
+
 private:
 	
 	//-----------------------------------------------------------------------------
@@ -70,6 +72,9 @@ private:
 	CScreen*	_popupScreen;
 
 	vector<CScreen*>	_screenItems;
+
+
+
 };
 
 #endif //!_CSCREEN_MANAGER_H_

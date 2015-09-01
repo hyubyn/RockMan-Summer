@@ -5,7 +5,7 @@ CStartState::CStartState(MGraphic* gra): CScreen()
 {
 		this->_graphic = gra;
 	_txtPressStart = new CTextblock();
-	_txtPressStart->_position = D3DXVECTOR2(0, 224);
+	_txtPressStart->_position = D3DXVECTOR2(0, 240);
 	_txtPressStart->_size = D3DXVECTOR2(SCREEN_WIDTH, 224);
 	_txtPressStart->_text = "PRESS START";
 	_txtPressStart->_verticalAlignment = Alignment::CENTER;
@@ -32,10 +32,11 @@ CStartState::CStartState(MGraphic* gra): CScreen()
 
 void CStartState::UpdateKeyboard(MKeyboard *input)
 {
+		ResourceManager::PlayASound(ID_SOUND_GAME_START);
 	if (input->GetKeyDown()==DIK_SPACE && _isNextFrame==0)
 	{
 		_isNextFrame++;
-		//ResourceManager::PlayASound(ID_SOUND_GAME_START);
+	
 	}
 }
 

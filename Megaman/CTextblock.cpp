@@ -11,6 +11,7 @@ CTextblock::CTextblock() :CItemControl(){
 	_isAnimation = false;
 	_animationMode = AnimationMode::ONCE;
 	_animationTime = 0.0f;
+		_tickAnimation = 0;
 
 }
 
@@ -99,7 +100,7 @@ void CTextblock::Render(CTimer* gameTime, Camera* cam, MGraphic* graphics)
 		if (_tick >= _animationTime&&_animationMode == AnimationMode::ONCE)
 			_isAnimation = false;
 
-		if (_tickAnimation >= 300)
+		if (_tickAnimation >= 1000)
 		{
 			_tickAnimation = 0;
 			graphics->DrawString(_text, _boundingRectText, _color, _scale, false, cam);

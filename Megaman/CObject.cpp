@@ -22,6 +22,11 @@ void CObject::UpdateBox()
 
 Box CObject::GetBox()
 {
+	if (_box._x == NULL)
+	{
+		int a = 0;
+		return Box(0,0,0,0,0,0);
+	}
 	return _box;
 }
 

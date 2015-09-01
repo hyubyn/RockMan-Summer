@@ -68,7 +68,7 @@ void CEnemyBubble::Update(CTimer* gameTime, Megaman* rockman)
 		this->UpdateBox();
 		return;
 	}
-
+	
 	_position.x += gameTime->GetTime()*_v.x;
 	_position.y += gameTime->GetTime()*_v.y;
 	_isHitDame = false;
@@ -123,13 +123,13 @@ CEnemyBubble* CEnemyBubble::ToValue()
 
 void CEnemyBubble::AttackRockman(float frameTime)
 {
-#pragma region Vùng dừng tấn công bằng phương pháp xét vị postion của điểm dừng. Đang kích hoạt
+	#pragma region Vùng dừng tấn công bằng phương pháp xét vị postion của điểm dừng. Đang kích hoạt
 	//Tấn công Rockman đến khi nào vị trí của EnemyBubble gặp 
 	//điểm dừng tấn công - vị trí đối xứng với vị trí cũ qua trục Oy
 	//(lấy y của Rockman làm gốc) thì dừng tấn công
 	if (((_v.x>0 && _position.x < _endAttackingBox._x)
 		|| (_v.x<0 && _position.x > _endAttackingBox._x))
-		&& _position.y < _endAttackingBox._y +2)
+		)
 	{
 		_position.x += frameTime*_v.x;
 		_position.y = _aParabol*_position.x*_position.x + _bParabol*_position.x + _cParabol;
@@ -141,9 +141,9 @@ void CEnemyBubble::AttackRockman(float frameTime)
 		_position.y = _endAttackingBox._y;
 		_position.x = _endAttackingBox._x;
 	}
-#pragma endregion
-
-#pragma region Vùng dừng tấn công bằng phương phá xét va chạm AABB. Chưa được kích hoạt vì AABB không check được va chạm đối với vật di chuyển không theo công thức: S=v*t;
+	#pragma endregion
+		
+	#pragma region Vùng dừng tấn công bằng phương phá xét va chạm AABB. Chưa được kích hoạt vì AABB không check được va chạm đối với vật di chuyển không theo công thức: S=v*t;
 	//CDirection directX, directY;
 	////Dừng tấn công bằng phương pháp check va chạm AABB
 	//float timeCollide = this->CheckCollision(_endAttackingBox, directX, directY, frameTime);
@@ -165,7 +165,7 @@ void CEnemyBubble::AttackRockman(float frameTime)
 
 	//	_v.y = (_position.y - posYPreviousFrame) / frameTime;
 	//}
-#pragma endregion
+	#pragma endregion
 }
 
 void CEnemyBubble::AnalyseParabol(D3DXVECTOR2 point1, D3DXVECTOR2 point2, D3DXVECTOR2 point3) 
@@ -196,7 +196,7 @@ float CEnemyBubble::CheckCollision(Box endAttackingBox, CDirection &normalX, CDi
 	thisBox._vy -= objBox._vy;
 	objBox._vx = 0;
 	objBox._vy = 0;
-
+	
 	// tạo broad phase box để kiểm tra tổng quát với đối tượng đứng yên obj
 	// Nếu có xảy ra va chạm, thì tiến hành kiểm tra bằng AABBSweep và đưa ra thời gian va chạm
 	Box broadBox = CCollision::GetSweptBox(thisBox, frameTime);

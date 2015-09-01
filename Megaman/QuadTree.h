@@ -21,7 +21,7 @@ public:
 	bool		_isBossDied;				// Kiểm tra boss có chết hay chưa
 	CQuadTree(void);
 	CNode* _nodeRoot;
-	void LoadMap(int mapId);
+	void LoadMap(int mapId, Camera* cam);
 	void BuildTree(CNode* root);
 	void ClipCamera(CNode* root, RECT viewPort);
 	void Render(CTimer* gameTime, MGraphic* graphics);

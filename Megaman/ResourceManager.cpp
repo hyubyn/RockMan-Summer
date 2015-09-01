@@ -24,58 +24,58 @@ int ResourceManager::Init(HWND hWnd, LPDIRECT3DDEVICE9 d3ddev)
 		return 0;
 	}
 	
-	ResourceManager::_instance->AddSound(ID_SOUND_BEAM_IN, 0, L"Resources//SoundEffects//beam_in.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_DEAD, 0, L"Resources//SoundEffects//dead.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_DISAPPEARING_BLOCK, 0, L"Resources//SoundEffects//disappearing_block.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_ENEMY_HIT, 0, L"Resources//SoundEffects//enemy_hit.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_HEALTH, 0, L"Resources//SoundEffects//health.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_HURT, 0, L"Resources//SoundEffects//hurt.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_LAND, 0, L"Resources//SoundEffects//land.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_PAUSE, 0, L"Resources//SoundEffects//pause.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_POWER_UP, 0, L"Resources//SoundEffects//power_up.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_SHOOT, 0, L"Resources//SoundEffects//shoot.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_SHOT_BLOCKED, 0, L"Resources//SoundEffects//shot_blocked.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_BEAM_IN, 0, "Resources//SoundEffects//beam_in.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_DEAD, 0, "Resources//SoundEffects//dead.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_DISAPPEARING_BLOCK, 0, "Resources//SoundEffects//disappearing_block.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_ENEMY_HIT, 0, "Resources//SoundEffects//enemy_hit.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_HEALTH, 0, "Resources//SoundEffects//health.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_HURT, 0, "Resources//SoundEffects//hurt.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_LAND, 0, "Resources//SoundEffects//land.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_PAUSE, 0, "Resources//SoundEffects//pause.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_POWER_UP, 0, "Resources//SoundEffects//power_up.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_SHOOT, 0, "Resources//SoundEffects//shoot.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_SHOT_BLOCKED, 0, "Resources//SoundEffects//shot_blocked.wav");
 
-	ResourceManager::_instance->AddSound(ID_SOUND_STAGE_SELECT, 1, L"Resources//SoundTracks//stage_select.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_GAME_START, 0, L"Resources//SoundTracks//game_start.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_CUTMAN_STAGE, 1, L"Resources//SoundTracks//cutman_stage.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_GUTSMAN_STAGE, 1, L"Resources//SoundTracks//gutsman_stage.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_BOMBMAN_STAGE, 1, L"Resources//SoundTracks//bombman_stage.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_BOSS, 1, L"Resources//SoundTracks//boss.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_STAGE_CLEAR, 0, L"Resources//SoundTracks//stage_clear.wav");
-	ResourceManager::_instance->AddSound(ID_SOUND_GAME_OVER, 0, L"Resources//SoundTracks//game_over.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_STAGE_SELECT, 1, "Resources//SoundTracks//stage_select.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_GAME_START, 0, "Resources//SoundTracks//game_start.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_CUTMAN_STAGE, 1, "Resources//SoundTracks//cutman_stage.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_GUTSMAN_STAGE, 1, "Resources//SoundTracks//gutsman_stage.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_BOMBMAN_STAGE, 1, "Resources//SoundTracks//bombman_stage.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_BOSS, 1, "Resources//SoundTracks//boss.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_STAGE_CLEAR, 0, "Resources//SoundTracks//stage_clear.wav");
+	ResourceManager::_instance->AddSound(ID_SOUND_GAME_OVER, 0, "Resources//SoundTracks//game_over.wav");
 
-	ResourceManager::_instance->AddSound(ID_EFFECT_ANIMATION_SCORE, 1, L"Resources//SoundEffects//animation_score.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_BIG_ROBOT_ON_LAND, 0, L"Resources//SoundEffects//big_robot_on_land.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_BOSS_DIE, 0, L"Resources//SoundEffects//boss_die.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_BULLET_BOOM_EXPLODING, 0, L"Resources//SoundEffects//bullet_boom_exploding.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_BULLET_BOSS_CUTMAN, 0, L"Resources//SoundEffects//bullet_boss_cutman.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_BULLET_HIT_ENEMY_WITH_SHIELD, 0, L"Resources//SoundEffects//bullet_hit_enemy_with_shield.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_CAMERA_VIBRATE, 0, L"Resources//SoundEffects//camera_vibrate.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_ELEVATOR_RUNNING, 1, L"Resources//SoundEffects//elevator_running.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_ENEMY_EXPLODING, 0, L"Resources//SoundEffects//enemy_exploding.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_ENEMY_FIRE, 0, L"Resources//SoundEffects//enemy_fire.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_ENEMY_HIT, 0, L"Resources//SoundEffects//enemy_hit.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_FOCUS_STAGE, 0, L"Resources//SoundEffects//focus_stage.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_GET_BLOOD, 0, L"Resources//SoundEffects//get_blood.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_GET_ITEM, 0, L"Resources//SoundEffects//get_item.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_HEALTH, 0, L"Resources//SoundEffects//health.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_INCREASE_POWER_ENEMY, 0, L"Resources//SoundEffects//increase_power_energy.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_INTRO_STAGE, 0, L"Resources//SoundEffects//intro_stage.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_LAND, 0, L"Resources//SoundEffects//land.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_OPEN_THE_DOOR, 0, L"Resources//SoundEffects//open_the_door.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_PAUSE, 0, L"Resources//SoundEffects//pause.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_POPUP_APPEAR, 0, L"Resources//SoundEffects//popup_appear.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_POWER_UP, 0, L"Resources//SoundEffects//power_up.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_ROCKMAN_APPEAR, 0, L"Resources//SoundEffects//rockman_appear.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_ROCKMAN_COLLIDE_WITH_ENEMY, 0, L"Resources//SoundEffects//rockman_collide_with_enemy.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_ROCKMAN_DIE, 0, L"Resources//SoundEffects//rockman_die.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_ROCKMAN_FIRE_BULLET_NORMAL, 0, L"Resources//SoundEffects//rockman_fire_bulet_normal.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_ROCKMAN_FIRE_BULLET_CUT, 0, L"Resources//SoundEffects//rockman_fire_bullet_cut.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_ROCKMAN_FIRE_BULLET_GUTS, 0, L"Resources//SoundEffects//rockman_fire_bullet_guts.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_SELECT_STAGE, 0, L"Resources//SoundEffects//select_stage.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_VICTORY, 0, L"Resources//SoundTracks//stage_victory.wav");
-	ResourceManager::_instance->AddSound(ID_EFFECT_ANIMATION_TEXT, 0, L"Resources//SoundEffects//animation_text.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_ANIMATION_SCORE, 1, "Resources//SoundEffects//animation_score.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_BIG_ROBOT_ON_LAND, 0, "Resources//SoundEffects//big_robot_on_land.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_BOSS_DIE, 0, "Resources//SoundEffects//boss_die.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_BULLET_BOOM_EXPLODING, 0, "Resources//SoundEffects//bullet_boom_exploding.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_BULLET_BOSS_CUTMAN, 0, "Resources//SoundEffects//bullet_boss_cutman.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_BULLET_HIT_ENEMY_WITH_SHIELD, 0, "Resources//SoundEffects//bullet_hit_enemy_with_shield.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_CAMERA_VIBRATE, 0, "Resources//SoundEffects//camera_vibrate.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_ELEVATOR_RUNNING, 1, "Resources//SoundEffects//elevator_running.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_ENEMY_EXPLODING, 0, "Resources//SoundEffects//enemy_exploding.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_ENEMY_FIRE, 0, "Resources//SoundEffects//enemy_fire.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_ENEMY_HIT, 0, "Resources//SoundEffects//enemy_hit.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_FOCUS_STAGE, 0, "Resources//SoundEffects//focus_stage.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_GET_BLOOD, 0, "Resources//SoundEffects//get_blood.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_GET_ITEM, 0, "Resources//SoundEffects//get_item.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_HEALTH, 0, "Resources//SoundEffects//health.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_INCREASE_POWER_ENEMY, 0, "Resources//SoundEffects//increase_power_energy.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_INTRO_STAGE, 0, "Resources//SoundEffects//intro_stage.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_LAND, 0, "Resources//SoundEffects//land.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_OPEN_THE_DOOR, 0, "Resources//SoundEffects//open_the_door.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_PAUSE, 0, "Resources//SoundEffects//pause.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_POPUP_APPEAR, 0, "Resources//SoundEffects//popup_appear.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_POWER_UP, 0, "Resources//SoundEffects//power_up.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_ROCKMAN_APPEAR, 0, "Resources//SoundEffects//rockman_appear.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_ROCKMAN_COLLIDE_WITH_ENEMY, 0, "Resources//SoundEffects//rockman_collide_with_enemy.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_ROCKMAN_DIE, 0, "Resources//SoundEffects//rockman_die.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_ROCKMAN_FIRE_BULLET_NORMAL, 0, "Resources//SoundEffects//rockman_fire_bulet_normal.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_ROCKMAN_FIRE_BULLET_CUT, 0, "Resources//SoundEffects//rockman_fire_bullet_cut.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_ROCKMAN_FIRE_BULLET_GUTS, 0, "Resources//SoundEffects//rockman_fire_bullet_guts.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_SELECT_STAGE, 0, "Resources//SoundEffects//select_stage.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_VICTORY, 0, "Resources//SoundTracks//stage_victory.wav");
+	ResourceManager::_instance->AddSound(ID_EFFECT_ANIMATION_TEXT, 0, "Resources//SoundEffects//animation_text.wav");
 
 #pragma region Load resource cho Rockman
 	ResourceManager::_instance->_lstSprite.insert(pair<int, CSprite*>(ID_SPRITE_ROCKMAN_STAND, new CSprite("Resources//Sprites//Rockman//rockman_stand.png", 1, 2, 2, 600, D3DCOLOR_XRGB(0, 102, 102),d3ddev)));
@@ -280,21 +280,21 @@ int ResourceManager::InitDirectSound(HWND hWnd)
 	return 1;
 }
 
-void ResourceManager::AddSound(int soundID, bool isLooping, wchar_t* fileName)
+void ResourceManager::AddSound(int soundID, bool isLooping, LPTSTR fileName)
 {
 	CSound* sound = this->LoadSound(isLooping, fileName);
 	if (sound != NULL)
 		_lstSound.insert(pair<int, CSound*>(soundID, sound));
 }
 
-CSound* ResourceManager::LoadSound(bool isLooping, wchar_t* fileName)
+CSound* ResourceManager::LoadSound(bool isLooping, LPTSTR fileName)
 {
 	HRESULT result;
 
 	CSound *wave;
-	char* file = new char[];
-	wcstombs(file,fileName,sizeof(fileName) + 1);
-	result = _soundManage->Create(&wave, file);
+	//char* file = new char[];
+	//wcstombs(file,fileName,sizeof(fileName) + 1);
+	result = _soundManage->Create(&wave, fileName);
 	if (result != DS_OK) return NULL;// lỗi
 	Trace(L"The ", fileName, L" has been created successfully");
 

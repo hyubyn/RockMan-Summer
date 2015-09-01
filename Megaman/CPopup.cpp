@@ -126,16 +126,17 @@ void CPopup::Update(CTimer* gameTime)
 }
 void CPopup::UpdateKeyboard(MKeyboard* input)
 {
-	if (input->IsKeyDown(DIK_RETURN))
+	if (input->IsKeyPress(DIK_RETURN) && CScreenManager::GetInstance()->isShowingPopup == true)
 	{
 		_rockman->SetWeapons(skills[_RockManChoose], skillsInfo.find(skills[_RockManChoose])->second);
 		CScreenManager::GetInstance()->ShowPopupScreen(NULL);
+		CScreenManager::GetInstance()->isShowingPopup = false;
 	}
-	if (input->IsKeyDown(ID_KEY_CODE_DOWN))
+	if (input->GetKeyDown() == ID_KEY_CODE_DOWN)
 	{
 		_RockManChoose=__max(_RockManChoose-1,0);
 	}
-	if (input->IsKeyDown(ID_KEY_CODE_UP))
+	if (input->GetKeyUp() == ID_KEY_CODE_UP)
 	{
 		_RockManChoose = __min(_RockManChoose+1, skills.size()-1);
 		

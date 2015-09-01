@@ -7,8 +7,11 @@
 #ifndef _CENEMY_FISH_H_
 #define _CENEMY_FISH_H_
 
+#include "CGameObject.h"
 #include "CEnemy.h"
+#include "ResourceManager.h"
 #include "CEnemyFishBullet.h"
+#include "Camera.h"
 
 enum StaticFish
 {
@@ -17,9 +20,8 @@ enum StaticFish
 class CEnemyFish :public CEnemy
 {
 
-public: 
-	CEnemyFish(){};
-	CEnemyFish(int positionYStart);
+public:
+	CEnemyFish(int positionYStart, Camera* cameraPath);
 	~CEnemyFish();
 
 	//-----------------------------------------------------------------------------
@@ -52,13 +54,15 @@ public:
 	vector<CBullet*> Fire() override;
 	StaticFish GetStaticFish();
 	CEnemyFish* ToValue() override;
-	void SetPosition(float positionY);
-private: 
+private:
 	int _positionYStart;// lấy giá trị y ban đầu 
 	StaticFish _static;
 	float _g;
 	int _spacePositionYChange;// khoảng y để thay đổi chiều di chuyển
+	//CEnemyFishBullet* _enemyFishBullet;
 	vector<CBullet*> _lstBullet;
+	//int timetest;
+	Camera* _cameraPath;
 
 };
 

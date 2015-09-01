@@ -39,44 +39,44 @@ void CEnemyNinja::UpdateBox()
 void CEnemyNinja::Update(CTimer* gameTime, Megaman* rockman)
 {
 	// xử lý tiền va chạm 
-	//if (_historyCollide != CDirection::NONE_DIRECT)
-	//{
-	//	switch (_historyCollide)
-	//	{
-	//	case CDirection::ON_UP:
-	//		_position.y += _timeHistoryCollide*_v.y - 1;
-	//		_v.y = 0;
-	//		_v.x = 0;
-	//		_static = STATICNINJA::NINJAFALL;
-	//		break;
-	//	case CDirection::ON_RIGHT:
-	//		_position.x += _timeHistoryCollide*_v.x - 1;
-	//		_v.y = 0;
-	//		_v.x = 0;
-	//		_static = STATICNINJA::NINJAFALL;
-	//		break;
-	//	case CDirection::ON_LEFT:
-	//		_position.x += _timeHistoryCollide*_v.x + 1;
-	//		_v.x = 0;
-	//		_v.y = 0;
-	//		_static = STATICNINJA::NINJAFALL;
-	//		break;
-	//	case CDirection::ON_DOWN:
-	//		_position.y += _timeHistoryCollide*_v.y+1;
-	//		_v.y = 0.0f;
-	//		_v.x = 0.0f;
-	//		_static = STATICNINJA::NINJAFIRE;// rớt xuống bắn ngay 
-	//		break;
-	//	default:
-	//		break;
-	//	}
-	//}
-	//// lần đầu tiên khi vào ninja sẽ nhảy đến rockman 
-	//if (!_fistJump)
-	//{
-	//	_fistJump = true;
-	//	Jump(rockman->GetPos(),TYPEJUMP::NINJAJUMPTOROCKMAN);
-	//}
+	if (_historyCollide != CDirection::NONE_DIRECT)
+	{
+		switch (_historyCollide)
+		{
+		case CDirection::ON_UP:
+			_position.y += _timeHistoryCollide*_v.y - 1;
+			_v.y = 0;
+			_v.x = 0;
+			_static = STATICNINJA::NINJAFALL;
+			break;
+		case CDirection::ON_RIGHT:
+			_position.x += _timeHistoryCollide*_v.x - 1;
+			_v.y = 0;
+			_v.x = 0;
+			_static = STATICNINJA::NINJAFALL;
+			break;
+		case CDirection::ON_LEFT:
+			_position.x += _timeHistoryCollide*_v.x + 1;
+			_v.x = 0;
+			_v.y = 0;
+			_static = STATICNINJA::NINJAFALL;
+			break;
+		case CDirection::ON_DOWN:
+			_position.y += _timeHistoryCollide*_v.y+1;
+			_v.y = 0.0f;
+			_v.x = 0.0f;
+			_static = STATICNINJA::NINJAFIRE;// rớt xuống bắn ngay 
+			break;
+		default:
+			break;
+		}
+	}
+	// lần đầu tiên khi vào ninja sẽ nhảy đến rockman 
+	if (!_fistJump)
+	{
+		_fistJump = true;
+		Jump(rockman->_position,TYPEJUMP::NINJAJUMPTOROCKMAN);
+	}
 	// xử lý sau va chạm 
 	switch (_static)
 	{
@@ -84,13 +84,13 @@ void CEnemyNinja::Update(CTimer* gameTime, Megaman* rockman)
 		// hết thời gian bảo vệ ninja sẽ bắn 
 		if (_timeProtect <= 0)
 		{
-			Jump(rockman->GetPos(), TYPEJUMP::NINJAJUMPSTAND);
+			Jump(rockman->_position, TYPEJUMP::NINJAJUMPSTAND);
 			_timeProtect = _timeProtectDefault;
 		}
 		_timeProtect -= gameTime->GetTime();
-		if ((rockman->GetPos().x > _position.x))
+		if ((rockman->_position.x > _position.x))
 		{
-			Jump(rockman->GetPos(),TYPEJUMP::NINJAJUMPTOROCKMAN);
+			Jump(rockman->_position,TYPEJUMP::NINJAJUMPTOROCKMAN);
 		}
 		break;
 	case STATICNINJA::NINJAJUMP:
@@ -232,8 +232,14 @@ CEnemyNinja* CEnemyNinja::ToValue()
 }
 vector<CBullet*> CEnemyNinja::Fire()
 {
-	vector<CBullet*> result = _lstBullet;
-	//Xóa hết đạn trong danh sách vì bên ngoài đã nhận rồi
-	_lstBullet.clear();
+	vector<CBullet*> result;
+	if(!IsDied())
+	{
+		result = _lstBullet;
+		//Xóa hết đạn trong danh sách vì bên ngoài đã nhận rồi
+		_lstBullet.clear();
+	}
+	else
+		result.clear();
 	return result;
 }

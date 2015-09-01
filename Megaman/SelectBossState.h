@@ -41,6 +41,8 @@ private:
 	///Hình nền background
 	CImageItem	_background;
 
+		bool		_isJustPlaySound;
+
 	///Boss
 	CMenuItem   _boss[6];
 };

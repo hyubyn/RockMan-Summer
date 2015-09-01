@@ -14,7 +14,7 @@ CQuadTree::~CQuadTree(void)
 {
 }
 
-void CQuadTree::LoadMap(int mapId)
+void CQuadTree::LoadMap(int mapId, Camera *cam)
 {
 	wchar_t* state = nullptr;
 	switch (mapId)
@@ -56,8 +56,10 @@ void CQuadTree::LoadMap(int mapId)
 		iss>>id>>type>>x>>y>>width>>height>>xCollide>>yCollide>>posXCollide>>posYCollide;
 		if (type == 29)
 		{
+			
 			int b = 1;
 		}
+		CGameObjectFactory::GetInstance()->cam = cam;
 		CGameObject * object = CGameObjectFactory::GetInstance()->CreateObject(id, type, x, y, width, height, xCollide, yCollide, posXCollide, posYCollide);
 		if (object != NULL)
 		{
@@ -162,9 +164,15 @@ void CQuadTree::ClipCamera(CNode* root, RECT viewPort)
 		{
 			try
 			{
+				viewPort.right += 150;
+				
 				for (int i = 0; i < root->_objectCount; i++)
 				{
+					if (root->_listGameObject.at(i)->GetCollideRegion().IntersecWith(viewPort))
+					{
 					_listObjectOnScreen[root->_listGameObject.at(i)->_id] = root->_listGameObject.at(i);
+
+					}
 				}				
 			}
 			catch(std::out_of_range e)

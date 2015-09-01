@@ -1,42 +1,41 @@
 ﻿#include "CEnemyFish.h"
-CEnemyFish::CEnemyFish(int positionYStart): CEnemy()
+CEnemyFish::CEnemyFish(int positionYStart, Camera* cameraPath)
 {
-	_dame = 2;
+	_dame = DAME_ENEMY_FISH;
 	_positionYStart = positionYStart;
 	_static = StaticFish::Fly;
 	_spacePositionYChange = 50;
+	_cameraPath = cameraPath;
 	_blood = 1;
 	_score = SCORE_DEFAULT;
-	
-}
 
+}
 CEnemyFish::~CEnemyFish()
 {
-	
+
 }
 int CEnemyFish::Initlize()
 {
 	_sprite = ResourceManager::GetSprite(ID_SPRITE_ENEMY_FISH);
-	_v = D3DXVECTOR2(50.0f , 60.0f);
+	_v = D3DXVECTOR2(50.0f / 1000.0f, 60.0f / 1000.0f);
 	_g = 0.098f / 1000.0f;
 	UpdateBox();
 	return 1;
 }
-
-void CEnemyFish::SetPosition(float positionY)
-{
-	_positionYStart = positionY;
-}
-
 void CEnemyFish::Render(CTimer* gameTime, MGraphic* graphics)
 {
-	if (_static==StaticFish::Fly)
-	graphics->Draw(_sprite.GetTexture(), _sprite.GetDestinationRectangle(), _position, true);
+	if (_static == StaticFish::Fly)
+		graphics->Draw(_sprite.GetTexture(), _sprite.GetDestinationRectangle(), _position, true);
 }
 void CEnemyFish::Update(CTimer* gameTime, Megaman* rockman)
 {
-	
-	
+
+	/*if (timetest > 2000)
+	{
+	_static = StaticFish::Fire;
+	}
+	else
+	timetest += gameTime->GetDeltaTime();*/
 	if (_static == StaticFish::Fly)
 	{
 		_position.x -= _v.x*gameTime->GetTime();
@@ -49,15 +48,15 @@ void CEnemyFish::Update(CTimer* gameTime, Megaman* rockman)
 	if (_static == StaticFish::Efforts)
 	{
 		_lstBullet.clear();
-		_lstBullet.push_back( new CEnemyFishBullet(0, ID_BULLET_ENEMY_FISH, ResourceManager::GetSprite(ID_SPRITE_BULLET_ENEMY_FISH), 1, 0, D3DXVECTOR2(0, 0), 0, _position.x, _position.y));
+		_lstBullet.push_back(new CEnemyFishBullet(0, ID_BULLET_ENEMY_FISH, ResourceManager::GetSprite(ID_SPRITE_BULLET_ENEMY_FISH), 1, 0, D3DXVECTOR2(0, 0), 0, _position.x, _position.y));
 		_static = StaticFish::Die;
 
 	}
 	if (_static == StaticFish::Die)
 	{
-		/*_position.x = rockman->GetPos().x + SCREEN_WIDTH/2;
-		_position.y = _cameraPath->GetCameraPointOnPath().y;
-		_static = StaticFish::Fly;*/
+		_position.x = _cameraPath->_pos.x + SCREEN_WIDTH;
+		_position.y = _cameraPath->_pos.y - SCREEN_HEIGHT/2;
+		_static = StaticFish::Fly;
 	}
 	UpdateBox();
 }
@@ -66,12 +65,12 @@ void CEnemyFish::OnCollideWith(CGameObject *gameObject, CDirection normalX, CDir
 	switch (gameObject->_typeID)
 	{
 	case ID_ROCKMAN://Nếu đối tượng va chạm là ROCKMAN. 
-		if (_static==StaticFish::Fly)
-		   _static = StaticFish::Efforts;
+		if (_static == StaticFish::Fly)
+			_static = StaticFish::Efforts;
 		break;
 	case ID_BULLET_ROCKMAN_NORMAL: case ID_BULLET_ROCKMAN_BOOM: case ID_BULLET_ROCKMAN_CUT: case ID_BULLET_ROCKMAN_GUTS:
-		    _static = StaticFish::Efforts;
-			_blood = 0;
+		_static = StaticFish::Efforts;
+		_blood = 0;
 		break;
 	}
 }
