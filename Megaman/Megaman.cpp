@@ -155,10 +155,50 @@ D3DXVECTOR2 Megaman::GetPos()
 
 void Megaman::Update(CTimer* gameTime, MKeyboard* mkeyboard)
 {
-
-
 	if (IsDied())
 		return;
+
+
+	if (_position.x<0 || _position.y <0)
+	{
+		if (_behave != Behave::DYING&& _behave != Behave::REAL_DIE)
+		{
+			_life -= 1;
+			_blood = 0;
+			_behave = Behave::DYING;
+			_deltaTime = 0;
+			_v.x = ROCKMAN_VERLOCITY_X;
+			_isRequireStopScreen = true;
+			switch (_currentSkill)
+			{
+			case NORMAL:
+				CExplodingEffectManager::Add(new CExplodingEffectX(_position, ResourceManager::GetSprite(ID_SPRITE_EXPLODING_EFFECT_ROCKMAN)));
+				break;
+			case CUT:
+				CExplodingEffectManager::Add(new CExplodingEffectX(_position, ResourceManager::GetSprite(ID_SPRITE_EXPLODING_EFFECT_CUTMAN)));
+				break;
+			case GUTS:
+				CExplodingEffectManager::Add(new CExplodingEffectX(_position, ResourceManager::GetSprite(ID_SPRITE_EXPLODING_EFFECT_GUTSMAN)));
+				break;
+			case BOOM:
+				CExplodingEffectManager::Add(new CExplodingEffectX(_position, ResourceManager::GetSprite(ID_SPRITE_EXPLODING_EFFECT_BOOMMAN)));
+				break;
+			}
+			switch (CGameInfo::GetInstance()->GetLevel())
+			{
+			case ID_LEVEL_CUT:
+				ResourceManager::StopSound(ID_SOUND_CUTMAN_STAGE);
+				break;
+			case ID_LEVEL_GUTS:
+				ResourceManager::StopSound(ID_SOUND_GUTSMAN_STAGE);
+				break;
+			case ID_LEVEL_BOOM:
+				ResourceManager::StopSound(ID_SOUND_BOMBMAN_STAGE);
+				break;
+			}
+			ResourceManager::PlayASound(ID_EFFECT_ROCKMAN_DIE);
+		}
+	}
 
 	if (_behave != Behave::DYING)
 	{
