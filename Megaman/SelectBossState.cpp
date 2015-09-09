@@ -23,7 +23,7 @@ CSelectBossState::CSelectBossState(MGraphic* graphic, LPDIRECT3DDEVICE9 d3ddev):
 	_boss[0]._background = new CTexture("Resources//sprites//icon_master_cut_man.png", D3DCOLOR_XRGB(0, 255, 0),d3ddev);
 	_boss[0]._size = D3DXVECTOR2(50, 50);
 	_boss[0]._position = D3DXVECTOR2(SCREEN_WIDTH / 2 - 60, SCREEN_HEIGHT / 2 + 135);
-	_boss[0]._name = "CUTMAN";
+	_boss[0]._name = "FIREMAN";
 	_boss[0]._foreground = D3DCOLOR_XRGB(156, 252, 240);
 	_boss[0]._isFocused = true;
 	_boss[0].Initlize(graphic);
@@ -33,7 +33,7 @@ CSelectBossState::CSelectBossState(MGraphic* graphic, LPDIRECT3DDEVICE9 d3ddev):
 	_boss[1]._background = new CTexture("Resources//sprites//icon_master_guts_man.png", D3DCOLOR_XRGB(0, 255, 0),d3ddev);
 	_boss[1]._size = D3DXVECTOR2(50, 50);
 	_boss[1]._position = D3DXVECTOR2(SCREEN_WIDTH / 2 + 15, SCREEN_HEIGHT / 2 + 135);
-	_boss[1]._name = "GUTSMAN";
+	_boss[1]._name = "BOOMMAN";
 	_boss[1]._foreground = D3DCOLOR_XRGB(156, 252, 240);
 	_boss[1].Initlize(graphic);
 
@@ -51,7 +51,7 @@ CSelectBossState::CSelectBossState(MGraphic* graphic, LPDIRECT3DDEVICE9 d3ddev):
 	_boss[3]._background = new CTexture("Resources//sprites//icon_master_Boom_man.png", D3DCOLOR_XRGB(0, 255, 0), d3ddev);
 	_boss[3]._size = D3DXVECTOR2(50, 50);
 	_boss[3]._position = D3DXVECTOR2(SCREEN_WIDTH / 2 + 15, SCREEN_HEIGHT / 2 );
-	_boss[3]._name = "BOOMMAN";
+	_boss[3]._name = "GUTSMAN";
 	_boss[3]._foreground = D3DCOLOR_XRGB(156, 252, 240);
 	_boss[3].Initlize(graphic);
 
@@ -60,7 +60,7 @@ CSelectBossState::CSelectBossState(MGraphic* graphic, LPDIRECT3DDEVICE9 d3ddev):
 	_boss[4]._background = new CTexture("Resources//sprites//icon_master_Fire_man.png", D3DCOLOR_XRGB(0, 255, 0), d3ddev);
 	_boss[4]._size = D3DXVECTOR2(50, 50);
 	_boss[4]._position = D3DXVECTOR2(SCREEN_WIDTH / 2 - 60, SCREEN_HEIGHT / 2 );
-	_boss[4]._name = "FIREMAN";
+	_boss[4]._name = "CUTMAN";
 	_boss[4]._foreground = D3DCOLOR_XRGB(156, 252, 240);
 	_boss[4].Initlize(graphic);
 

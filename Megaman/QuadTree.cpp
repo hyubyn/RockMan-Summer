@@ -168,7 +168,7 @@ void CQuadTree::ClipCamera(CNode* root, RECT viewPort)
 				
 				for (int i = 0; i < root->_objectCount; i++)
 				{
-					if (root->_listGameObject.at(i)->GetCollideRegion().IntersecWith(viewPort))
+					if (root->_listGameObject.at(i)->GetCollideRegion().IntersecWith(viewPort) || root->_listGameObject.at(i)->_position.y < viewPort.bottom)
 					{
 					_listObjectOnScreen[root->_listGameObject.at(i)->_id] = root->_listGameObject.at(i);
 

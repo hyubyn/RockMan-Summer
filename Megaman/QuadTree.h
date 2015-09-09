@@ -9,13 +9,13 @@
 using namespace std;
 class CQuadTree
 {
-	vector<CGameObject*> _listAllGameObject;
+	
 	map<INT32,CNode*> _mapNode;
 	int _nodeCount;
 	int _objectCount;
 public:
 	map<int, CGameObject*> _listObjectOnScreen;
-	
+	vector<CGameObject*> _listAllGameObject;
 	int _prepareForBoss;
 	CSprite		_spriteIntroBoss;
 	bool		_isBossDied;				// Kiểm tra boss có chết hay chưa

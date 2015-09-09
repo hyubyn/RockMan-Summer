@@ -15,6 +15,7 @@ CEnemyBall::CEnemyBall(int id, int typeID, CSprite sprite, CSprite spriteExplodi
 	_blood = blood;
 	_isHitDame = false;
 	_score = score;
+	_state = ENEMYBALL_STATE::DEFENSE;
 
 
 	_spriteExplodingEffect = spriteExplodingEffect;
