@@ -409,7 +409,7 @@
 #pragma region Vùng định nghĩa DAME và BLOOD, WEAPONS, ITEM VALUE, SCORE
 
 #define SCORE_DEFAULT				200
-#define BLOOD_DEFAULT				10
+#define BLOOD_DEFAULT				27
 #define	WEASPON_DEFAULT				27
 #define VALUE_ITEM_BLOOD_BIG		10
 #define VALUE_ITEM_BLOOD_SMALL		2
