@@ -2095,7 +2095,7 @@ void Megaman::ResetAll()
 	_isGoingOverDoor = false;
 	_canFire = true;
 	_isTheFirstTime = true;
-	_isChangingState = false;
+	_isChangingState = true;
 	_isInShield = false;
 	_changeScreenDirection = CDirection::NONE_DIRECT;
 

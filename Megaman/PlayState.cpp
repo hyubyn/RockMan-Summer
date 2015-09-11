@@ -898,27 +898,30 @@ void CPlayState::Update(CTimer* gameTime)
 				
 				
 
-				_playState = PlayState::READY;
-				_deltaTime = 0;
-				_rockman->_blood = BLOOD_DEFAULT;
-				_rockman->_behave = Behave::START;
-				D3DXVECTOR2 pos = _camera->_listPoint.at(0);
-				_camera->_pos = pos;
-				_rockman->SetPos(D3DXVECTOR2(pos.x + 120  ,pos.y )); 
+		_rockman->ResetAll();
+		_changingScreen = 0;
+		_pointAfterDoor = D3DXVECTOR2(0, 0);
+		_pointBeforeDoor =D3DXVECTOR2(0, 0);
+		_isBossDied = false;
 		
 
-				_prepareForBoss = 0;
-				_isBossDied = false;
-				_enemies.clear();
-				_bulletsRockman.clear();
-				_bulletsEnemy.clear();
-				_powerEnegies.clear();
-				_items.clear();
+		// Khởi động trạng thái
+		_playState = PlayState::READY;
+		_deltaClearPoint = 0;
+		_strClearPoint = "";
+		_strBonus = "";
+		_deltaTime = 0;
+		_typeID = ID_SCREEN_PLAY;
+		_prepareForBoss = 0;
+		_shakePointRand = D3DXVECTOR2(0.0f, 0.0f);
+		_defaultStringColor = D3DCOLOR_XRGB(255, 255, 255);
 
-				_pointAfterDoor = D3DXVECTOR2(0, 0);
-				_pointBeforeDoor = D3DXVECTOR2(0, 0);
-				_shakePointRand = D3DXVECTOR2(0.0f, 0.0f);
-				CInput::GetInstance()->Active();
+
+		//D3DXVECTOR2 pos = _camera->_listPoint.at(_camera->_listPoint.size() - 4);
+		D3DXVECTOR2 pos = _camera->_listPoint.at(0);
+		_camera->_pos = pos;
+		_rockman->SetPos(D3DXVECTOR2(pos.x + 120 ,pos.y )); 
+
 
 				switch (CGameInfo::GetInstance()->GetLevel())
 				{
