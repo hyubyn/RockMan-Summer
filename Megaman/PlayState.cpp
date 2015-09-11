@@ -36,17 +36,19 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 		_defaultStringColor = D3DCOLOR_XRGB(255, 255, 255);
 
 
-		D3DXVECTOR2 pos = _camera->_listPoint.at(0);
+		D3DXVECTOR2 pos = _camera->_listPoint.at(_camera->_listPoint.size() - 4);
+		//D3DXVECTOR2 pos = _camera->_listPoint.at(0);
 		pos.x += 120;
 		_camera->_pos = pos;
+
 		switch (id)
 		{
-		case 3:
-			_rockman->SetPos(D3DXVECTOR2(pos.x  + 120  ,pos.y )); 
-			break;
-		default:
-			_rockman->SetPos(D3DXVECTOR2(pos.x  ,pos.y )); 
-			break;
+			case 3:
+				_rockman->SetPos(D3DXVECTOR2(pos.x  + 120  ,pos.y )); 
+				break;
+			default:
+				_rockman->SetPos(D3DXVECTOR2(pos.x  ,pos.y )); 
+				break;
 		}
 		
 
@@ -99,7 +101,14 @@ void CPlayState::Update(CTimer* gameTime)
 {
 	if (!_isPause)
 	{
-		///Nếu của sổ chọn skill đang mở
+		_camera->Update(_rockman->_position);
+		//Clear ListObjt và Clip Camera
+	
+		tree->_listObjectOnScreen.clear();
+		tree->ClipCamera(tree->_nodeRoot, _camera->getViewPort());
+		if (!_camera->isMoving)
+		{
+			///Nếu của sổ chọn skill đang mở
 		if (_isChosingSkill)
 		{
 			_isChosingSkill = false;
@@ -143,10 +152,7 @@ void CPlayState::Update(CTimer* gameTime)
 
 	
 	
-	//Clear ListObjt và Clip Camera
-	_camera->Update(_rockman->_position);
-	tree->_listObjectOnScreen.clear();
-	tree->ClipCamera(tree->_nodeRoot, _camera->getViewPort());
+	
 	
 	_groundObjs.clear();
 	_elevators.clear();
@@ -158,9 +164,7 @@ void CPlayState::Update(CTimer* gameTime)
 		{
 		case ID_ELEVATOR_TROUBLE:
 		case ID_ELEVATOR:
-				
-					_elevators.push_back((CElevator*)(tree->_listAllGameObject.at(i)));
-			
+			_elevators.push_back((CElevator*)(tree->_listAllGameObject.at(i)));
 			break;
 		}
 	}
@@ -283,9 +287,9 @@ void CPlayState::Update(CTimer* gameTime)
 		if (_elevators[i]->GetBox().IntersecWith(_camera->getViewPort()))
 		{
 			if (_elevators.size() == 0)
-			ResourceManager::StopSound(ID_EFFECT_ELEVATOR_RUNNING);
-		else
-			ResourceManager::PlayASound(ID_EFFECT_ELEVATOR_RUNNING);
+				ResourceManager::StopSound(ID_EFFECT_ELEVATOR_RUNNING);
+			else
+				ResourceManager::PlayASound(ID_EFFECT_ELEVATOR_RUNNING);
 		}
 	}
 		
@@ -634,13 +638,30 @@ void CPlayState::Update(CTimer* gameTime)
 				int countEnemies = _enemies.size();
 				for (int i = 0; i < countEnemies; i++)
 				{
+					if (!_enemies[i]->GetBox().IntersecWith(_camera->getViewPort()) && _enemies[i]->IsDied())
+					{
+						_enemies[i]->_blood = 2;
+					}
 					if (!_enemies[i]->IsDied())
 					{
 						_enemies[i]->Update(gameTime);
 						_enemies[i]->Update(gameTime, _rockman);
 						_enemies[i]->UpdateCamera(*_camera);
 					}
-					
+					else
+					{
+						for(map<int,CGameObject*>::iterator ii = tree->_listObjectOnScreen.begin();ii != tree->_listObjectOnScreen.end();++ii)
+							{
+				
+								if ((*ii).second->_id == _enemies[i]->_id)
+								{
+									map<int, CGameObject*>::iterator toErase = ii;
+									tree->_listObjectOnScreen.erase(toErase);
+									countEnemies--;
+									break;
+								}
+							}
+					}
 					if (_enemies[i]->IsDied() && !_rockman->IsDied())
 					{
 						_items.clear();
@@ -1037,9 +1058,8 @@ void CPlayState::Update(CTimer* gameTime)
 		{
 			_spriteIntroBoss.Update(gameTime);
 		}
-
-	
-}
+		}	
+	}
 
 	
 	
@@ -1059,20 +1079,6 @@ void CPlayState::Draw(CTimer* gameTime, MGraphic* graphics)
 		(*i).second->Render(gameTime,graphics);
 	}*/
 
-	D3DXVECTOR2 oldCameraPoint = _camera->_pos;
-
-	if (Asset::GetInstance()->__is_require_shake_screen)
-	{
-		_deltatTimeShakingScreen += gameTime->GetTime();
-		if (_deltatTimeShakingScreen > 50)
-		{
-			_deltatTimeShakingScreen = 0;
-			_shakePointRand.x = rand() % 7 + 1;
-			_shakePointRand.y = rand() % 3 + 1;
-
-			_camera->_pos = (oldCameraPoint + _shakePointRand);
-		}
-	}
 	RenderBackground(graphics, _camera->getViewPort());
 
 	if (_prepareForBoss == 2)
@@ -1102,8 +1108,8 @@ void CPlayState::Draw(CTimer* gameTime, MGraphic* graphics)
 
 		}
 	}
-	for (int i = 0; i < _elevators.size(); i++)
-		_elevators[i]->Render(gameTime, graphics);
+	/*for (int i = 0; i < _elevators.size(); i++)
+		_elevators[i]->Render(gameTime, graphics);*/
 	for (int i = 0; i < _bulletsRockman.size(); i++)
 		_bulletsRockman[i]->Render(gameTime, graphics);
 	for (int i = 0; i < _bulletsEnemy.size(); i++)
@@ -1112,7 +1118,7 @@ void CPlayState::Draw(CTimer* gameTime, MGraphic* graphics)
 		for (int i = 0; i < _powerEnegies.size(); i++)
 			_powerEnegies[i]->Render(gameTime, graphics);
 	
-	_camera->_pos = (oldCameraPoint);
+	//_camera->_pos = (oldCameraPoint);
 
 
 	// Vẽ điểm màn chơi

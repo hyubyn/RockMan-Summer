@@ -110,6 +110,8 @@
     <ClInclude Include="CExplodingEffectX.h" />
     <ClInclude Include="CGameInfo.h" />
     <ClInclude Include="CGameObject.h" />
+    <ClInclude Include="CGameOver.h" />
+    <ClInclude Include="CGutsMan.h" />
     <ClInclude Include="CGutsManBullet.h" />
     <ClInclude Include="CGutsRockManBullet.h" />
     <ClInclude Include="CInput.h" />
@@ -198,6 +200,8 @@
     <ClCompile Include="CExplodingEffectX.cpp" />
     <ClCompile Include="CGameInfo.cpp" />
     <ClCompile Include="CGameObject.cpp" />
+    <ClCompile Include="CGameOver.cpp" />
+    <ClCompile Include="CGutsMan.cpp" />
     <ClCompile Include="CGutsManBullet.cpp" />
     <ClCompile Include="CGutsRockManBullet.cpp" />
     <ClCompile Include="CInput.cpp" />

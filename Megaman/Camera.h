@@ -61,7 +61,6 @@ class Camera
 {
 	D3DXMATRIX _MatrixTransform;
 	vector<MoveLine> _listMoveLine;	// list cac duong thang ma camera di chuyen ben tren
-	bool isMoving;		// bien xac dinh camera co dang di chuyen hay ko
 	D3DXVECTOR2 endPoint;	// toa do camera di chuyen toi
 	int count;	// bien dem luu tru so luong point path
 	int limitX; // hieu cua hai toa do camera di chuyen. moi map moi khac
@@ -70,6 +69,7 @@ class Camera
 public:
 	Camera();
 	~Camera();
+	bool isMoving;		// bien xac dinh camera co dang di chuyen hay ko
 	vector<D3DXVECTOR2> _listPoint;	// list cac toa do duoc doc tu file txt
 	D3DXVECTOR2 endMap;	// toa do cuoi cung cua Camera
 	D3DXVECTOR2 _pos;

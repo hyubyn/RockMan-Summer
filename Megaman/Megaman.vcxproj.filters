@@ -227,6 +227,8 @@
     <ClCompile Include="CEnemyBall.cpp" />
     <ClCompile Include="CBoomMan.cpp" />
     <ClCompile Include="CCutMan.cpp" />
+    <ClCompile Include="CGameOver.cpp" />
+    <ClCompile Include="CGutsMan.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -407,5 +409,7 @@
     <ClInclude Include="CEnemyBall.h" />
     <ClInclude Include="CBoomMan.h" />
     <ClInclude Include="CCutMan.h" />
+    <ClInclude Include="CGameOver.h" />
+    <ClInclude Include="CGutsMan.h" />
   </ItemGroup>
 </Project>

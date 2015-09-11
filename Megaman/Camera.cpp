@@ -49,13 +49,13 @@ void Camera::Update(D3DXVECTOR2 megamanPosition)
 				isMoving = false;
 			}
 		}
-		else if (_pos.y < endPoint.y - 4)
+		else if (_pos.y < endPoint.y - 5)
 		{
-			_pos.y += 5;
+			_pos.y += 6;
 		}
-		else if (_pos.y > endPoint.y + 4)
+		else if (_pos.y > endPoint.y + 5)
 		{
-			_pos.y -= 5;
+			_pos.y -= 6;
 		}
 		else if (_pos.y < endPoint.y)
 		{

@@ -27,7 +27,7 @@ public:
 	void Render(CTimer* gameTime, MGraphic* graphics);
 	void Update(CTimer* gameTime, Megaman* rockman,Camera* cam );
 	int nodeCountForDebug;
-
+	vector<CNode*> listNodeForDebug;
 	~CQuadTree(void);
 };
 

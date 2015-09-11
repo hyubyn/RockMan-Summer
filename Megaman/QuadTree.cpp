@@ -103,23 +103,28 @@ void CQuadTree::LoadMap(int mapId, Camera *cam)
 void CQuadTree::BuildTree(CNode* root)
 {
 	// tao node la tu node cha dua tren hash map da load tu file map len
-
+	if (root->_nodeId == 255)
+	{
+		int a= 0;
+	}
 	for(map<INT32,CNode*>::iterator i = _mapNode.begin();i != _mapNode.end();++i)
 	{
 		if((*i).first == root->_nodeId*4 + 1)
 		{
-
+			if (root->_nodeId* 4 + 3 == 255)
+			{
+				int a = 0;
+			}
 			int width = root->_width / 2;
 			int height = root->_height / 2;
-			root->_lt = new CNode(root->_nodeId* 4 + 1, root->_x, root->_y, root->_width, root->_height);
-			root->_rt = new CNode(root->_nodeId* 4 + 2, root->_x, root->_y, root->_width, root->_height);
-			root->_rb = new CNode(root->_nodeId* 4 + 3, root->_x, root->_y, root->_width, root->_height);
-			root->_lb = new CNode(root->_nodeId* 4 + 4, root->_x, root->_y, root->_width, root->_height);
+			root->_lt = new CNode(root->_nodeId* 4 + 1, (*i).second->_x, (*i).second->_y, (*i).second->_width, (*i).second->_height);
+			root->_rt = new CNode(root->_nodeId* 4 + 2, (*i).second->_x + width, (*i).second->_y, (*i).second->_width, (*i).second->_height);
+			root->_rb = new CNode(root->_nodeId* 4 + 4, (*i).second->_x + width, (*i).second->_y - height, (*i).second->_width, (*i).second->_height);
+			root->_lb = new CNode(root->_nodeId* 4 + 3, (*i).second->_x, (*i).second->_y - height, (*i).second->_width, (*i).second->_height);
 			BuildTree(root->_lt);
 			BuildTree(root->_lb);
 			BuildTree(root->_rt);
 			BuildTree(root->_rb);
-			nodeCountForDebug += 4;
 		}
 	}
 
@@ -150,7 +155,10 @@ void CQuadTree::BuildTree(CNode* root)
 
 void CQuadTree::ClipCamera(CNode* root, RECT viewPort)
 {
-
+	if (root->_nodeId == 255)
+	{
+		int a = 1;
+	}
 	if (root->ClipCamera(viewPort) == 1)
 	{
 		if (root->_lt != NULL)
@@ -164,16 +172,20 @@ void CQuadTree::ClipCamera(CNode* root, RECT viewPort)
 		{
 			try
 			{
-				viewPort.right += 150;
-				
-				for (int i = 0; i < root->_objectCount; i++)
+				for (int i = 0; i < root->_listGameObject.size(); i++)
 				{
-					if (root->_listGameObject.at(i)->GetCollideRegion().IntersecWith(viewPort) || root->_listGameObject.at(i)->_position.y < viewPort.bottom)
+					if (root->_listGameObject.at(i)->GetCollideRegion().IntersecWith(viewPort))
 					{
-					_listObjectOnScreen[root->_listGameObject.at(i)->_id] = root->_listGameObject.at(i);
-
+						CGameObject* object = root->_listGameObject.at(i);
+						_listObjectOnScreen[root->_listGameObject.at(i)->_id] = object;
 					}
-				}				
+				}		
+				if (root->_objectCount > 0)
+				{
+					nodeCountForDebug++;
+					listNodeForDebug.push_back(root);
+				}
+
 			}
 			catch(std::out_of_range e)
 			{
@@ -184,22 +196,7 @@ void CQuadTree::ClipCamera(CNode* root, RECT viewPort)
 		}
 		
 	}
-	else
-	{
-		for (int j = 0; j < root->_listGameObject.size(); ++j)
-		{
-			for(map<int,CGameObject*>::iterator i = _listObjectOnScreen.begin();i != _listObjectOnScreen.end();++i)
-			{
-				
-				if ((*i).second->_id == root->_listGameObject.at(j)->_id)
-				{
-					map<int, CGameObject*>::iterator toErase = i;
-					_listObjectOnScreen.erase(toErase);
-				}
-			}
-		}
-		
-	}
+	
 }
 
 void CQuadTree::Render(CTimer* gameTime, MGraphic* graphics)
