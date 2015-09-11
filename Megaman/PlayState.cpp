@@ -37,8 +37,8 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 
 
 		//D3DXVECTOR2 pos = _camera->_listPoint.at(_camera->_listPoint.size() - 4);
-		D3DXVECTOR2 pos = _camera->_listPoint.at(0);
-		pos.x += 120;
+		D3DXVECTOR2 pos = _camera->_positionBossRoom;
+		pos.x -= 1200;
 		_camera->_pos = pos;
 
 		switch (id)
@@ -327,7 +327,7 @@ void CPlayState::Update(CTimer* gameTime)
 	else if (_playState == PlayState::PLAYING)
 	{
 
-		switch (CGameInfo::GetInstance()->GetLevel())
+		switch (CGameInfo::GetInstance()->GetLevel() && _camera->_pos != _camera->_positionBossRoom)
 				{
 				case ID_LEVEL_BOOM:
 					ResourceManager::PlayASound(ID_SOUND_BOMBMAN_STAGE);
@@ -342,7 +342,7 @@ void CPlayState::Update(CTimer* gameTime)
 
 #pragma region Xử lý khi vào phòng boss
 
-		if (_prepareForBoss == 1)
+		if (_prepareForBoss == 1 && _camera->_pos == _camera->_positionBossRoom)
 		{
 			_deltaTime += gameTime->GetTime();
 			if (_deltaTime >= 3000)
@@ -1054,7 +1054,7 @@ void CPlayState::Update(CTimer* gameTime)
 		CExplodingEffectManager::Update(gameTime);
 
 		//Update spriteintro khi vào phòng boss
-		if (_prepareForBoss == 2)
+		if (_prepareForBoss == 1 && _camera->_pos == _camera->_positionBossRoom)
 		{
 			_spriteIntroBoss.Update(gameTime);
 		}
@@ -1081,7 +1081,7 @@ void CPlayState::Draw(CTimer* gameTime, MGraphic* graphics)
 
 	RenderBackground(graphics, _camera->getViewPort());
 
-	if (_prepareForBoss == 2)
+	if (_prepareForBoss == 1)
 	{
 		graphics->Draw(_spriteIntroBoss.GetTexture(), _spriteIntroBoss.GetDestinationRectangle(), _camera->_listPoint.at(_camera->_listPoint.size()-1) + D3DXVECTOR2(SCREEN_WIDTH/2, - SCREEN_HEIGHT/2), true, D3DXVECTOR2(1.0f, 1.0f), SpriteEffects::NONE);
 	}
