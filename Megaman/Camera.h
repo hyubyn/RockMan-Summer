@@ -86,5 +86,6 @@ public:
 	void SetEndMap(D3DXVECTOR2);				// set toa do cuoi cung cua camera
 	D3DXVECTOR3 GetPointTransform(int x, int y);
 	void Transform(D3DXVECTOR2* position);
+	D3DXVECTOR2 checkDoorPoint;
 };
 

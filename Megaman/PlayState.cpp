@@ -36,8 +36,8 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 		_defaultStringColor = D3DCOLOR_XRGB(255, 255, 255);
 
 
-		D3DXVECTOR2 pos = _camera->_listPoint.at(_camera->_listPoint.size() - 4);
-		//D3DXVECTOR2 pos = _camera->_listPoint.at(0);
+		//D3DXVECTOR2 pos = _camera->_listPoint.at(_camera->_listPoint.size() - 4);
+		D3DXVECTOR2 pos = _camera->_listPoint.at(0);
 		pos.x += 120;
 		_camera->_pos = pos;
 
@@ -423,7 +423,8 @@ void CPlayState::Update(CTimer* gameTime)
 					{
 						_doorState = 0;
 						_rockman->ThroughOverDoor(_listDoor.at(i)->_typeID);
-					
+						_camera->MoveOverDoor();
+						
 						_changingScreen = 1;
 
 						_enemies.clear();
@@ -450,7 +451,6 @@ void CPlayState::Update(CTimer* gameTime)
 					_doorState = 0;
 					_listDoor.at(i)->CloseDoor();
 					_changingScreen = 0 ;
-					_camera->MoveOverDoor();
 					ResourceManager::PlayASound(ID_EFFECT_OPEN_THE_DOOR);
 					_listDoor.at(i)->Update(gameTime);
 				}

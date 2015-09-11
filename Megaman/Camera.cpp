@@ -97,8 +97,11 @@ void Camera::Move(D3DXVECTOR2 megamanPos, int index)
 					} 
 					else
 					{
-					
+						if (_pos.x != checkDoorPoint.x || (_pos.x == checkDoorPoint.x && megamanPos.x > _pos.x + SCREEN_WIDTH / 2))
+						{
 							_pos.x = megamanPos.x - SCREEN_WIDTH / 2;
+
+						}
 							if (_pos.x < line.startPoint.x )
 							{
 								_pos = line.startPoint;
@@ -240,9 +243,9 @@ void Camera::LoadCameraPath(int id)
 	fs.close();
 	switch (id)
 	{
-	case 1: endMap = _listPoint.at(count - 5); doorPoint = _listPoint.at(count - 4); break;
+	case 1: endMap = _listPoint.at(count - 5);  checkDoorPoint = doorPoint = _listPoint.at(count - 4); break;
 	case 2: 
-	case 3: endMap = _listPoint.at(count - 4);doorPoint = _listPoint.at(count - 3);break;
+	case 3: endMap = _listPoint.at(count - 4);checkDoorPoint = doorPoint = _listPoint.at(count - 3);break;
 
 	default:
 		break;
