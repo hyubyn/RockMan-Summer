@@ -76,6 +76,11 @@ void CBulletRockman::OnCollideWith(CGameObject *obj, CDirection normalX, CDirect
 			_collidedObject._timeCollide = collideTime;
 			_collidedObject._object = obj;
 		}
+		Die();
+		break;
+	case ID_BLOCK:
+	case ID_ROCK:
+		Die();
 		break;
 	}
 }
