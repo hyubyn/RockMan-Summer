@@ -39,16 +39,8 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 		//D3DXVECTOR2 pos = _camera->_listPoint.at(_camera->_listPoint.size() - 4);
 		D3DXVECTOR2 pos = _camera->_listPoint.at(0);
 		_camera->_pos = pos;
-
-		switch (id)
-		{
-			case 3:
-				_rockman->SetPos(D3DXVECTOR2(pos.x  + 240  ,pos.y )); 
-				break;
-			default:
-				_rockman->SetPos(D3DXVECTOR2(pos.x + 120 ,pos.y )); 
-				break;
-		}
+		_rockman->SetPos(D3DXVECTOR2(pos.x + 120 ,pos.y )); 
+	
 		
 
 		//Load Map
@@ -903,26 +895,17 @@ void CPlayState::Update(CTimer* gameTime)
 				//FindScene(startIndex);
 
 				// Khởi động trạng thái
-				D3DXVECTOR2 pos = _camera->_listPoint.at(0);
-				_camera->_pos = pos;
+				
 				
 
 				_playState = PlayState::READY;
 				_deltaTime = 0;
 				_rockman->_blood = BLOOD_DEFAULT;
 				_rockman->_behave = Behave::START;
-				int id = CGameInfo::GetInstance()->GetLevel();
-				switch (id)
-				{
-
-				case 3003:
-					_rockman->SetPos(D3DXVECTOR2(pos.x  + 240 ,pos.y )); 
-					break;
-				default:
-					_rockman->SetPos(D3DXVECTOR2(pos.x + 120  ,pos.y )); 
-					break;
-				} 
-			
+				D3DXVECTOR2 pos = _camera->_listPoint.at(0);
+				_camera->_pos = pos;
+				_rockman->SetPos(D3DXVECTOR2(pos.x + 120  ,pos.y )); 
+		
 
 				_prepareForBoss = 0;
 				_isBossDied = false;
@@ -1106,8 +1089,8 @@ void CPlayState::Draw(CTimer* gameTime, MGraphic* graphics)
 
 		}
 	}
-	/*for (int i = 0; i < _elevators.size(); i++)
-		_elevators[i]->Render(gameTime, graphics);*/
+	for (int i = 0; i < _elevators.size(); i++)
+		_elevators[i]->Render(gameTime, graphics);
 	for (int i = 0; i < _bulletsRockman.size(); i++)
 		_bulletsRockman[i]->Render(gameTime, graphics);
 	for (int i = 0; i < _bulletsEnemy.size(); i++)
