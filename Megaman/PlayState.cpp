@@ -37,17 +37,16 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 
 
 		//D3DXVECTOR2 pos = _camera->_listPoint.at(_camera->_listPoint.size() - 4);
-		D3DXVECTOR2 pos = _camera->_positionBossRoom;
-		pos.x -= 1200;
+		D3DXVECTOR2 pos = _camera->_listPoint.at(0);
 		_camera->_pos = pos;
 
 		switch (id)
 		{
 			case 3:
-				_rockman->SetPos(D3DXVECTOR2(pos.x  + 120  ,pos.y )); 
+				_rockman->SetPos(D3DXVECTOR2(pos.x  + 240  ,pos.y )); 
 				break;
 			default:
-				_rockman->SetPos(D3DXVECTOR2(pos.x  ,pos.y )); 
+				_rockman->SetPos(D3DXVECTOR2(pos.x + 120 ,pos.y )); 
 				break;
 		}
 		
@@ -425,11 +424,11 @@ void CPlayState::Update(CTimer* gameTime)
 						_rockman->ThroughOverDoor(_listDoor.at(i)->_typeID);
 						_camera->MoveOverDoor();
 						
-						_changingScreen = 1;
+						//_changingScreen = 1;
 
 						_enemies.clear();
 						_bulletsEnemy.clear();
-						_bulletsRockman.clear();
+						//_bulletsRockman.clear();
 						_items.clear();
 						_rockman->_canFire = true;
 
@@ -905,7 +904,6 @@ void CPlayState::Update(CTimer* gameTime)
 
 				// Khởi động trạng thái
 				D3DXVECTOR2 pos = _camera->_listPoint.at(0);
-				pos.x += 120;
 				_camera->_pos = pos;
 				
 
@@ -918,10 +916,10 @@ void CPlayState::Update(CTimer* gameTime)
 				{
 
 				case 3003:
-					_rockman->SetPos(D3DXVECTOR2(pos.x  + 120  ,pos.y )); 
+					_rockman->SetPos(D3DXVECTOR2(pos.x  + 240 ,pos.y )); 
 					break;
 				default:
-					_rockman->SetPos(D3DXVECTOR2(pos.x  ,pos.y )); 
+					_rockman->SetPos(D3DXVECTOR2(pos.x + 120  ,pos.y )); 
 					break;
 				} 
 			
