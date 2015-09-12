@@ -135,7 +135,7 @@ void Camera::Move(D3DXVECTOR2 megamanPos, int index)
 			} 
 			else                                                // neu la huong di xuong
 			{
-				if (_pos == line.startPoint && megamanPos.y < line.startPoint.y - SCREEN_HEIGHT)
+				if (_pos == line.startPoint && megamanPos.y < line.startPoint.y - SCREEN_HEIGHT - 20)
 				{
 					isMoving = true;
 					endPoint = line.endPoint;
@@ -243,9 +243,24 @@ void Camera::LoadCameraPath(int id)
 	fs.close();
 	switch (id)
 	{
-	case 1: endMap = _listPoint.at(count - 5);  checkDoorPoint = doorPoint = _listPoint.at(count - 4); break;
-	case 2: 
-	case 3: endMap = _listPoint.at(count - 4);checkDoorPoint = doorPoint = _listPoint.at(count - 3);break;
+	case 1: endMap = _listPoint.at(count - 5);  checkDoorPoint = doorPoint = _listPoint.at(count - 4);
+		_listCheckPoints.push_back(_listPoint.at(0));
+		_listCheckPoints.push_back(_listPoint.at(3));
+		_listCheckPoints.push_back(_listPoint.at(7));
+		_listCheckPoints.push_back(_listPoint.at(count - 1));
+		break;
+	case 2: endMap = _listPoint.at(count - 4);checkDoorPoint = doorPoint = _listPoint.at(count - 3);
+		_listCheckPoints.push_back(_listPoint.at(0));
+		_listCheckPoints.push_back(_listPoint.at(5));
+		_listCheckPoints.push_back(_listPoint.at(10));
+		_listCheckPoints.push_back(_listPoint.at(count - 1));
+		break;
+
+	case 3: endMap = _listPoint.at(count - 4);checkDoorPoint = doorPoint = _listPoint.at(count - 3);
+		_listCheckPoints.push_back(_listPoint.at(0));
+		//_listCheckPoints.push_back(_listPoint.at(5));
+		_listCheckPoints.push_back(_listPoint.at(count - 1));
+		break;
 
 	default:
 		break;

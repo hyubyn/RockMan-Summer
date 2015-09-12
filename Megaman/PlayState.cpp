@@ -12,7 +12,7 @@ CPlayState::CPlayState(char *pathmap, MGraphic* gra, LPDIRECT3DDEVICE9 d3ddev, M
 		_graphic->SetDevice(d3ddev);
 		content = new MContent(gra->GetDevice());
 		this->SetInput(input);
-
+		mapId = id;
 		_rockman = new Megaman();
 		_rockman->Initlize();
 		_changingScreen = 0;
@@ -97,6 +97,7 @@ void CPlayState::Update(CTimer* gameTime)
 	
 		tree->_listObjectOnScreen.clear();
 		tree->ClipCamera(tree->_nodeRoot, _camera->getViewPort());
+		
 		if (!_camera->isMoving)
 		{
 			///Nếu của sổ chọn skill đang mở
@@ -455,8 +456,7 @@ void CPlayState::Update(CTimer* gameTime)
 		if (_doorState == -1)
 			return;
 
-		//Update Rockman
-		_rockman->Update(gameTime, _input);
+		
 
 		vector<CBullet*> bullets = _rockman->GetBullets();
 		for (int i = 0; i < bullets.size(); i++)
@@ -562,6 +562,9 @@ void CPlayState::Update(CTimer* gameTime)
 			ResourceManager::PlayASound(ID_EFFECT_VICTORY);
 			return;
 		}
+
+		//Update Rockman
+		_rockman->Update(gameTime, _input);
 
 		if (_changingScreen == 0)
 		{
@@ -845,7 +848,7 @@ void CPlayState::Update(CTimer* gameTime)
 
 			}
 
-
+		
 
 
 			for (int i = 0; i < _powerEnegies.size(); i++)
@@ -896,9 +899,22 @@ void CPlayState::Update(CTimer* gameTime)
 
 				// Khởi động trạng thái
 				
-				
-
+				D3DXVECTOR2 pos = _camera->_listPoint.at(0);
+		// kiem tra toa do check point
+				int countCheckPoints = _camera->_listCheckPoints.size();
+				for (int i = countCheckPoints - 1; i >  - 1; i--)
+				{
+					if (_rockman->GetPos().x > _camera->_listCheckPoints.at(i).x)
+					{
+						pos = _camera->_listCheckPoints.at(i);
+						break;
+					}
+				}
 		_rockman->ResetAll();
+		free(tree);
+		//Load map - Load quadtree
+		tree = new CQuadTree();
+		tree->LoadMap(mapId, this->_camera);
 		_changingScreen = 0;
 		_pointAfterDoor = D3DXVECTOR2(0, 0);
 		_pointBeforeDoor =D3DXVECTOR2(0, 0);
@@ -918,7 +934,7 @@ void CPlayState::Update(CTimer* gameTime)
 
 
 		//D3DXVECTOR2 pos = _camera->_listPoint.at(_camera->_listPoint.size() - 4);
-		D3DXVECTOR2 pos = _camera->_listPoint.at(0);
+		
 		_camera->_pos = pos;
 		_rockman->SetPos(D3DXVECTOR2(pos.x + 120 ,pos.y )); 
 
@@ -1043,6 +1059,7 @@ void CPlayState::Update(CTimer* gameTime)
 			_spriteIntroBoss.Update(gameTime);
 		}
 		}	
+			
 	}
 
 	

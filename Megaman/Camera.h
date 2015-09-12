@@ -87,5 +87,6 @@ public:
 	D3DXVECTOR3 GetPointTransform(int x, int y);
 	void Transform(D3DXVECTOR2* position);
 	D3DXVECTOR2 checkDoorPoint;
+	vector<D3DXVECTOR2> _listCheckPoints;
 };
 
